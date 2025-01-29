@@ -21,12 +21,12 @@ This is the Node.js, server, and database management area of the project.
 3. In **Terminal 1:**
    ```
    cd backend
-   npm install
+   npm install <- only if first time running project
    ```
 4. In **Terminal 2:**
    ```
    cd frontend
-   npm install
+   npm install <- only if first time running project
    ```
 5. In **Terminal 2:**
    ```
