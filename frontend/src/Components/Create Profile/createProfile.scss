@@ -1,0 +1,101 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.main-area{
+    width: auto;
+    height: 100%;
+    display:  flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.header{
+    margin-left: 35%;
+}
+
+.horizontal-flex{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    width: 150px; 
+    text-align: right; 
+}
+
+.input-field {
+    padding: 10px;
+    width: 300px;
+    box-sizing: border-box;
+}
+
+.input-field.invalid{
+    border: 2px solid red;
+}
+
+
+.create-profile{
+    padding: 15px 15px;
+    width: 150px;
+    height: 30px;
+    background-color: #315fb9;
+    border-radius: 8px;
+    color: white;
+    font-size: 22px;
+    margin-left: auto;
+}
+
+.password-check-area{
+    width: 100%;
+    height: 50%;
+    margin-left: 50px;
+    background-color: #FDFDFF;
+    border: solid 2px black;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.password-check-area h2{
+    margin: 0px 5px;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.necessary-password-metrics{
+    list-style-type: none;
+    padding: 0;
+    margin: 0px 10px;
+}
+
+.password-check-item{
+    padding: 5px 0px;
+    color: red;
+    font-weight: bold;
+}
+
+.password-check-item.completed{
+    color: green;
+}
+
+.password-confirm{
+    display: none;
+    margin-top: auto;
+    text-align: center;
+}
+
+.password-confirm.valid{
+    display: inline-block;
+}
