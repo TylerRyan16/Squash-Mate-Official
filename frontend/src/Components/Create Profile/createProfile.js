@@ -13,7 +13,11 @@ const CreateProfile = () => {
         age: "",
         playerLevel: "",
         clubLockerURL: "",
+        firstName: "",
+        lastName: "",
+        country: "",
     });
+
     const [lengthValid, setLengthValid] = useState(false);
     const [numbersValid, setNumbersValid] = useState(false);
     const [specialValid, setSpecialValid] = useState(false);
@@ -102,7 +106,7 @@ const CreateProfile = () => {
         //  SEND REQUEST TO DATABASE
         try {
             const response = await axios.post("http://localhost:5000/api/profiles", formValues);
-            
+
             console.log("Profile created: ", response.data);
 
             // set auth token in local storage
@@ -127,66 +131,88 @@ const CreateProfile = () => {
             <div className="horizontal-flex">
                 <div className="main-area">
                     <h1 className="header">Create Profile</h1>
+                    <div className="first-last-name-area">
+                        {/* FIRST NAME */}
+                        <div className="column-flexbox">
+                            <label htmlFor="first-name-input">First Name: </label>
+                            <input
+                                type="text"
+                                name="First name..."
+                                id="first-name"
+                                className={`input-field ${invalidFields.firstName && touchedFields.firstName ? "invalid" : ""}`}
+                                placeholder="First name..."
+                                value={formValues.firstName}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        {/* LAST NAME */}
+                        <div className="column-flexbox">
+
+                            <label htmlFor="last-name-input">Last Name: </label>
+                            <input
+                                type="text"
+                                name="Last name..."
+                                id="last-name"
+                                className={`input-field ${invalidFields.lastName && touchedFields.lastName ? "invalid" : ""}`}
+                                placeholder="Last name..."
+                                value={formValues.lastName}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                    </div>
+
                     {/* USERNAME */}
-                    <div className="horizontal-flex">
-                        <label htmlFor="username-input">Username: </label>
-                        <input
-                            type="text"
-                            name="username"
-                            className={`input-field ${invalidFields.username && touchedFields.username ? "invalid" : ""}`}
-                            placeholder="username..."
-                            value={formValues.username}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <label htmlFor="username-input">Username: </label>
+                    <input
+                        type="text"
+                        name="username"
+                        className={`input-field ${invalidFields.username && touchedFields.username ? "invalid" : ""}`}
+                        placeholder="username..."
+                        value={formValues.username}
+                        onChange={handleInputChange}
+                    />
                     {/* PASSWORD */}
-                    <div className="horizontal-flex">
-                        <label htmlFor="password-input">Password: </label>
-                        <input
-                            type="password"
-                            name="password"
-                            className={`input-field ${invalidFields.password && touchedFields.password ? "invalid" : ""}`}
-                            placeholder="password..."
-                            value={formValues.password}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <label htmlFor="password-input">Password: </label>
+                    <input
+                        type="password"
+                        name="password"
+                        className={`input-field ${invalidFields.password && touchedFields.password ? "invalid" : ""}`}
+                        placeholder="password..."
+                        value={formValues.password}
+                        onChange={handleInputChange}
+                    />
                     {/* AGE */}
-                    <div className="horizontal-flex">
-                        <label htmlFor="age-input">Age: </label>
-                        <input
-                            type="text"
-                            name="age"
-                            className={`input-field ${invalidFields.age && touchedFields.age ? "invalid" : ""}`}
-                            placeholder="age..."
-                            value={formValues.age}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <label htmlFor="age-input">Age: </label>
+                    <input
+                        type="text"
+                        name="age"
+                        className={`input-field ${invalidFields.age && touchedFields.age ? "invalid" : ""}`}
+                        placeholder="age..."
+                        value={formValues.age}
+                        onChange={handleInputChange}
+                    />
                     {/* PLAYER LEVEL */}
-                    <div className="horizontal-flex">
-                        <label htmlFor="player-level-input">Player Level: </label>
-                        <input
-                            type="text"
-                            name="playerLevel"
-                            className={`input-field ${invalidFields.playerLevel && touchedFields.playerLevel ? "invalid" : ""}`}
-                            placeholder="player level..."
-                            value={formValues.playerLevel}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <label htmlFor="player-level-input">Player Level: </label>
+                    <input
+                        type="text"
+                        name="playerLevel"
+                        className={`input-field ${invalidFields.playerLevel && touchedFields.playerLevel ? "invalid" : ""}`}
+                        placeholder="player level..."
+                        value={formValues.playerLevel}
+                        onChange={handleInputChange}
+                    />
                     {/* CLUB LOCKER URL */}
-                    <div className="horizontal-flex">
-                        <label htmlFor="club-locker-url-input">Club Locker URL: </label>
-                        <input
-                            type="text"
-                            name="clubLockerURL"
-                            className={`input-field ${invalidFields.clubLockerURL && touchedFields.clubLockerURL ? "invalid" : ""}`}
-                            placeholder="URL..."
-                            value={formValues.clubLockerURL}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <label htmlFor="club-locker-url-input">Club Locker URL: </label>
+                    <input
+                        type="text"
+                        name="clubLockerURL"
+                        className={`input-field ${invalidFields.clubLockerURL && touchedFields.clubLockerURL ? "invalid" : ""}`}
+                        placeholder="URL..."
+                        value={formValues.clubLockerURL}
+                        onChange={handleInputChange}
+                    />
 
                     <Link to="/"
                         onClick={(e) => {

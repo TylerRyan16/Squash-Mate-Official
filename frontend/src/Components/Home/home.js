@@ -1,6 +1,6 @@
 import './home.scss';
-import {useNavigate } from 'react-router-dom';
-import {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 // MAIN EXPORT
@@ -14,10 +14,10 @@ const Home = () => {
     };
 
     useEffect(() => {
-        if (!isLoggedIn()){
-            console.log("user not logged in, redirecting to /landing");
-            //navigate("/landing");
-        }
+        // if (!isLoggedIn()){
+        console.log("user not logged in, redirecting to /landing");
+        navigate("/landing");
+        // }
     }, [navigate])
 
     return (

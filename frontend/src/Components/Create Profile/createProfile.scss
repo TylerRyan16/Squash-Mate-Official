@@ -8,17 +8,23 @@
 }
 
 .main-area{
-    width: auto;
+    width: 100%;
     height: 100%;
     display:  flex;
     flex-direction: column;
-    gap: 15px;
-    align-items: center;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #4693e1;
+    border-radius: 12px;
+    padding: 0 5%;
 }
 
+
 .header{
-    margin-left: 35%;
+    color: white;
 }
+
+
 
 .horizontal-flex{
     display: flex;
@@ -28,33 +34,53 @@
 }
 
 label {
-    display: block;
-    font-weight: bold;
-    width: 150px; 
-    text-align: right; 
+    font-size: 16px;
+    width: 125px;
+    color: white;  
+    padding: 5px 0px;  
+}
+
+
+.first-last-name-area{
+    display: flex;
+    justify-content:space-between;
 }
 
 .input-field {
     padding: 10px;
-    width: 300px;
+    width: 450px;
+    margin-right: 10%;
+    border-radius: 8px;
+    margin-bottom: 5%;
     box-sizing: border-box;
+    border: 1px solid white;
+    background-color: #b5d4f3;
 }
 
 .input-field.invalid{
     border: 2px solid red;
 }
 
+#first-name{
+    width: 90%;
+}
+
+#last-name{
+    width: 100%;
+}
 
 .create-profile{
     padding: 15px 15px;
-    width: 150px;
-    height: 30px;
+    width: 45%;
+    height: 100%;
     background-color: #315fb9;
     border-radius: 8px;
     color: white;
-    font-size: 22px;
-    margin-left: auto;
+    font-size: 30px;
+    margin: 15px auto;
+    text-align: center;
 }
+
 
 .password-check-area{
     width: 100%;
