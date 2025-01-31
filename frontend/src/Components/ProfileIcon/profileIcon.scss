@@ -1,0 +1,23 @@
+.icon-area{
+    position: absolute;
+    top: 5%;
+    right: 2%;
+    width: 200px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.profile-icon{
+    padding: 0px 5px;
+    height: 65px;
+    width: auto;
+    border-radius: 32px;
+    padding: 15px 15px;
+}
+
+.profile-icon:hover{
+    background-color: rgb(211,211,211, 0.5);
+}
+

@@ -56,16 +56,6 @@ const Sidebar = () => {
                     <span className="nav-text">My Videos</span>
                 </Link>
 
-                {/* explore button */}
-                <Link
-                    to="/explore"
-                    className={`nav-button ${selectedRoute === '/explore' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Explore</span>
-
-                </Link>
-
                 {/* shared with me button */}
                 <Link
                     to="/shared-with-me"
@@ -75,13 +65,15 @@ const Sidebar = () => {
                     <span className="nav-text">Shared With Me</span>
                 </Link>
 
-                {/* profile button */}
+
+                {/* explore button */}
                 <Link
-                    to="/profile"
-                    className={`nav-button ${selectedRoute === '/profile' ? 'selected' : ''}`}
+                    to="/explore"
+                    className={`nav-button ${selectedRoute === '/explore' ? 'selected' : ''}`}
                 >
                     <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Profile</span>
+                    <span className="nav-text">Explore</span>
+
                 </Link>
 
                 {/* camps button */}
