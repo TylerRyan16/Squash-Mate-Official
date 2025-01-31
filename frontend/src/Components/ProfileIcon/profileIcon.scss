@@ -1,12 +1,13 @@
 .icon-area{
     position: absolute;
-    top: 5%;
-    right: 2%;
+    top: 25px;
+    right: 25px;
     width: 200px;
     height: 65px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    z-index: 50;
 }
 
 .profile-icon{
@@ -15,9 +16,14 @@
     width: auto;
     border-radius: 32px;
     padding: 15px 15px;
+    z-index: 50;
+
 }
 
 .profile-icon:hover{
     background-color: rgb(211,211,211, 0.5);
+    z-index: 50;
+
 }
+
 

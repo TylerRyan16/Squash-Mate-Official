@@ -34,7 +34,7 @@ const Sidebar = () => {
                     to="/upload"
                     className={`nav-button ${selectedRoute === '/upload' ? 'selected' : ''}`}
                 >
-                    <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                    <img src="/assets/icons/white-upload.png" alt="upload" className="nav-icon"></img>
                     <span className="nav-text">Upload</span>
                 </Link>
 
@@ -43,7 +43,7 @@ const Sidebar = () => {
                     to="/"
                     className={`nav-button ${selectedRoute === '/' ? 'selected' : ''}`}
                 >
-                    <img src="/assets/icons/home.png" alt="upload" className="nav-icon"></img>
+                    <img src="/assets/icons/white-home.png" alt="upload" className="nav-icon"></img>
                     <span className="nav-text">Home</span>
                 </Link>
 

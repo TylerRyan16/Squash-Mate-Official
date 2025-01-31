@@ -1,6 +1,8 @@
+import './shared.scss';
+
 const SharedWithMe = () => {
     return (
-        <div className="container">
+        <div className="page-container">
             <h1>Shared with me page</h1>
         </div>
     );
