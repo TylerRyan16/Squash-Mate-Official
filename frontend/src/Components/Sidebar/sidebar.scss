@@ -1,10 +1,10 @@
 .sidebar {
     position: absolute;
-    
     width: 7%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
+    background-color: #4693e1;
 }
 
 .list{
@@ -28,14 +28,19 @@
     align-items: center;
     cursor: pointer;
     padding: 5px 0px; 
+    color: white;
 }
 
 .nav-button:hover{
-    background-color: rgb(171, 171, 171, 0.7);
+    background-color: rgb(245,255,255, 0.8);
+
+    img, span{
+        filter: brightness(0) invert(0); /* Change color on hover */
+    }
 }
 
 .selected {
-    background-color: rgb(171, 171, 171, 0.7);
+    background-color: rgb(245,255,255, 0.8);
 }
 
 .nav-button a{
@@ -49,7 +54,6 @@
     margin-bottom: 8px;
     padding-top: 5px;
 }
-
 
 a{
     text-decoration: none;

@@ -17,6 +17,7 @@ const CreateProfile = () => {
         lastName: "",
         country: "",
         email: "",
+        dateOfBirth: "",
     });
 
     const [lengthValid, setLengthValid] = useState(false);
