@@ -1,17 +1,50 @@
-.landing-container{
+.landing-page-container{
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100vw;
-    gap: 10px;
+}
+
+.centered-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    background-color: #4693e1;
+    border-radius: 32px;
+    width: 25%;
+    min-width: 250px;
+    height: 50%;
+}
+
+.items{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: orange;
+    width: 75%;
+}
+
+.login-input{
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 2%;
+    box-sizing: border-box;
+    border: 1px solid white;
+    background-color: #b5d4f3;
+}
+
+.or{
+    align-self: center;
 }
 
 .login-button, .create-profile-button{
-    padding: 5px 15px;
-    width: 150px;
-    height: 35px;
+    padding: 10px 0px;
+    margin-bottom: 25px;
+    width: 100%;
     background-color: #315fb9;
     border-radius: 8px;
     color: white;
