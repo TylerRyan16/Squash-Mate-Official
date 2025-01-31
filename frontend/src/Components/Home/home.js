@@ -16,10 +16,10 @@ const Home = () => {
     useEffect(() => {
         if (!isLoggedIn()){
             console.log("user not logged in, redirecting to /landing");
-            navigate("/landing");
+            //navigate("/login");
         }
         
-        navigate("/landing");
+        //navigate("/login");
     }, [navigate])
 
     return (
