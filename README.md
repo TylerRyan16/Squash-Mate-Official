@@ -9,19 +9,29 @@
 # 1. FOLDERS:
 ## Frontend 
 This is the React part of the project. This folder holds everything you need for building the visuals and functionality of the app.
-This folder holds the Components folder, which holds all of our pages and JS code
-### Components
-This is where all pages are stored with their respective JavaScript and .scss files
+#### Components
+This is where all pages are stored with their respective JavaScript and .scss files.
 
 ## Backend
-This is the Node.js and Socket.io portion of the project. This folder holds everything we need for server management, comment & video storage, and connections.
-
+This is the Node.js, server, and database management area of the project.
   
 # 2.  HOW TO RUN PROJECT
-1. open the project in vscode
-2. create a new terminal
-3. "cd frontend"
-4. "npm start"
+1. Open the project in VS Code.
+2. Create **2** new terminals
+3. In **Terminal 1:**
+   ```
+   cd backend
+   npm install <- only if first time running project
+   ```
+4. In **Terminal 2:**
+   ```
+   cd frontend
+   npm install <- only if first time running project
+   ```
+5. In **Terminal 2:**
+   ```
+   npm start
+   ```
 
 # 3. HOW TO EDIT ANY PAGE
 1. Make CERTAIN you are in **your own branch**
