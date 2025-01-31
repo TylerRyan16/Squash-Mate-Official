@@ -16,6 +16,7 @@ const CreateProfile = () => {
         firstName: "",
         lastName: "",
         country: "",
+        email: "",
     });
 
     const [lengthValid, setLengthValid] = useState(false);
@@ -137,7 +138,7 @@ const CreateProfile = () => {
                             <label htmlFor="first-name-input">First Name: </label>
                             <input
                                 type="text"
-                                name="First name..."
+                                name="firstName"
                                 id="first-name"
                                 className={`input-field ${invalidFields.firstName && touchedFields.firstName ? "invalid" : ""}`}
                                 placeholder="First name..."
@@ -152,7 +153,7 @@ const CreateProfile = () => {
                             <label htmlFor="last-name-input">Last Name: </label>
                             <input
                                 type="text"
-                                name="Last name..."
+                                name="lastName"
                                 id="last-name"
                                 className={`input-field ${invalidFields.lastName && touchedFields.lastName ? "invalid" : ""}`}
                                 placeholder="Last name..."
@@ -162,6 +163,16 @@ const CreateProfile = () => {
                         </div>
 
                     </div>
+                    {/* EMAIL */}
+                    <label htmlFor="email-input">Email: </label>
+                    <input
+                        type="text"
+                        name="email"
+                        className={`input-field ${invalidFields.email && touchedFields.email ? "invalid" : ""}`}
+                        placeholder="email..."
+                        value={formValues.email}
+                        onChange={handleInputChange}
+                    />
 
                     {/* USERNAME */}
                     <label htmlFor="username-input">Username: </label>
@@ -211,6 +222,16 @@ const CreateProfile = () => {
                         className={`input-field ${invalidFields.clubLockerURL && touchedFields.clubLockerURL ? "invalid" : ""}`}
                         placeholder="URL..."
                         value={formValues.clubLockerURL}
+                        onChange={handleInputChange}
+                    />
+                    {/* CLUB LOCKER URL */}
+                    <label htmlFor="country">Country: </label>
+                    <input
+                        type="text"
+                        name="country"
+                        className={`input-field ${invalidFields.country && touchedFields.country ? "invalid" : ""}`}
+                        placeholder="Country..."
+                        value={formValues.country}
                         onChange={handleInputChange}
                     />
 
