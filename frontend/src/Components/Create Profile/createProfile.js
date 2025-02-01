@@ -196,13 +196,12 @@ const CreateProfile = () => {
                         onChange={handleInputChange}
                     />
                     {/* AGE */}
-                    <label htmlFor="age-input">Age: </label>
+                    <label htmlFor="date-of-birth-input">Date of Birth: </label>
                     <input
-                        type="text"
-                        name="age"
-                        className={`input-field ${invalidFields.age && touchedFields.age ? "invalid" : ""}`}
-                        placeholder="age..."
-                        value={formValues.age}
+                        type="date"
+                        name="birthDate"
+                        className={`input-field ${invalidFields.dateOfBirth && touchedFields.dateOfBirth ? "invalid" : ""}`}
+                        value={formValues.dateOfBirth}
                         onChange={handleInputChange}
                     />
                     {/* PLAYER LEVEL */}

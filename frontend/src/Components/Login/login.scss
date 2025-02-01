@@ -1,0 +1,105 @@
+.app-title{
+    font-size: 64px;
+    position: absolute;
+    top: 0%;
+}
+
+.slogan{
+    font-size: 32px;
+    position: absolute;
+    top: 12%;
+}
+
+.centered-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    border-radius: 32px;
+    width: 25%;
+    min-width: 250px;
+    height: 50%;
+}
+
+.items{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 75%;
+
+    h1{
+        color: black;
+    }
+}
+
+.login-input{
+    padding: 20px 15px;
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 2%;
+    box-sizing: border-box;
+    border: 1px solid white;
+    background-color: #b5d4f3;
+    margin-top: 5%;
+}
+
+.login-input::placeholder{
+    color: #5a5a5a;
+    opacity: 1;
+    font-size: 14px;
+}
+
+.or{
+    align-self: center;
+    padding-bottom: 6%;
+}
+
+.invalid-info-text{
+    display: none;
+    font-size: 14px;
+    margin: 0 0;
+    padding: 0 0;
+    margin-top: 5%;
+    color: red;
+}
+
+.invalid-info-text.visible{
+    display: block;
+}
+
+.forgot-password{
+    align-self: flex-end;
+    padding: 10px 0px;
+    border-radius: 8px;
+    background-color: white;
+    border: none;
+    color: black;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.forgot-password:hover{
+    color: red;
+}
+
+
+
+.login-button, .create-profile-button{
+    padding: 10px 0px;
+    margin-bottom: 25px;
+    width: 100%;
+    background-color: #315fb9;
+    border-radius: 8px;
+    color: white;
+    font-size: 22px;
+    text-align: center;
+    border: none;
+    box-sizing: border-box;
+}
+
+.login-button{
+    margin-top: 5%;
+}

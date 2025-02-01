@@ -9,7 +9,6 @@ import Camps from "./Components/Camps/camps";
 import Layout from "./Components/Layout/layout";
 import SharedWithMe from "./Components/SharedWithMe/shared.js";
 import MyVideos from "./Components/MyVideos/myVideos.js";
-import Landing from "./Components/Landing/landing.js";
 import Login from "./Components/Login/login.js";
 import CreateProfile from "./Components/Create Profile/createProfile.js";
 
@@ -21,8 +20,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/landing" element = {<Landing/>}></Route>
-          <Route path="/login" element ={ <Login />}></Route>
+          <Route path="/login" element = {<Login/>}></Route>
           <Route path="/create-profile" element = { <CreateProfile />}></Route>
           <Route path="/explore" element={<Explore />}></Route>
           <Route path="/upload" element={<Upload />}> </Route>
