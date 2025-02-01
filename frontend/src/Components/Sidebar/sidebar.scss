@@ -9,8 +9,8 @@
 }
 
 .sidebar {
-    min-width: 7%;
-    width: 7%;
+    min-width: 5;
+    width: 5%;
     height: 100vh;
     min-height: 100vh; /* Ensures it always has height */
     display: flex;
@@ -66,11 +66,28 @@
 }
 
 .nav-icon{
-    width: 25px;
-    height: 25px;
+    width: clamp(13px, 3vw, 30px);
+    height: auto;
     margin-bottom: 8px;
     padding-top: 5px;
 }
+
+.my-videos{
+    width: clamp(20px, 2vw, 40px);
+}
+
+.shared-with-me{
+    width: clamp(20px, 4vw, 50px);
+}
+
+.explore{
+    width: clamp(20px, 4vw, 50px);
+}
+
+.camps{
+    width: clamp(20px, 4vw, 50px);
+}
+
 
 a{
     text-decoration: none;

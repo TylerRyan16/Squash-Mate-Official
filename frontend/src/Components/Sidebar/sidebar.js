@@ -58,7 +58,7 @@ const Sidebar = () => {
                         to="/my-videos"
                         className={`nav-button ${selectedRoute === '/my-videos' ? 'selected' : ''}`}
                     >
-                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <img src="/assets/icons/my-videos.png" alt="upload" className="nav-icon my-videos"></img>
                         <span className="nav-text">My Videos</span>
                     </Link>
 
@@ -67,7 +67,7 @@ const Sidebar = () => {
                         to="/shared-with-me"
                         className={`nav-button ${selectedRoute === '/shared-with-me' ? 'selected' : ''}`}
                     >
-                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <img src="/assets/icons/shared-with-me.png" alt="upload" className="nav-icon shared-with-me"></img>
                         <span className="nav-text">Shared With Me</span>
                     </Link>
 
@@ -77,7 +77,7 @@ const Sidebar = () => {
                         to="/explore"
                         className={`nav-button ${selectedRoute === '/explore' ? 'selected' : ''}`}
                     >
-                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <img src="/assets/icons/explore.png" alt="upload" className="nav-icon explore"></img>
                         <span className="nav-text">Explore</span>
 
                     </Link>
@@ -87,7 +87,7 @@ const Sidebar = () => {
                         to="/camps"
                         className={`nav-button ${selectedRoute === '/camps' ? 'selected' : ''}`}
                     >
-                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <img src="/assets/icons/camps.png" alt="upload" className="nav-icon camps"></img>
                         <span className="nav-text">Camps</span>
                     </Link>
 
