@@ -61,6 +61,7 @@
     margin: 0 0;
     padding: 0 0;
     margin-top: 5%;
+    color: red;
 }
 
 .invalid-info-text.visible{
@@ -77,6 +78,7 @@
     font-size: 14px;
     text-align: center;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .forgot-password:hover{
@@ -94,6 +96,8 @@
     color: white;
     font-size: 22px;
     text-align: center;
+    border: none;
+    box-sizing: border-box;
 }
 
 .login-button{

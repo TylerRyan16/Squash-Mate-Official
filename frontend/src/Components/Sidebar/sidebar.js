@@ -12,6 +12,8 @@ const Sidebar = () => {
     // we use 'useState' to store this value and update it dynamically 
     const [selectedRoute, setSelectedRoute] = useState(location.pathname);
 
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     // the 'useEffect' hook runs whenever the dependencies in its array change
     // here, it updates 'selectedRoute' whenever location changes
     useEffect(() => {
@@ -19,74 +21,79 @@ const Sidebar = () => {
     }, [location]); // this only runs when location changes because its in our dependency array
 
     return (
-        <nav className="sidebar">
-            {
-                /* Navigation buttons use the 'Link' component from react for routing.
-                Instead of using <a>, use Link, it has all the functionality of <a> and more.*/
+        <>
+            {/* menu button - for smaller screens */}
+            <button
+                className="menu-button"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+                ☰
+            </button>
 
-                /* Each button dynamically adds the 'selected ' class if the current route matches the
-                we get from location.pathname */
-            }
+            {/* sidebar hidden on small screens */}
+            <nav
+                className={`sidebar ${isSidebarOpen ? 'open' : ''}`}
+            >
+                <ul className="list">
+                    {/* upload button */}
+                    <Link
+                        to="/upload"
+                        className={`nav-button ${selectedRoute === '/upload' ? 'selected' : ''}`}
+                    >
+                        <img src="/assets/icons/white-upload.png" alt="upload" className="nav-icon"></img>
+                        <span className="nav-text">Upload</span>
+                    </Link>
 
-            <ul className="list">
-                {/* upload button */}
-                <Link
-                    to="/upload"
-                    className={`nav-button ${selectedRoute === '/upload' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/white-upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Upload</span>
-                </Link>
+                    {/* home button */}
+                    <Link
+                        to="/"
+                        className={`nav-button ${selectedRoute === '/' ? 'selected' : ''}`}
+                    >
+                        <img src="/assets/icons/white-home.png" alt="upload" className="nav-icon"></img>
+                        <span className="nav-text">Home</span>
+                    </Link>
 
-                {/* home button */}
-                <Link
-                    to="/"
-                    className={`nav-button ${selectedRoute === '/' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/white-home.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Home</span>
-                </Link>
+                    {/* my videos button */}
+                    <Link
+                        to="/my-videos"
+                        className={`nav-button ${selectedRoute === '/my-videos' ? 'selected' : ''}`}
+                    >
+                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <span className="nav-text">My Videos</span>
+                    </Link>
 
-                {/* my videos button */}
-                <Link
-                    to="/my-videos"
-                    className={`nav-button ${selectedRoute === '/my-videos' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">My Videos</span>
-                </Link>
-
-                {/* shared with me button */}
-                <Link
-                    to="/shared-with-me"
-                    className={`nav-button ${selectedRoute === '/shared-with-me' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Shared With Me</span>
-                </Link>
+                    {/* shared with me button */}
+                    <Link
+                        to="/shared-with-me"
+                        className={`nav-button ${selectedRoute === '/shared-with-me' ? 'selected' : ''}`}
+                    >
+                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <span className="nav-text">Shared With Me</span>
+                    </Link>
 
 
-                {/* explore button */}
-                <Link
-                    to="/explore"
-                    className={`nav-button ${selectedRoute === '/explore' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Explore</span>
+                    {/* explore button */}
+                    <Link
+                        to="/explore"
+                        className={`nav-button ${selectedRoute === '/explore' ? 'selected' : ''}`}
+                    >
+                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <span className="nav-text">Explore</span>
 
-                </Link>
+                    </Link>
 
-                {/* camps button */}
-                <Link
-                    to="/camps"
-                    className={`nav-button ${selectedRoute === '/camps' ? 'selected' : ''}`}
-                >
-                    <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
-                    <span className="nav-text">Camps</span>
-                </Link>
+                    {/* camps button */}
+                    <Link
+                        to="/camps"
+                        className={`nav-button ${selectedRoute === '/camps' ? 'selected' : ''}`}
+                    >
+                        <img src="/assets/icons/upload.png" alt="upload" className="nav-icon"></img>
+                        <span className="nav-text">Camps</span>
+                    </Link>
 
-            </ul>
-        </nav>
+                </ul>
+            </nav>
+        </>
     );
 }
 

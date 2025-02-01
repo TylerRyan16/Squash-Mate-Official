@@ -1,22 +1,38 @@
+.menu-button{
+    display: none;
+    top: 15px;
+    left: 15px;
+    color: black;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1100;
+}
+
 .sidebar {
-    position: absolute;
+    min-width: 7%;
     width: 7%;
     height: 100vh;
+    min-height: 100vh; /* Ensures it always has height */
     display: flex;
     justify-content: center;
     background-color: #4693e1;
+    overflow: hidden;
+    z-index: 1000;
+    transition: width 0.3s ease-in-out;
+
 }
 
 .list{
-    list-style-type: none;
-    margin: 0;
-    position: absolute;
-    top: 13%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
+    justify-content: space-evenly;
+    width: 100%;
+    height: auto;
+    margin: 0;
     padding: 0;
+    list-style-type: none;
+    
 }
 
 .nav-button{
@@ -29,6 +45,7 @@
     cursor: pointer;
     padding: 5px 0px; 
     color: white;
+    font-size: clamp(10px, 1.2vw, 22px);
 }
 
 .nav-button:hover{
@@ -58,4 +75,17 @@
 a{
     text-decoration: none;
     color: black;
+}
+
+@media screen and (max-width: 768px){
+    .sidebar{
+        width: 0;
+    }
+
+    .menu-button{
+        display: block;
+    }
+    .list{
+        gap: 20px;
+    }
 }

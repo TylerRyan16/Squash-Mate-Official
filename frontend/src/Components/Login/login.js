@@ -80,7 +80,7 @@ const Landing = () => {
                     </form>
 
                     <span className="or">Or</span>
-                    <button to="/create-profile" className="create-profile-button">Sign Up</button>
+                    <Link to="/create-profile" className="create-profile-button">Sign Up</Link>
                     <button className="forgot-password">Forgot Password?</button>
                 </div>
 
