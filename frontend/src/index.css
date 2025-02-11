@@ -20,12 +20,25 @@ code {
   height: 100vh;
 }
 
+.page-header{
+  align-self: flex-start;
+  margin-left: 2%;
+}
+
 .horizontal-flex {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
+.vertical-flex{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  height: 100%;
+  margin: auto auto;
+}
 
 
 * {
