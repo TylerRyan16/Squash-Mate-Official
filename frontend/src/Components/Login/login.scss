@@ -1,13 +1,17 @@
 .app-title{
     font-size: 64px;
-    position: absolute;
-    top: 0%;
+    text-align: center;
+    position: relative;
+    top: -10%;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .slogan{
     font-size: 32px;
-    position: absolute;
-    top: 12%;
+    position: relative;
+    text-align: center;
+    top: -10%;
 }
 
 .centered-container{

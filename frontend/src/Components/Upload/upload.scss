@@ -1,3 +1,72 @@
-h1{
-    width: auto;
+.items-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    align-self: center;
 }
+
+// INPUTS
+.label{
+    color: black;
+    align-self: flex-start;
+    font-size: 24px;
+    width: 100%;
+}
+
+.link-input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    background-color: #b5d4f3;
+    font-size: 20px;
+}
+
+.url{
+    margin-bottom: 2%;
+}
+
+#match-type{
+    align-self: flex-start;
+}
+
+// VIDEO AREA
+.video-area{
+    width: 50%;
+    height: 20%; 
+    background-color: grey;
+}
+
+// RADIO AREA
+.radio-area{
+    padding: 10px;
+    border-radius: 12px;
+    background-color: #b5d4f3;
+    align-self: flex-start;
+    width: 100%;
+    justify-content: space-between;
+    
+    label {
+        color: black;
+        font-size: 24px;
+    }
+}
+
+// Length
+#length{
+    align-self: flex-start;
+}
+
+.best-of{
+    width: 50%;
+}
+
+// TOURNAMENT NAME / SHIT
+.tournament{
+    width: 100%;
+    gap: 1%;
+}
+
