@@ -55,16 +55,11 @@ const CreateProfile = () => {
         }
 
         if (name === "password") {
-            const isLengthValid = value.length >= 8;
-            const isNumbersValid = numberRegex.test(value);
-            const isSpecialValid = specialCharacterRegex.test(value);
+            setLengthValid(value.length >= 8);
+            setNumbersValid(numberRegex.test(value));
+            setSpecialValid(specialCharacterRegex.test(value));
 
-            // Update validation states
-            setLengthValid(isLengthValid);
-            setNumbersValid(isNumbersValid);
-            setSpecialValid(isSpecialValid);
-
-            setPasswordValid(isLengthValid && isNumbersValid && isSpecialValid)
+            setPasswordValid(lengthValid && numbersValid && specialValid)
         }
     };
 
@@ -129,111 +124,122 @@ const CreateProfile = () => {
 
 
     return (
-        <div className="container">
-            <div className="horizontal-flex">
-                <div className="main-area">
+        <div className="page-container">
+            <div className="create-display-area">
+                <div className="create-background">
                     <h1 className="header">Create Profile</h1>
                     <div className="first-last-name-area">
+
                         {/* FIRST NAME */}
-                        <div className="column-flexbox">
-                            <label htmlFor="first-name-input">First Name: </label>
+                        <div className="input-container">
+                            <label className="floating-label profile-label">First (required)</label>
                             <input
                                 type="text"
                                 name="firstName"
-                                id="first-name"
-                                className={`input-field ${invalidFields.firstName && touchedFields.firstName ? "invalid" : ""}`}
-                                placeholder="First name..."
+                                className={`input-zone zone-profile first-name ${invalidFields.firstName && touchedFields.firstName ? "invalid" : ""}`}
                                 value={formValues.firstName}
                                 onChange={handleInputChange}
                             />
+
                         </div>
 
                         {/* LAST NAME */}
-                        <div className="column-flexbox">
-
-                            <label htmlFor="last-name-input">Last Name: </label>
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Last (required)</label>
                             <input
                                 type="text"
                                 name="lastName"
-                                id="last-name"
-                                className={`input-field ${invalidFields.lastName && touchedFields.lastName ? "invalid" : ""}`}
-                                placeholder="Last name..."
+                                className={`input-zone zone-profile last-name ${invalidFields.lastName && touchedFields.lastName ? "invalid" : ""}`}
                                 value={formValues.lastName}
                                 onChange={handleInputChange}
                             />
-                        </div>
 
+                        </div>
                     </div>
+
+
                     {/* EMAIL */}
-                    <label htmlFor="email-input">Email: </label>
-                    <input
-                        type="text"
-                        name="email"
-                        className={`input-field ${invalidFields.email && touchedFields.email ? "invalid" : ""}`}
-                        placeholder="email..."
-                        value={formValues.email}
-                        onChange={handleInputChange}
-                    />
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Email (required)</label>
+                        <input
+                            type="text"
+                            name="email"
+                            className={`input-zone zone-profile ${invalidFields.email && touchedFields.email ? "invalid" : ""}`}
+                            value={formValues.email}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
 
                     {/* USERNAME */}
-                    <label htmlFor="username-input">Username: </label>
-                    <input
-                        type="text"
-                        name="username"
-                        className={`input-field ${invalidFields.username && touchedFields.username ? "invalid" : ""}`}
-                        placeholder="username..."
-                        value={formValues.username}
-                        onChange={handleInputChange}
-                    />
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Username (required)</label>
+                        <input
+                            type="text"
+                            name="username"
+                            className={`input-zone zone-profile ${invalidFields.username && touchedFields.username ? "invalid" : ""}`}
+                            value={formValues.username}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
                     {/* PASSWORD */}
-                    <label htmlFor="password-input">Password: </label>
-                    <input
-                        type="password"
-                        name="password"
-                        className={`input-field ${invalidFields.password && touchedFields.password ? "invalid" : ""}`}
-                        placeholder="password..."
-                        value={formValues.password}
-                        onChange={handleInputChange}
-                    />
-                    {/* AGE */}
-                    <label htmlFor="date-of-birth-input">Date of Birth: </label>
-                    <input
-                        type="date"
-                        name="birthDate"
-                        className={`input-field ${invalidFields.dateOfBirth && touchedFields.dateOfBirth ? "invalid" : ""}`}
-                        value={formValues.dateOfBirth}
-                        onChange={handleInputChange}
-                    />
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Password (required)</label>
+                        <input
+                            type="password"
+                            name="password"
+                            className={`input-zone zone-profile ${invalidFields.password && touchedFields.password ? "invalid" : ""}`}
+                            value={formValues.password}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
+                    {/* DATE OF BIRTH */}
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Date of Birth (required)</label>
+                        <input
+                            type="date"
+                            name="birthDate"
+                            className={`input-zone zone-profile ${invalidFields.dateOfBirth && touchedFields.dateOfBirth ? "invalid" : ""}`}
+                            onChange={handleInputChange}
+                        />
+
+                    </div>
+
                     {/* PLAYER LEVEL */}
-                    <label htmlFor="player-level-input">Player Level: </label>
-                    <input
-                        type="text"
-                        name="playerLevel"
-                        className={`input-field ${invalidFields.playerLevel && touchedFields.playerLevel ? "invalid" : ""}`}
-                        placeholder="player level..."
-                        value={formValues.playerLevel}
-                        onChange={handleInputChange}
-                    />
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Player Level (required)</label>
+                        <select  className="level-selection" name = "playerLevel">
+                            <option name="playerLevel" value="Beginner">Beginner</option>
+                            <option name="playerLevel" value="Intermediate">Intermediate</option>
+                            <option name="playerLevel" value="Pro">Pro</option>
+                        </select>
+                    </div>
+
                     {/* CLUB LOCKER URL */}
-                    <label htmlFor="club-locker-url-input">Club Locker URL: </label>
-                    <input
-                        type="text"
-                        name="clubLockerURL"
-                        className={`input-field ${invalidFields.clubLockerURL && touchedFields.clubLockerURL ? "invalid" : ""}`}
-                        placeholder="URL..."
-                        value={formValues.clubLockerURL}
-                        onChange={handleInputChange}
-                    />
-                    {/* CLUB LOCKER URL */}
-                    <label htmlFor="country">Country: </label>
-                    <input
-                        type="text"
-                        name="country"
-                        className={`input-field ${invalidFields.country && touchedFields.country ? "invalid" : ""}`}
-                        placeholder="Country..."
-                        value={formValues.country}
-                        onChange={handleInputChange}
-                    />
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Club Locker URL (not required)</label>
+                        <input
+                            type="text"
+                            name="clubLockerURL"
+                            className={`input-zone zone-profile ${invalidFields.clubLockerURL && touchedFields.clubLockerURL ? "invalid" : ""}`}
+                            value={formValues.clubLockerURL}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
+                    {/* COUNTRY */}
+                    <div className="input-container">
+                        <label className="floating-label profile-label">Country (not required)</label>
+                        <input
+                            type="text"
+                            name="country"
+                            className={`input-zone zone-profile ${invalidFields.country && touchedFields.country ? "invalid" : ""}`}
+                            value={formValues.country}
+                            onChange={handleInputChange}
+                        />
+                    </div>
 
                     <Link to="/"
                         onClick={(e) => {
@@ -256,7 +262,9 @@ const CreateProfile = () => {
                     </ul>
                     <h2 className={`password-confirm ${passwordValid ? "valid" : ""}`}>Password Valid</h2>
                 </div>
+
             </div>
+
 
 
 

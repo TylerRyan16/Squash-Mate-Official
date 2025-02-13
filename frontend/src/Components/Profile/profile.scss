@@ -40,54 +40,79 @@
         }
     
     }
-
     
 }
 
 .right-area{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0%;
     width:75%;
-    gap: 35px;
     min-height: 100vh;
-    padding-left: 5%;
 
-    .horizontal-flexbox{
+    // NECESSARY
+    .left-column{
         display: flex;
-        align-items: center;
-        gap: 3%;
-        width: 80%;
-        height: 25%;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 8%;
+        padding-left: 1%;
+
+        label{
+            color: black;
+            font-size: 22px;
+        }
+
+        h1{
+            border-bottom: 1px solid black;
+            width: 100%;
+        }
     }
 
-    .name-area{
-        width: 80%;
-        margin-top: 10%;
-    }
-    
-
+    // INPUTS
     .profile-input-field{
         padding: 15px 0;
-        width:35%;
+        width:40%;
         border-radius: 8px;
         box-sizing: border-box;
         border: 1px solid white;
         background-color: #b5d4f3;
-
         font-size: 24px;
         padding-left: 10px;
+        margin-bottom: 15px;
     }
 
-    .experience{
-        background-color: orange;
+    .first-name{
+        width: 100%;
     }
 
-    .date-of-birth{
-        width: 28%;
+    .last-name{
+        width: 100%;
+    }
+
+    .email{
+        width: 100%;
     }
 
 
 
+    // CHANGE PASSWORD
+    .change-password-button{
+        width: 25%;
+        padding: 10px 10px;
+        font-size: 18px;
+        color: red;
+        border: 1px solid red;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .change-password-button:hover{
+        background-color: red;
+        color: white;
+    }
+    
 
     // SMARTPHONE
     @media screen and (max-width: 768px){
@@ -107,8 +132,96 @@
         }
     }
 
+  
+    // SECURITY
+    #show-age-label{
+        width: 40%;
+        font-size: 24px;
+    }
+
+    [type="checkbox"]{
+        opacity: 0;
+    }
+
+    [type="checkbox"] + label{
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        display: inline-block;
+        line-height: 25px;
+    }
+    
+    [type="checkbox"] + label::before{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 20px;
+        height: 20px;
+        outline: 3px solid red;
+        background: aliceblue;
+    }
+
+    [type="checkbox"]:checked + label::before{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 20px;
+        height: 20px;
+        outline: 3px solid green;
+        background: aliceblue;
+    }
+
+    [type="checkbox"]:checked + label::after{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url("../../../public/assets/checkmark.png");
+        background-size: contain;
+        transform: scale(1);
+        opacity: 1;
+        transition: all .3s ease;
+    }
+
+    [type="checkbox"]:not(:checked) + label::after{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url("../../../public/assets/checkmark.png");
+        background-size: contain;
+        transform: scale(0);
+        opacity: 0;        
+    }
+
+
+
 
 }
+
+
+
+// FLEXBOXES
+.horizontal-flexbox{
+    display: flex;
+    width: 100%;
+    height: auto;
+    gap: 5%;
+    align-items: center;
+}
+
+.vertical-flexbox{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
 
 // ELEMENT SELECTORS
 h1{
