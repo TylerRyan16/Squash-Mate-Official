@@ -11,25 +11,30 @@ const Upload = () => {
     const [continuePressed, setContinuePressed] = useState(false);
     const [videoDetails, setVideoDetails] = useState({
         title: "",
+        description: "",
         url: "",
         type: "",
         length: "",
-        date: "",
+        tournament_date: "",
         tournament_name: "",
-        tournament_location: ""
+        tournament_location: "",
+        poster: ""
     });
 
     useEffect(() => {
-        if (videoDetails.type === "Game"){
+        if (videoDetails.type === "Game") {
             setVideoDetails((prevDetails) => ({
                 ...prevDetails,
                 length: "Single"
             }));
         }
-    }, [videoDetails.type, videoDetails]);
+    }, [videoDetails.type]);
 
+    // HANDLE VIDEO INPUT
     const handleVideoInput = (e) => {
         const { name, value } = e.target;
+        console.log("name: ", name);
+        console.log("value: ", value);
 
         setVideoDetails((prevDetails) => ({
             ...prevDetails,
@@ -62,24 +67,22 @@ const Upload = () => {
 
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
-        console.log("video details: ", videoDetails);
-
         //  SEND POST REQUEST TO DATABASE
-        // try {
-        //     const response = await axios.post("http://localhost:5000/api/videos", videoDetails);
+        try {
+            const response = await axios.post("http://localhost:5000/api/videos", videoDetails);
 
-        //     console.log("Video uploaded: ", response.data);
+            console.log("Video uploaded: ", response.data);
 
-        //     navigate("/video");
-        // } catch (error) {
-        //     if (error.response && error.response.data.error) {
-        //         alert(error.response.data.error);
-        //     } else {
-        //         console.error("error creating profile: ", error);
-        //         alert("An error occurred while creating your profile. Please try again.");
-        //     }
+            navigate("/video");
+        } catch (error) {
+            if (error.response && error.response.data.error) {
+                alert(error.response.data.error);
+            } else {
+                console.error("error creating profile: ", error);
+                alert("An error occurred while creating your profile. Please try again.");
+            }
 
-        // }
+        }
 
         navigate("/video");
 
@@ -242,8 +245,8 @@ const Upload = () => {
                             <input
                                 type="date"
                                 className="input-zone date"
-                                name="date"
-                                value={videoDetails.date}
+                                name="tournament_date"
+                                value={videoDetails.tournament_date}
                                 onChange={handleVideoInput}
                             ></input>
 
@@ -272,10 +275,16 @@ const Upload = () => {
                             ></input>
 
                         </div>
-
-
-
-
+                        <div className="input-container">
+                            <label className="floating-label">Description (not required)</label>
+                            <input
+                                type="text"
+                                className="input-zone description"
+                                name="description"
+                                value={videoDetails.description}
+                                onChange={handleVideoInput}
+                            ></input>
+                        </div>
                         <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
 
                     </div>
@@ -287,7 +296,7 @@ const Upload = () => {
                     <div className="right-background">
                         <h1>Preview</h1>
                         <img src={thumbnail} className="page-two-thumbnail" alt="video thumbnail"></img>
-                        <p>{videoDetails.title}</p>
+                        <p id="video-title">{videoDetails.title}</p>
                         <p id="uploader">Uploader Name</p>
                     </div>
                 </div>

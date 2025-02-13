@@ -55,16 +55,11 @@ const CreateProfile = () => {
         }
 
         if (name === "password") {
-            const isLengthValid = value.length >= 8;
-            const isNumbersValid = numberRegex.test(value);
-            const isSpecialValid = specialCharacterRegex.test(value);
+            setLengthValid(value.length >= 8);
+            setNumbersValid(numberRegex.test(value));
+            setSpecialValid(specialCharacterRegex.test(value));
 
-            // Update validation states
-            setLengthValid(isLengthValid);
-            setNumbersValid(isNumbersValid);
-            setSpecialValid(isSpecialValid);
-
-            setPasswordValid(isLengthValid && isNumbersValid && isSpecialValid)
+            setPasswordValid(lengthValid && numbersValid && specialValid)
         }
     };
 
@@ -201,7 +196,6 @@ const CreateProfile = () => {
                         type="date"
                         name="birthDate"
                         className={`input-field ${invalidFields.dateOfBirth && touchedFields.dateOfBirth ? "invalid" : ""}`}
-                        value={formValues.dateOfBirth}
                         onChange={handleInputChange}
                     />
                     {/* PLAYER LEVEL */}
