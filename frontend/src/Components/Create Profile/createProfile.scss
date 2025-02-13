@@ -1,70 +1,63 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.create-display-area{
+    width: 100%;
     height: 100vh;
-    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
-.main-area {
-    width: 100%;
-    height: 100%;
+.create-background {
+    width: 35%;
+    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     background-color: #4693e1;
     border-radius: 12px;
-    padding: 0 5%;
-    margin: 0 auto;
+    padding: 0 2%;
+    gap: 3%;
+    margin-left: 15%;
 }
-
 
 .header {
     color: white;
 }
 
-label {
-    font-size: 16px;
-    width: 125px;
-    color: white;
-    padding: 5px 0px;
-}
-
-
 .first-last-name-area {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    gap: 4%;
 }
 
-.input-field {
-    padding: 10px;
-    width: 450px;
-    margin-right: 10%;
-    border-radius: 8px;
-    margin-bottom: 2%;
-    box-sizing: border-box;
-    border: 1px solid white;
-    background-color: #b5d4f3;
+.first-name{
+    width: 98%;
+}
+
+.last-name{
+    width: 100%;
 }
 
 .input-field.invalid {
     border: 2px solid red;
 }
 
-#first-name {
-    width: 90%;
-}
-
-#last-name {
+.level-selection{
     width: 100%;
+    font-size: 20px;
+    padding-top: 30px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-radius: 8px;
+    background-color: #b5d4f3;
 }
 
 .create-profile {
     padding: 15px 15px;
-    width: 45%;
-    height: 100%;
+    width: 75%;
+    height: fit-content;
     background-color: #315fb9;
     border-radius: 8px;
     color: white;
@@ -75,8 +68,8 @@ label {
 
 
 .password-check-area {
-    width: 100%;
-    height: 50%;
+    width: 25%;
+    height: fit-content;
     margin-left: 50px;
     background-color: #FDFDFF;
     border: solid 2px black;
@@ -121,7 +114,7 @@ label {
 
 /* Responsive adjustments */
 @media screen and (max-width: 1240px) {
-    .main-area {
+    .create-background {
         width: 100%;
         height: 85%;
         padding: 3%;

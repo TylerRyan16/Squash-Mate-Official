@@ -5,38 +5,6 @@
     max-height: 100%;
 }
 
-// INPUT
-.input-container{
-    position: relative;
-    width: 100%;
-}
-
-.floating-label{
-    position: absolute;
-    font-size: 12px;
-    font-weight: 600;
-    width: fit-content;
-    opacity: 1;
-    color: #4c4b51;
-    text-align: left;
-    top: 5px;
-    left: 5px;
-    padding: 0;
-    margin: 0;
-}
-
-.input-zone {
-    width: 100%;
-    padding-left: 10px;
-    padding-top: 30px;
-    padding-bottom: 10px;
-    border-radius: 8px;
-    box-sizing: border-box;
-    border: 2px solid grey;
-    background-color: #b5d4f3;
-    font-size: 20px;
-}
-
 // ORIGINAL DETAILS
 .label{
     color: black;
