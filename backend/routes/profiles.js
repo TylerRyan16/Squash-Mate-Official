@@ -25,4 +25,17 @@ router.post("/", async (req, res) => {
     }
 });
 
+// GET PROFILE
+router.get("/", async (req, res) => {
+    const {username, password} = req.body;
+
+    try {
+        const result = await pool.query(`SELECT * FROM profiles WHERE username = ${username}`);
+        res.json(result.rows);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch videos."});
+    }
+})
+
 module.exports = router;
