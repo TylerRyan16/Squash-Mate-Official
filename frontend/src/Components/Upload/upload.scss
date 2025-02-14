@@ -1,80 +1,56 @@
-.page-one{
-    width: 90%;
-    margin: 0 auto;
-    height: 100%;
-    max-height: 100%;
-}
-
-// ORIGINAL DETAILS
-.label{
-    color: black;
-    font-size: 24px;
-    width: 100%;
-}
-
-.original-details{
+.page-one {
     align-self: flex-start;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: fit-content;
-}
-
-.url{
-    margin-bottom: 2%;
-}
-
-#match-type{
-    align-self: flex-start;
+    width: 90%;
+    height: 100%;
+    gap: 3%;
+    margin: 0 auto;
 }
 
 // VIDEO AREA
-.video-thumbnail{
+.video-thumbnail {
     width: 35%;
     height: auto;
 }
 
 // TITLE / MATCH TYPE
-.title-type-area{
+.title-type-area {
     display: flex;
     width: 100%;
-    height: fit-content;
-    align-items: center;
-    gap: 25px;
-    margin-top: 1%;
+    gap: 2%;
 }
 
-.title{
+.title {
     width: 100%;
-    align-self: flex-start;
 }
 
-.match-type-area{
+.match-type-area {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
     height: 60px;
 }
 
-.match-type-button{
+.match-type-button {
     width: 30%;
     height: 60px;
     background-color: #7aa6d3;
-    font-size: 24px;
+    font-size: clamp(16px, 1.5vw, 28px);
     height: inherit;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
 
-.match-type-button.selected{
+.match-type-button.selected {
     height: 67px;
     background-color: #b5d4f3;
-    font-size: 28px;
+    font-size: clamp(20px, 1.8vw, 32px);
 }
 
 // CONTINUE
-.continue-button{
+.continue-button {
     width: 50%;
     height: auto;
     background-color: #315fb9;
@@ -87,29 +63,29 @@
 }
 
 // PAGE TWO
-.page-two{
+.page-two {
     width: 90%;
-    margin: 0 auto;
     height: 100%;
-    max-height: 100%;
+    margin: 0 auto;
     display: flex;
     overflow: hidden;
 }
 
-.left-area{
+
+.left-area {
     display: flex;
     flex-direction: column;
     gap: 1%;
     width: 50%;
-    height: 100%;
+    height: 50%;
     align-self: flex-start;
     border: none;
     overflow: hidden;
 }
 
 
-.back-button{
-    width: 20%;
+.back-button {
+    width: 35%;
     background-color: #315fb9;
     color: white;
     padding: 5px;
@@ -120,7 +96,7 @@
     margin-bottom: 0.5%;
 }
 
-.detail-display-background{
+.detail-display-background {
     width: 100%;
     border-radius: 12px;
     background-color: #b5d4f3;
@@ -128,19 +104,19 @@
     border: 2px solid grey;
 
 
-    h2{
+    h2 {
         font-size: 20px;
         padding: 5px;
         margin: 0;
     }
 
-    p{
+    p {
         font-size: 18px;
         margin: 0;
         padding-top: 5px;
     }
 
-    .detail-row{
+    .detail-row {
         display: flex;
         align-items: center;
         gap: 5px;
@@ -148,7 +124,7 @@
 }
 
 //  MORE DETAILS
-.more-details{
+.more-details {
     width: 100%;
     height: 100%;
     display: flex;
@@ -157,42 +133,42 @@
     gap: 2%;
 }
 
-.match-length-area{
+.match-length-area {
     display: flex;
     justify-content: space-around;
     width: 100%;
 }
 
-.match-length-button{
+.match-length-button {
     width: 49%;
     height: 60px;
     background-color: #7aa6d3;
-    font-size: 24px;
+    font-size: clamp(16px, 1.5vw, 28px);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
 
-.match-length-button.three{
+.match-length-button.three {
     width: 32%;
 }
 
-.match-length-button.selected{
+.match-length-button.selected {
     height: 67px;
     background-color: #b5d4f3;
-    font-size: 28px;
+    font-size: clamp(18px, 1.8vw, 32px);
 }
 
 .date {
     width: 50%;
 }
 
-.description{
+.description {
     padding-bottom: 10%;
     font-size: 16px;
 }
 
 // UPLOAD
-.upload-button{
+.upload-button {
     width: 100%;
     background-color: #315fb9;
     color: white;
@@ -203,26 +179,25 @@
     align-self: flex-start;
 }
 
-.right-area{
+.right-area {
     display: flex;
     flex-direction: column;
     width: 50%;
     max-height: inherit;
     align-items: center;
 
-    .right-background{
+    .right-background {
         width: 80%;
-        height: 80%;
-        background-color:azure;
+        height: fit-content;
         border-radius: 12px;
     }
 
 
-    h1{
+    h1 {
         width: 75%;
     }
 
-    #video-title{
+    #video-title {
         width: 75%;
         font-size: 24px;
         font-weight: 500;
@@ -230,14 +205,108 @@
         padding: 0;
     }
 
-    #uploader{
+    #uploader {
         font-size: 18px;
         margin-top: 1%;
     }
 }
 
-.page-two-thumbnail{
+.page-two-thumbnail {
     width: 75%;
     height: auto;
     max-height: inherit;
+}
+
+@media screen and (max-width: 1025px) {
+    .detail-display-background {
+        width: 100%;
+        border-radius: 12px;
+        background-color: #b5d4f3;
+        padding: 5px;
+        border: 2px solid grey;
+
+
+        h2 {
+            font-size: 16px;
+            padding: 2px;
+            margin: 0;
+        }
+
+        p {
+            font-size: 14px;
+            margin: 0;
+            padding-top: 2px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+    }
+
+    .match-length-button {
+        width: 49%;
+        height: 30px;
+        background-color: #7aa6d3;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .match-length-button.three {
+        width: 32%;
+    }
+
+    .match-length-button.selected {
+        height: 35px;
+        background-color: #b5d4f3;
+    }
+}
+
+// SMARTPHONE
+@media screen and (max-width: 768px) {
+    .page-one {
+        gap: 5%;
+        padding-top: 3%;
+
+        .title-type-area {
+            flex-direction: column;
+            width: 100%;
+            gap: 25px;
+        }
+        
+
+        .video-thumbnail {
+            width: 90%;
+        }
+
+        .continue-button {
+            width: 75%;
+            margin: 0 auto;
+        }
+    }
+
+    .page-two {
+        display: flex;
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+        height: 75%;
+        gap: 5%;
+
+        .left-area {
+            width: 95%;
+            height: 50%;
+        }
+
+        .right-area{
+            display: none;
+        }
+
+
+        .match-length-area.selected{
+            font-size: clamp(12px, 0.5em, 24px);
+        }
+    }
+
 }
