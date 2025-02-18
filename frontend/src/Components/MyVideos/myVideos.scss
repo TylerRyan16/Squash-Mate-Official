@@ -7,3 +7,86 @@
     position: absolute;
 }
 
+.page-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.search-bar-container {
+  width: 1100px;
+  margin-bottom: 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  margin-bottom: 20px;
+}
+
+.filter-container{
+    position: relative;
+    gap: 10px;
+    background-color: #ccc;
+    width: 50px;
+    height: 45px;
+    border-radius: 5px;
+}
+
+.filter-icon{
+    position: relative;
+    width: 42px;
+    height: 42px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+
+  &:focus {
+    border-color: #7baedc;
+  }
+}
+
+.video-card{
+  text-align: left;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+  padding-top: 5px;
+}
+
+.rows{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 20px;
+}
+
+.vertical-flex{
+  width: 33%;
+}
+
+.item{
+  width: 300%;
+  border-radius: 5px;
+  transition: transform ease 0.3s;
+}
+
+.item:hover{
+  width: 300%;
+  transform: scale(1.2);
+}
