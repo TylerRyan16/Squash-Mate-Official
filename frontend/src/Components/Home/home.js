@@ -37,11 +37,7 @@ const Home = () => {
         //navigate("/login");
     }, [navigate])
 
-    const itemWidth = 150
-    const padding = 10
 
-
-    
     return (
         <div className="page-container">
             <h1 class='top-header'>Squash Mate</h1>
