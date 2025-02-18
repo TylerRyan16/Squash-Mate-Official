@@ -20,7 +20,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5%;
+    gap: clamp(2%, 1.2vw, 5%);
     background-color: #4693e1;
     overflow: hidden;
     z-index: 1000;
