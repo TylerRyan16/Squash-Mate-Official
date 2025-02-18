@@ -139,4 +139,31 @@ router.get("/me", async (req, res) => {
     }
 });
 
+// GET MY PROFILE
+router.get("/my-username", async (req, res) => {
+    try {
+        const authToken = req.cookies.authToken;
+
+        if (!authToken){
+            return res.status(401).json({ error: "Unauthorized. No token provided."});
+        }
+
+        // get user id
+        const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+
+        const result = await pool.query("SELECT username FROM profiles WHERE id = $1", [userId]);
+
+        if (result.rows.length === 0){
+            return res.status(401).json({error: "User not found"});
+        }
+
+        res.json(result.rows[0]);
+        console.log(result.rows[0]);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Failed to fetch user data."});
+    }
+});
+
 module.exports = router;
