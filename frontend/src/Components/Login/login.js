@@ -2,7 +2,6 @@ import "./login.scss";
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
 import { login } from "../../services/api";
-import axios from "axios";
 
 
 const Landing = () => {
@@ -30,8 +29,11 @@ const Landing = () => {
         e.preventDefault();
         try {
             const userData = await login(email, password);
-            navigate('/');
-        } catch (error){
+            if (userData) {
+                navigate('/');
+            }
+
+        } catch (error) {
             console.error("login failed: ", error);
         }
     };

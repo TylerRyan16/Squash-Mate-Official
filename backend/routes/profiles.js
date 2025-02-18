@@ -92,6 +92,7 @@ router.post("/login", async (req, res) => {
                 dateOfBirth: user.date_of_birth,
             },
         });
+
         console.log("signed user in: ", user);
         
     } catch (error){
@@ -124,13 +125,14 @@ router.get("/me", async (req, res) => {
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
         const userId = decoded.userId;
 
-        const result = await pool.query("SELECT id, username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth FROM profiles WHERE id = $1", [userId]);
+        const result = await pool.query("SELECT username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth FROM profiles WHERE id = $1", [userId]);
 
         if (result.rows.length === 0){
             return res.status(401).json({error: "User not found"});
         }
 
         res.json(result.rows[0]);
+        console.log(result.rows[0]);
     } catch (error){
         console.error(error);
         res.status(500).json({error: "Failed to fetch user data."});
