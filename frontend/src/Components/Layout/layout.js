@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import Sidebar from "../Sidebar/sidebar";
-import ProfileIcon from "../ProfileIcon/profileIcon";
 import "./layout.scss";
 
-const Layout = ({children}) => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-
-
+const Layout = ({ children }) => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
         <div className="layout-container">
-            {!isMobile && <Sidebar/>}
-            <ProfileIcon />
-            <main className="main-content">{children}</main>
+            {<Sidebar isOpen={isSidebarOpen} />}
+
+            {/* TOP NAV BAR (PROFILE & NOTIFS) */}
+            <div className={`content-area-with-top-navbar ${isSidebarOpen ? "sidebar-open" : 'sidebar-closed'}`}>
+                <div className="top-nav-bar">
+                    {/* menu button - for smaller screens */}
+                    <img src="/assets/icons/hamburger icon.png" alt="close sidebar button" className="menu-button"
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
+                    </img>
+                    <div className="icon-area">
+                        <Link to="/profile"><img src="/assets/icons/profile-icon.png" alt="profile" className="profile-icon"></img></Link>
+                    </div>
+                </div>
+
+                <main className="main-content">
+                    {children}
+                </main>
+            </div>
+
         </div>
     );
 };

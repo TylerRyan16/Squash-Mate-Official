@@ -1,7 +1,7 @@
 import "./login.scss";
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
-import axios from "axios";
+import { login } from "../../services/api";
 
 
 const Landing = () => {
@@ -10,7 +10,6 @@ const Landing = () => {
     // store email and password
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loginValid, setLoginValid] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const handleInputChange = (e) => {
@@ -24,65 +23,69 @@ const Landing = () => {
         if (name === "password") {
             setPassword(value);
         }
-
     };
 
-    const validateUserLogin = (e) => {
+    const validateUserLogin = async (e) => {
         e.preventDefault();
+        try {
+            const userData = await login(email, password);
+            if (userData) {
+                navigate('/');
+            }
 
-        console.log("validating...");
-        if (loginValid) {
-            console.log("login valid. redirecting to home page");
-            setShowErrorMessage(false);
-            navigate("/");
-        } else {
-            setShowErrorMessage(true);
-            console.log("login invalid. staying on this page and setting invalid text to visible");
-
-            // here we need to add visible class to invalid-info-text
+        } catch (error) {
+            console.error("login failed: ", error);
         }
-
     };
-
 
     return (
         <div className="container">
-            <h1 className="app-title">SquashMate</h1>
-            <h3 className="slogan">Elevate Your Game</h3>
-            <div className="centered-container">
-                <div className="items">
-                    <h1>Welcome</h1>
-                    <form onSubmit={validateUserLogin}>
+            <div className="landing-header-area">
+                <h1 className="app-title">SquashMate</h1>
+                <h3 className="slogan">Elevate Your Game</h3>
+            </div>
+
+            <div className="items">
+                <h1>Welcome</h1>
+                <form onSubmit={validateUserLogin}>
+                    {/* EMAIL */}
+                    <div className="input-container">
+                        <label className="floating-label">Email</label>
                         <input
-                            className="login-input"
+                            className="input-zone email"
                             type="text"
                             name="email"
-                            placeholder="Email address"
                             value={email}
                             onChange={handleInputChange}
                             autoComplete="email"
                         />
+                    </div>
+
+                    {/* PASSWORD */}
+                    <div className="input-container">
+                        <label className="floating-label">Password</label>
                         <input
-                            className="login-input"
+                            className="input-zone password"
                             type="password"
                             name="password"
-                            placeholder="Password"
                             value={password}
                             onChange={handleInputChange}
                             autoComplete="current-password"
                         />
-                        <p
-                            className={`invalid-info-text ${showErrorMessage ? "visible" : ""}`}
-                        >
-                            The username or password you entered is incorrect.
-                        </p>
-                        <button className="login-button" type="submit">Login</button>
-                    </form>
-
-                    <span className="or">Or</span>
-                    <Link to="/create-profile" className="create-profile-button">Sign Up</Link>
+                    </div>
                     <button className="forgot-password">Forgot Password?</button>
-                </div>
+                    <p
+                        className={`invalid-info-text ${showErrorMessage ? "visible" : ""}`}
+                    >
+                        The username or password you entered is incorrect.
+                    </p>
+                    <button className="login-button" type="submit">Login</button>
+
+                    <p className="or">Or</p>
+                    <Link to="/create-profile" className="create-profile-button">Sign Up</Link>
+
+                </form>
+
 
             </div>
 

@@ -1,5 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import React, { useState } from "react";
+import { createAccount } from "../../services/api";
 import "./createProfile.scss";
 import axios from "axios";
 
@@ -7,10 +8,9 @@ const CreateProfile = () => {
     const navigate = useNavigate();
 
     // State to store form values
-    const [formValues, setFormValues] = useState({
+    const [profileDetails, setProfileDetails] = useState({
         username: "",
         password: "",
-        age: "",
         playerLevel: "",
         clubLockerURL: "",
         firstName: "",
@@ -20,12 +20,12 @@ const CreateProfile = () => {
         dateOfBirth: "",
     });
 
-    const [lengthValid, setLengthValid] = useState(false);
-    const [numbersValid, setNumbersValid] = useState(false);
-    const [specialValid, setSpecialValid] = useState(false);
-    const [passwordValid, setPasswordValid] = useState(false);
-    const [invalidFields, setInvalidFields] = useState({});
-    const [touchedFields, setTouchedFields] = useState({});
+    const [passwordValid, setPasswordValid] = useState({
+        length: false,
+        numbers: false,
+        specialCharacters: false
+    });
+
     const specialCharacterRegex = /[!@#$%&+]/;
     const numberRegex = /[0-9]/;
 
@@ -34,206 +34,168 @@ const CreateProfile = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
 
-        // MARK FIELD AS TOUCHED
-        setTouchedFields((prev) => ({
-            ...prev,
-            [name]: true,
-        }));
-
         // UPDATE FORM VALUES
-        setFormValues({
-            ...formValues,
+        setProfileDetails({
+            ...profileDetails,
             [name]: value,
         });
 
 
-        if (value.trim() !== "") {
-            setInvalidFields((prev) => ({
-                ...prev,
-                [name]: false,
-            }));
-        }
-
         if (name === "password") {
-            const isLengthValid = value.length >= 8;
-            const isNumbersValid = numberRegex.test(value);
-            const isSpecialValid = specialCharacterRegex.test(value);
-
-            // Update validation states
-            setLengthValid(isLengthValid);
-            setNumbersValid(isNumbersValid);
-            setSpecialValid(isSpecialValid);
-
-            setPasswordValid(isLengthValid && isNumbersValid && isSpecialValid)
+            setPasswordValid({
+                length: value.length >= 8,
+                numbers: numberRegex.test(value),
+                specialCharacters: specialCharacterRegex.test(value)
+            })
         }
     };
 
     // Handle form submission
     const handleCreateProfile = async () => {
-        // check if any field is empty
-        const newInvalidFields = [];
-
-
-        // validate each field
-        for (const [key, value] of Object.entries(formValues)) {
-            if (value.trim() === "") {
-                // add the field to invalid fields if its empty
-                newInvalidFields[key] = true;
-            }
-        }
-
-        // set fields we touched
-        setTouchedFields(
-            Object.keys(formValues).reduce((acc, key) => {
-                acc[key] = true;
-                return acc;
-            }, {})
-        );
-
-        // update the state
-        setInvalidFields(newInvalidFields);
-
-        // if invalid fields is not empty, stop submission
-        if (Object.keys(newInvalidFields).length > 0) {
-            console.log(Object.keys(newInvalidFields));
-            console.log("Some fields are empty!");
-            return;
-        }
-
-        if (!passwordValid) {
-            console.log("Password invalid!");
-            return;
-        }
-
-        //  SEND REQUEST TO DATABASE
         try {
-            const response = await axios.post("http://localhost:5000/api/profiles", formValues);
+            if (!passwordValid || profileDetails.firstName == ""
+                || profileDetails.lastName == ""
+                || profileDetails.username == ""
+                || profileDetails.email == ""
+                || profileDetails.password == ""
+                || profileDetails.dateOfBirth == ""
+                || profileDetails.playerLevel == ""
+            ) {
+                alert("error!");
+                return;
+            }
 
-            console.log("Profile created: ", response.data);
-
-            // set auth token in local storage
-            const authToken = response.data.id;
-            localStorage.setItem("authToken", authToken);
-
+            const userData = await createAccount(profileDetails);
+            console.log("profile created: ", userData);
             navigate("/");
         } catch (error) {
-            if (error.response && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error("error creating profile: ", error);
-                alert("An error occurred while creating your profile. Please try again.");
-            }
-
+            alert(error || "failed to create profile!");
+            console.error("Error creating your profile!");
         }
     };
 
 
     return (
-        <div className="container">
-            <div className="horizontal-flex">
-                <div className="main-area">
+        <div className="page-container">
+            <div className="create-display-area">
+                <div className="create-background">
                     <h1 className="header">Create Profile</h1>
-                    <div className="first-last-name-area">
-                        {/* FIRST NAME */}
-                        <div className="column-flexbox">
-                            <label htmlFor="first-name-input">First Name: </label>
+                    <form>
+                        <div className="first-last-name-area">
+
+                            {/* FIRST NAME */}
+                            <div className="input-container">
+                                <label className="floating-label profile-label">First (required)</label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    className={`input-zone zone-profile first-name`}
+                                    value={profileDetails.firstName}
+                                    onChange={handleInputChange}
+                                />
+
+                            </div>
+
+                            {/* LAST NAME */}
+                            <div className="input-container">
+                                <label className="floating-label profile-label">Last (required)</label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    className={`input-zone zone-profile last-name`}
+                                    value={profileDetails.lastName}
+                                    onChange={handleInputChange}
+                                />
+
+                            </div>
+                        </div>
+
+
+                        {/* USERNAME */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Username (required)</label>
                             <input
                                 type="text"
-                                name="firstName"
-                                id="first-name"
-                                className={`input-field ${invalidFields.firstName && touchedFields.firstName ? "invalid" : ""}`}
-                                placeholder="First name..."
-                                value={formValues.firstName}
+                                name="username"
+                                autoComplete="username"
+                                className={`input-zone zone-profile`}
+                                value={profileDetails.username}
                                 onChange={handleInputChange}
                             />
                         </div>
 
-                        {/* LAST NAME */}
-                        <div className="column-flexbox">
-
-                            <label htmlFor="last-name-input">Last Name: </label>
+                        {/* EMAIL */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Email (required)</label>
                             <input
                                 type="text"
-                                name="lastName"
-                                id="last-name"
-                                className={`input-field ${invalidFields.lastName && touchedFields.lastName ? "invalid" : ""}`}
-                                placeholder="Last name..."
-                                value={formValues.lastName}
+                                name="email"
+                                className={`input-zone zone-profile`}
+                                value={profileDetails.email}
                                 onChange={handleInputChange}
                             />
                         </div>
 
-                    </div>
-                    {/* EMAIL */}
-                    <label htmlFor="email-input">Email: </label>
-                    <input
-                        type="text"
-                        name="email"
-                        className={`input-field ${invalidFields.email && touchedFields.email ? "invalid" : ""}`}
-                        placeholder="email..."
-                        value={formValues.email}
-                        onChange={handleInputChange}
-                    />
+                        {/* PASSWORD */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Password (required)</label>
+                            <input
+                                type="password"
+                                name="password"
+                                autoComplete="current-password"
+                                className={`input-zone zone-profile`}
+                                value={profileDetails.password}
+                                onChange={handleInputChange}
+                            />
+                        </div>
 
-                    {/* USERNAME */}
-                    <label htmlFor="username-input">Username: </label>
-                    <input
-                        type="text"
-                        name="username"
-                        className={`input-field ${invalidFields.username && touchedFields.username ? "invalid" : ""}`}
-                        placeholder="username..."
-                        value={formValues.username}
-                        onChange={handleInputChange}
-                    />
-                    {/* PASSWORD */}
-                    <label htmlFor="password-input">Password: </label>
-                    <input
-                        type="password"
-                        name="password"
-                        className={`input-field ${invalidFields.password && touchedFields.password ? "invalid" : ""}`}
-                        placeholder="password..."
-                        value={formValues.password}
-                        onChange={handleInputChange}
-                    />
-                    {/* AGE */}
-                    <label htmlFor="date-of-birth-input">Date of Birth: </label>
-                    <input
-                        type="date"
-                        name="birthDate"
-                        className={`input-field ${invalidFields.dateOfBirth && touchedFields.dateOfBirth ? "invalid" : ""}`}
-                        value={formValues.dateOfBirth}
-                        onChange={handleInputChange}
-                    />
-                    {/* PLAYER LEVEL */}
-                    <label htmlFor="player-level-input">Player Level: </label>
-                    <input
-                        type="text"
-                        name="playerLevel"
-                        className={`input-field ${invalidFields.playerLevel && touchedFields.playerLevel ? "invalid" : ""}`}
-                        placeholder="player level..."
-                        value={formValues.playerLevel}
-                        onChange={handleInputChange}
-                    />
-                    {/* CLUB LOCKER URL */}
-                    <label htmlFor="club-locker-url-input">Club Locker URL: </label>
-                    <input
-                        type="text"
-                        name="clubLockerURL"
-                        className={`input-field ${invalidFields.clubLockerURL && touchedFields.clubLockerURL ? "invalid" : ""}`}
-                        placeholder="URL..."
-                        value={formValues.clubLockerURL}
-                        onChange={handleInputChange}
-                    />
-                    {/* CLUB LOCKER URL */}
-                    <label htmlFor="country">Country: </label>
-                    <input
-                        type="text"
-                        name="country"
-                        className={`input-field ${invalidFields.country && touchedFields.country ? "invalid" : ""}`}
-                        placeholder="Country..."
-                        value={formValues.country}
-                        onChange={handleInputChange}
-                    />
+                        {/* DATE OF BIRTH */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Date of Birth (required)</label>
+                            <input
+                                type="date"
+                                name="dateOfBirth"
+                                className={`input-zone zone-profile `}
+                                onChange={handleInputChange}
+                            />
+
+                        </div>
+
+                        {/* PLAYER LEVEL */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Player Level (required)</label>
+                            <select className="level-selection" name="playerLevel" value={profileDetails.playerLevel} onChange={handleInputChange}>
+                                <option value="">Select Level</option>
+                                <option name="playerLevel" value="Beginner">Beginner</option>
+                                <option name="playerLevel" value="Intermediate">Intermediate</option>
+                                <option name="playerLevel" value="Pro">Pro</option>
+                            </select>
+                        </div>
+
+                        {/* CLUB LOCKER URL */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Club Locker URL (not required)</label>
+                            <input
+                                type="text"
+                                name="clubLockerURL"
+                                className={`input-zone zone-profile`}
+                                value={profileDetails.clubLockerURL}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        {/* COUNTRY */}
+                        <div className="input-container">
+                            <label className="floating-label profile-label">Country (not required)</label>
+                            <input
+                                type="text"
+                                name="country"
+                                className={`input-zone zone-profile`}
+                                value={profileDetails.country}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                    </form>
 
                     <Link to="/"
                         onClick={(e) => {
@@ -250,13 +212,15 @@ const CreateProfile = () => {
                 <div className="password-check-area">
                     <h2>Your password must contain:</h2>
                     <ul className="necessary-password-metrics">
-                        <li className={`password-check-item ${lengthValid ? "completed" : ""}`}>8 characters</li>
-                        <li className={`password-check-item ${numbersValid ? "completed" : ""}`}>1 number</li>
-                        <li className={`password-check-item ${specialValid ? "completed" : ""}`}>1 special character (!, @, #, $, %, &, *, +)</li>
+                        <li className={`password-check-item ${passwordValid.length ? "completed" : ""}`}>8 characters</li>
+                        <li className={`password-check-item ${passwordValid.numbers ? "completed" : ""}`}>1 number</li>
+                        <li className={`password-check-item ${passwordValid.specialCharacters ? "completed" : ""}`}>1 special character (!, @, #, $, %, &, *, +)</li>
                     </ul>
                     <h2 className={`password-confirm ${passwordValid ? "valid" : ""}`}>Password Valid</h2>
                 </div>
+
             </div>
+
 
 
 
