@@ -23,7 +23,7 @@ const Home = () => {
     }, [navigate])
 
     return (
-        <div className="container">
+        <div className="page-container">
             <h1>Home Page.</h1>
             <p>This is the home page.</p>
         </div>

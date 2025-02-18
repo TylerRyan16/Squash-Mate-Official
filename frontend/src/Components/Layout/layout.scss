@@ -1,13 +1,95 @@
 .layout-container {
     display: flex;
-    height: 100vh; /* Full height of the viewport */
+    height: 100vh;
     height: 100%;
     width: 100%;
     overflow: hidden;
 }
 
+.content-area-with-top-navbar {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 5%);
+    height: 100%;
 
-.main-content{
-    flex-grow: 1;
+    transition: width 0.3s ease-in-out;
+
+    &.sidebar-open {
+        width: 95%;
+    }
+
+    &.sidebar-closed {
+        width: 100%;
+    }
+}
+
+
+
+.top-nav-bar {
+    width: 100%;
+    height: 8%;
+    padding-right: 1%;
+    padding-left: 1%;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .icon-area {
+        width: fit-content;
+        align-self: flex-end;
+        height: 65px;
+        display: flex;
+        z-index: 50;
+    }
+
+    .profile-icon {
+        padding: 0px 5px;
+        height: 65px;
+        width: auto;
+        border-radius: 32px;
+        padding: 15px 15px;
+        z-index: 50;
+
+    }
+
+    .profile-icon:hover {
+        background-color: rgb(211, 211, 211, 0.5);
+        z-index: 50;
+    }
+}
+
+.main-content {
     overflow: auto;
+}
+
+
+
+
+.menu-button {
+    width: 45px;
+    color: black;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1100;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.menu-button:hover {
+    background-color: grey;
+}
+
+@media screen and (max-width: 768px) {
+    .content-area-with-top-navbar {
+        width: calc(100% - 15%);
+
+        &.sidebar-open {
+            width: 85%;
+        }
+
+        &.sidebar-closed {
+            width: 100%;
+        }
+    }
 }
