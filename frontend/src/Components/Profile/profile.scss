@@ -2,25 +2,30 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 5%;
     width: 25%;
     min-height: 100vh;
     border-right: solid 3px black;
     
     .my-profile{
         align-self: flex-start;
-        padding-left: 5%;
     }
 
-    img{
-        width: 40%;
+    .profile-pic{
+        align-self: flex-start;
+        width: 25%;
         height: auto;
         background-color: lightgray;
-        padding: 25px;
         border-radius: 64px;
+    }
 
+    .profile-username{
+        align-self: flex-start;
+        font-size: clamp(32px, 1.5vw, 42px);
     }
 
     .club-locker-area{
+        align-self: flex-start;
         display: flex;
         flex-direction: column;
         padding-left: 2%;
@@ -28,8 +33,6 @@
         max-height: 35vh;
         background-color: rgb(70, 147, 225, 0.5);
         border-radius: 12px;
-
-
 
         .club-locker-link{
             cursor: pointer;
@@ -45,98 +48,57 @@
 
 .right-area{
     display: flex;
-    flex-direction: row;
-    gap: 0%;
-    width:75%;
+    flex-direction: column;
+    gap: clamp(25px, 1.5vw, 35px);
+    width: 100%;
     min-height: 100vh;
+    padding-top: 8%;
+    padding-left: 1%;
+    padding-right: 3%;
 
-    // NECESSARY
-    .left-column{
+    .name-area{
         display: flex;
-        flex-direction: column;
         width: 100%;
-        min-height: 100vh;
-        padding-top: 8%;
-        padding-left: 1%;
-
-        label{
-            color: black;
-            font-size: 22px;
-        }
-
-        h1{
-            border-bottom: 1px solid black;
-            width: 100%;
-        }
+        height: auto;
+        gap: 5%;
     }
-
-    // INPUTS
-    .profile-input-field{
-        padding: 15px 0;
-        width:40%;
-        border-radius: 8px;
-        box-sizing: border-box;
-        border: 1px solid white;
-        background-color: #b5d4f3;
-        font-size: 24px;
-        padding-left: 10px;
-        margin-bottom: 15px;
-    }
-
-    .first-name{
-        width: 100%;
-    }
-
-    .last-name{
-        width: 100%;
-    }
-
-    .email{
-        width: 100%;
-    }
-
-
 
     // CHANGE PASSWORD
     .change-password-button{
-        width: 25%;
+        width: (25%, .25vw, 30%);
         padding: 10px 10px;
-        font-size: 18px;
+        font-size: clamp(16px, 1vw, 24px);
         color: red;
         border: 1px solid red;
         background-color: transparent;
         cursor: pointer;
+        align-self: flex-start;
     }
 
     .change-password-button:hover{
         background-color: red;
         color: white;
     }
-    
 
-    // SMARTPHONE
-    @media screen and (max-width: 768px){
-        .horizontal-flexbox{
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 15px;
-        }
+    #security-title{
+        align-self: flex-start;
+        font-size: clamp(32px, 1.5vw, 42px);
+        border-bottom: 1px solid black;
+        width: 100%;
+    }
 
-        .name-area{
-            width: 80%;
-            margin-top: 40%;
-        }
-
-        .profile-input-field{
-            width: 80%;
-        }
+    .email-area{
+        display: flex;
+        width: 100%;
+        height: auto;
+        align-items: center;
     }
 
   
     // SECURITY
-    #show-age-label{
-        width: 40%;
-        font-size: 24px;
+    .show-age-label{
+        width: 100%;
+        font-size: clamp(16px, 1vw, 24px);
     }
 
     [type="checkbox"]{
@@ -155,7 +117,7 @@
         content: "";
         position: absolute;
         left: 0;
-        top: 10px;
+        top: 3px;
         width: 20px;
         height: 20px;
         outline: 3px solid red;
@@ -166,7 +128,7 @@
         content: "";
         position: absolute;
         left: 0;
-        top: 10px;
+        top: 3px;
         width: 20px;
         height: 20px;
         outline: 3px solid green;
@@ -177,7 +139,7 @@
         content: "";
         position: absolute;
         left: 0;
-        top: 10px;
+        top: 3px;
         width: 20px;
         height: 20px;
         background-image: url("../../../public/assets/checkmark.png");
@@ -191,7 +153,7 @@
         content: "";
         position: absolute;
         left: 0;
-        top: 10px;
+        top: 3px;
         width: 20px;
         height: 20px;
         background-image: url("../../../public/assets/checkmark.png");
@@ -199,10 +161,6 @@
         transform: scale(0);
         opacity: 0;        
     }
-
-
-
-
 }
 
 

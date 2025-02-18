@@ -92,71 +92,70 @@ const Upload = () => {
         <div className="page-container">
             <h1 className="page-header">Upload a Video</h1>
 
+
             {/* PAGE ONE */}
             {!continuePressed && <div className="page-one">
-                <div className="original-details">
-                    {/* LINK */}
+                {/* LINK */}
+                <div className="input-container">
+                    <label className="floating-label">URL (required)</label>
+                    <input
+                        type="text"
+                        className="input-zone url"
+                        name="url"
+                        value={videoDetails.url}
+                        onChange={handleVideoInput}
+                    ></input>
+                </div>
+
+
+                {/* VIDEO DISPLAY */}
+                {thumbnail && <img src={thumbnail} alt="thumbnail" className="video-thumbnail"></img>}
+
+                {/* TITLE / TYPE AREA */}
+                <div className="title-type-area">
+                    {/* TITLE */}
                     <div className="input-container">
-                        <label className="floating-label">URL (required)</label>
+                        <label className="floating-label">Title (required)</label>
                         <input
                             type="text"
-                            className="input-zone url"
-                            name="url"
-                            value={videoDetails.url}
+                            className="input-zone title"
+                            name="title"
+                            value={videoDetails.title}
                             onChange={handleVideoInput}
                         ></input>
                     </div>
 
+                    {/* MATCH TYPE */}
+                    <div className="match-type-area">
+                        <button
+                            className={`match-type-button ${videoDetails.type === 'Match' ? 'selected' : ''}`}
+                            name="type"
+                            value="Match"
+                            onClick={handleVideoInput}
+                        >Match</button>
+                        <button
+                            className={`match-type-button ${videoDetails.type === 'Game' ? 'selected' : ''}`}
+                            name="type"
+                            value="Game"
+                            onClick={handleVideoInput}
 
-                    {/* VIDEO DISPLAY */}
-                    {thumbnail && <img src={thumbnail} alt="thumbnail" className="video-thumbnail"></img>}
-
-                    {/* TITLE / TYPE AREA */}
-                    <div className="title-type-area">
-                        <div className="vertical-flex">
-                            {/* TITLE */}
-                            <div className="input-container">
-                                <label className="floating-label">Title (required)</label>
-                                <input
-                                    type="text"
-                                    className="input-zone title"
-                                    name="title"
-                                    value={videoDetails.title}
-                                    onChange={handleVideoInput}
-                                ></input>
-                            </div>
-                        </div>
-
-                        {/* MATCH TYPE */}
-                        <div className="match-type-area">
-                            <button
-                                className={`match-type-button ${videoDetails.type === 'Match' ? 'selected' : ''}`}
-                                name="type"
-                                value="Match"
-                                onClick={handleVideoInput}
-                            >Match</button>
-                            <button
-                                className={`match-type-button ${videoDetails.type === 'Game' ? 'selected' : ''}`}
-                                name="type"
-                                value="Game"
-                                onClick={handleVideoInput}
-
-                            >Game</button>
-                            <button
-                                className={`match-type-button ${videoDetails.type === 'Casual' ? 'selected' : ''}`}
-                                name="type"
-                                value="Casual"
-                                onClick={handleVideoInput}
-                            >Casual</button>
-                        </div>
+                        >Game</button>
+                        <button
+                            className={`match-type-button ${videoDetails.type === 'Casual' ? 'selected' : ''}`}
+                            name="type"
+                            value="Casual"
+                            onClick={handleVideoInput}
+                        >Casual</button>
                     </div>
-                    {/* CONTINUE BUTTON */}
-                    <button
-                        className="continue-button"
-                        onClick={() => handleContinuePressed()}
-                    >Continue</button>
                 </div>
+
+                {/* CONTINUE BUTTON */}
+                <button
+                    className="continue-button"
+                    onClick={() => handleContinuePressed()}
+                >Continue</button>
             </div>}
+
 
             {/* PAGE TWO */}
             {continuePressed && <div className="page-two">
@@ -301,12 +300,7 @@ const Upload = () => {
                     </div>
                 </div>
             </div>}
-
-
-
-
         </div>
-
     );
 }
 
