@@ -18,10 +18,10 @@
 }
 
 .search-icon {
-  position: absolute;
+  position: relative;
   left: 10px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(150%);
   width: 20px;
   height: 20px;
   pointer-events: none;
@@ -68,25 +68,33 @@
   height: auto;
   margin-bottom: 8px;
   padding-top: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
-.rows{
+.video-rows{
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  gap: 20px;
+  gap: 30px;
+  max-width: 90%;
+  margin: 0 auto;
 }
 
-.vertical-flex{
-  width: 33%;
+.align{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80px;
 }
 
-.item{
-  width: 300%;
+.video-item{
+  background-color: greenyellow;
+  max-width: 400px;
+  height: auto;
   border-radius: 5px;
   transition: transform ease 0.3s;
 }
 
-.item:hover{
-  width: 300%;
-  transform: scale(1.2);
+.video-item:hover{
+  transform: scale(1.1);
 }
