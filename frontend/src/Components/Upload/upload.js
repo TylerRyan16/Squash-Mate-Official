@@ -18,7 +18,8 @@ const Upload = () => {
         tournament_date: "",
         tournament_name: "",
         tournament_location: "",
-        poster: ""
+        poster: "",
+        thumbnail: "",
     });
 
     useEffect(() => {
@@ -45,6 +46,10 @@ const Upload = () => {
             const videoId = extractYouTubeID(value);
             if (videoId) {
                 setThumbnail(`https://img.youtube.com/vi/${videoId}/0.jpg`);
+                setVideoDetails((prevDetails) => ({
+                    ...prevDetails,
+                    thumbnail: `https://img.youtube.com/vi/${videoId}/0.jpg`
+                }))
             } else {
                 setThumbnail('');
             }

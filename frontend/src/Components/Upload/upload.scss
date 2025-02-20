@@ -51,14 +51,15 @@
 
 // CONTINUE
 .continue-button {
-    width: 50%;
+    width: clamp(70%, 1vw, 80%);
     height: auto;
     background-color: #315fb9;
     color: white;
-    padding: 5px;
+    padding: 15px;
     border-radius: 8px;
-    margin-top: 1em;
-    font-size: 32px;
+    margin-top: 0;
+    font-size: clamp(32px, 1vw, 44px);
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -309,4 +310,10 @@
         }
     }
 
+}
+
+@media screen and (min-width: 767px) and (max-width: 1025px){
+    .video-thumbnail{
+        width: 90%;
+    }
 }
