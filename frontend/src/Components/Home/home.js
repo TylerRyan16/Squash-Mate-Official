@@ -1,7 +1,8 @@
+
 import './home.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getAllVideos } from "../../services/api";
 
 
@@ -36,7 +37,6 @@ const Home = () => {
         fetchAllVideos();
     }, []);
 
-    const videos = ['https://img.youtube.com/vi/n05wyIGkeIA/0.jpg', 'https://img.youtube.com/vi/Lbdp-HCjWw8/0.jpg', 'https://img.youtube.com/vi/5Dd_LS5mWUE/0.jpg', 'https://img.youtube.com/vi/n05wyIGkeIA/0.jpg', 'https://img.youtube.com/vi/Lbdp-HCjWw8/0.jpg', 'https://img.youtube.com/vi/5Dd_LS5mWUE/0.jpg', 'https://img.youtube.com/vi/n05wyIGkeIA/0.jpg', 'https://img.youtube.com/vi/Lbdp-HCjWw8/0.jpg', 'https://img.youtube.com/vi/5Dd_LS5mWUE/0.jpg',]
     const isLoggedIn = () => {
         const loggedIn = localStorage.getItem('authToken');
         console.log("logged in: ", loggedIn);
@@ -46,16 +46,6 @@ const Home = () => {
     const navigateToVideo = (video) => {
         console.log("videoUrl: ", video.url);
     };
-
-    useEffect(() => {
-        if (!isLoggedIn()) {
-            console.log("user not logged in, redirecting to /landing");
-            //navigate("/login");
-        }
-
-        //navigate("/login");
-    }, [navigate])
-
 
     return (
         <div className="page-container">
@@ -91,52 +81,55 @@ const Home = () => {
             </div>
 
             {/* public games */}
-            <h1 className='category-name'>Public Games</h1>
-            <div className="scroll-container">
-                <div className="carousel">
+            <div className="category-name-button-area">
+                <h1 className='category-name'>Public Games</h1>
+                <Link to="/my-videos" className="view-more">View More</Link>
+            </div>
 
-                    {/* left arrow */}
-                    <button id="left-scroll-public" className="left-scroll" onClick={() => scrollLeft('public-games-list')}>
-                        <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
-                    <div id="public-games-list" className="my-videos-list">
-                        {videos.map(element => (
-                            <div className='video-card'>
-                                <img className="home-video-thumbnail" src={element} alt='' />
-                                <h4 className="video-title">Video Title</h4>
-                                <small className='video-title'>Updated Today</small>
-                            </div>
-                        ))}
-                    </div>
-                    {/* right arrow */}
-                    <button id="right-scroll-public" className="right-scroll" onClick={() => scrollRight("public-games-list")}>
-                        <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
+            <div className="carousel">
+                {/* left arrow */}
+                <button id="left-scroll-public" className="left-scroll" onClick={() => scrollLeft('public-games-list')}>
+                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                </button>
+                <div id="public-games-list" className="my-videos-list">
+                    {allVideos.map(element => (
+                        <div className='video-card'>
+                            <img className="home-video-thumbnail" src={element.thumbnail} alt='' />
+                            <h4 className="video-title">Video Title</h4>
+                            <small className='video-title'>Updated Today</small>
+                        </div>
+                    ))}
                 </div>
+                {/* right arrow */}
+                <button id="right-scroll-public" className="right-scroll" onClick={() => scrollRight("public-games-list")}>
+                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                </button>
             </div>
 
             {/* shared with me */}
-            <h1 class='category-name'>Shared With Me</h1>
-            <div class="scroll-container">
-                <div class="carousel">
-                    {/* left arrow */}
-                    <button id="left-scroll-shared" class="left-scroll" onClick={() => scrollLeft('shared-list')}>
-                        <img class='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
-                    <div id="shared-list" className="my-videos-list">
-                        {videos.map(element => (
-                            <div className='video-card'>
-                                <img className="home-video-thumbnail" src={element} alt='' />
-                                <h4 className="video-title">Video Title</h4>
-                                <small className='video-title'>Updated Today</small>
-                            </div>
-                        ))}
-                    </div>
-                    {/* right arrow */}
-                    <button id="right-scroll-shared" className="right-scroll" onClick={() => scrollRight("shared-list")}>
-                        <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
+            <div className="category-name-button-area">
+                <h1 className='category-name'>Shared With Me</h1>
+                <Link to="/my-videos" className="view-more">View More</Link>
+            </div>           
+             
+            <div class="carousel">
+                {/* left arrow */}
+                <button id="left-scroll-shared" class="left-scroll" onClick={() => scrollLeft('shared-list')}>
+                    <img class='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                </button>
+                <div id="shared-list" className="my-videos-list">
+                    {allVideos.map(element => (
+                        <div className='video-card'>
+                            <img className="home-video-thumbnail" src={element.thumbnail} alt='' />
+                            <h4 className="video-title">Video Title</h4>
+                            <small className='video-title'>Updated Today</small>
+                        </div>
+                    ))}
                 </div>
+                {/* right arrow */}
+                <button id="right-scroll-shared" className="right-scroll" onClick={() => scrollRight("shared-list")}>
+                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                </button>
             </div>
         </div>
     );
