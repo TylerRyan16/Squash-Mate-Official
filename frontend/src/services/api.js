@@ -53,6 +53,7 @@ export const getUserData = async () => {
 // GET ALL VIDEOS
 export const getAllVideos = async () => {
     try {
+        console.log("Getting videos in api");
         const response = await api.get("/videos/all-videos");
         return response.data;
     } catch (error){

@@ -13,14 +13,13 @@
 }
 
 .search-bar-container {
-  width: 1100px;
+  width: 90%;
   margin-bottom: 20px;
 }
 
 .search-icon {
   position: relative;
   left: 10px;
-  top: 50%;
   transform: translateY(150%);
   width: 20px;
   height: 20px;
@@ -89,10 +88,6 @@
   margin-bottom: 80px;
 }
 
-.video-item{
-  max-width: 400px;
-  height: auto;
-  
 .rows{
   width: 90%;
   margin: auto;
