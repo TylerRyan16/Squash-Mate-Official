@@ -49,3 +49,23 @@ export const getUserData = async () => {
         throw error.response?.data || "Failed to fetch user data";
     }
 };
+
+// GET ALL VIDEOS
+export const getAllVideos = async () => {
+    try {
+        const response = await api.get("/videos/all-videos");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch video data";
+    }
+}
+
+// GET MY VIDEOS
+export const getMyVideos = async () => {
+    try {
+        const response = await api.get("/videos/my-videos");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch video data";
+    }
+}

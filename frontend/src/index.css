@@ -65,13 +65,13 @@ code {
 .input-zone {
     width: 100%;
     padding-left: 10px;
-    padding-top: 30px;
-    padding-bottom: 10px;
+    padding-top: clamp(20px, 1.5vw, 35px);
+    padding-bottom: clamp(5px, 1vw, 10px);
     border-radius: 8px;
     box-sizing: border-box;
     border: 2px solid grey;
     background-color: #b5d4f3;
-    font-size: 20px;
+    font-size: clamp(20px, 1vw, 24px);
 }
 
 .profile-label{
@@ -87,14 +87,6 @@ code {
 
 * {
   box-sizing: border-box;
-}
-
-@media screen and (max-width: 1025px){
-  .input-zone{
-    font-size: 14px;
-    padding-top: 20px;
-    padding-bottom: 5px;
-  }
 }
 
 a{

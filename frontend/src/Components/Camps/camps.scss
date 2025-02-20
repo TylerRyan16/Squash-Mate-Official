@@ -2,18 +2,18 @@ h1{
     text-align: center;
 }
 
-p1{
-    text-align: center;
-    padding-left: 130px;
-}
-
-p2{
-    max-width: 600px;  /* Constrain width */
+.paragraph{
+    max-width: 1200px;  /* Constrain width */
     margin: 0 auto;    /* Center horizontally */
-    padding: 130px;   /* Add some space on the sides */
-    text-align: center; /* Optional: Center text */
+    padding: 10px;   /* Add some space on the sides */
+    text-align: left; /* Optional: Center text */
+    font-size: 20px;
 }
-
+  
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: blue;
+}
 
 .camp-gallery {
     display: grid;

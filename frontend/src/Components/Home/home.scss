@@ -10,9 +10,29 @@ button{
     text-align: center;
 }
 
-.category-name{
-    padding-left: 105px;
+.category-name-button-area{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    margin: auto;
+    height: 5%;
+}
 
+.category-name{
+    align-self: flex-start;
+    margin: 0;
+    padding: 0;
+}
+
+.view-more-button{
+    margin-right: 2%;
+    text-decoration: none;
+}
+
+.view-more-button:hover{
+    text-decoration: underline;
 }
 
 .left-scroll-icon{
@@ -23,51 +43,71 @@ button{
 .right-scroll-icon{
     width: 40px;
 }
-
-.scroll-container {
-    width: 100%;
-    height: 40vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: aliceblue;
-  }
   
-  .carousel {
+.carousel {
+    width: 95%;
+    height: 40vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    padding: 44px 0;
+    padding: 1% 0;
+    margin: auto;
     transition: all 0.25s ease-in;
-  }
+}
 
 .my-videos-list{
-    width: 80vw;
+    width: 100vw;
+    height: 100%;
     display: flex;
     scroll-behavior: smooth;
-    transition: all 0.25s ease-in;
-    overflow: auto;
-    gap: 10px;
-    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    gap: clamp(50px, 1vw, 80px);
 }
+
 .my-videos-list::-webkit-scrollbar{
     display:none;
 }
 
-.item{
+.video-card{
+    display: flex;
+    flex-direction: column;
     scroll-snap-align: center;
-    width: clamp(250px, 3vw, 300px);
+    width: clamp(300px, 1vw, 700px);
     height: auto;
+    border-radius: 8px;
     margin-bottom: 8px;
-    padding-top: 5px;
+    padding: 5px;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease-in-out;
 }
 
-.video-card{
-    text-align: center;
+.video-card:hover{
+    background-color: lightgrey;
+}
+
+.home-video-thumbnail{
     scroll-snap-align: center;
-    width: clamp(250px, 3vw, 300px);
-    height: auto;
     margin-bottom: 8px;
     padding-top: 5px;
+
+    transition: transform 0.15s ease-in-out;
+}
+
+
+
+.video-title{
+    align-self: flex-start;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 2px;
+}
+
+
+@media screen and (max-width: 768px){
+    .video-card{
+        width: clamp(200px, 1vw, 275px);
+    }
 }
