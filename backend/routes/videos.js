@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../config/db.js");
 
 // get all videos
-router.get("/", async (req, res) => {
+router.get("/all-videos", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM videos");
         res.json(result.rows);

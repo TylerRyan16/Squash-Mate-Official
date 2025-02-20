@@ -6,8 +6,6 @@ button{
     transition: all .3s ease-in-out;
 }
 
-
-
 .top-header{
     text-align: center;
 }
@@ -52,12 +50,13 @@ button{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1% 0;
     margin: auto;
     transition: all 0.25s ease-in;
 }
 
 .my-videos-list{
-    width: 90%;
+    width: 100vw;
     height: 100%;
     display: flex;
     scroll-behavior: smooth;
@@ -90,7 +89,6 @@ button{
 }
 
 .home-video-thumbnail{
-    width: clamp(290px, 1vw, 690px);
     scroll-snap-align: center;
     margin-bottom: 8px;
     padding-top: 5px;
