@@ -36,12 +36,12 @@ import "./myVideos.scss";
 // };
 
 const videos = [
-  "https://img.youtube.com/vi/23urWKmHS6o/0.jpg",
-  "https://img.youtube.com/vi/BxxfExJR63g/0.jpg",
-  "http://i3.ytimg.com/vi/KDorKy-13ak/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/Cf5dPQ7YeE8/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/Ks_Uxuhz6nc/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/xgXSLLULGyU/hqdefault.jpg"
+  "http://i3.ytimg.com/vi/n05wyIGkeIA/hqdefault.jpg",
+  "http://i3.ytimg.com/vi/nTcvGK3k1IQ/hqdefault.jpg",
+  "http://i3.ytimg.com/vi/WBLZ3-T8q7s/hqdefault.jpg",
+  "http://i3.ytimg.com/vi/0H9xNZQhEc4/hqdefault.jpg",
+  "http://i3.ytimg.com/vi/387IPXPUx4Y/hqdefault.jpg",
+  "http://i3.ytimg.com/vi/RsVJkAig3PE/hqdefault.jpg",
 ];
 const MyVideos = () => {
   return (
@@ -56,11 +56,18 @@ const MyVideos = () => {
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
 
+        <div class="video-card">
+          <div className="video-rows">
+            {videos.map((element, index) => (
+              <div key={index}class="align">
+                <img class="video-item" src={element} alt="{`Video ${index}`}" />
+
         <div class="video-area">
           <div className="rows">
             {videos.map((element, index) => (
               <div key={index} class="my-videos-video-card">
                 <img class="my-videos-thumbnail" src={element} alt="{`Video ${index}`}" />
+
                 <h5 class="video-title">Video Title</h5>
                 <small class="video-title">Updated Today</small>
               </div>
