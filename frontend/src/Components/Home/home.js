@@ -45,7 +45,6 @@ const Home = () => {
 
     const navigateToVideo = (video) => {
         console.log("videoUrl: ", video.url);
-        navigate()
     };
 
     useEffect(() => {
@@ -77,7 +76,7 @@ const Home = () => {
 
                 <div id="my-videos-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                        <div className='video-card' onClick={navigateToVideo(currentVideo)}>
+                        <div className='video-card' onClick={navigateToVideo(currentVideo.url)}>
                             <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
                             <h4 className="video-title">{currentVideo.title}</h4>
                             <small className='video-title'>{currentVideo.date_posted}</small>
