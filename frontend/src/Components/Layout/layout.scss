@@ -1,9 +1,8 @@
 .layout-container {
     display: flex;
     height: 100vh;
-    height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow: hidden;    
 }
 
 .content-area-with-top-navbar {
@@ -22,8 +21,6 @@
         width: 100%;
     }
 }
-
-
 
 .top-nav-bar {
     width: 100%;
@@ -63,11 +60,9 @@
     overflow: auto;
 }
 
-
-
-
 .menu-button {
-    width: 45px;
+    width: clamp(55px, 2vw, 100px);
+    height: clamp(55px, 2vw, 100px);
     color: black;
     font-size: 24px;
     cursor: pointer;
@@ -91,5 +86,12 @@
         &.sidebar-closed {
             width: 100%;
         }
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    .menu-button {
+        width: 80px;
+        height: 80px;
     }
 }

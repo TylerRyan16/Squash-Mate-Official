@@ -28,7 +28,6 @@ const Home = () => {
     useEffect(() => {
         const fetchAllVideos = async () => {
             try {
-                console.log("trying to get videos");
                 const videos = await getAllVideos();
                 setAllVideos(videos);
             } catch (error) {
@@ -38,25 +37,15 @@ const Home = () => {
         fetchAllVideos();
     }, []);
 
-    // const isLoggedIn = () => {
-    //     const loggedIn = localStorage.getItem('authToken');
-    //     console.log("logged in: ", loggedIn);
-    //     return !!loggedIn;
-    // };
+    const isLoggedIn = () => {
+        const loggedIn = localStorage.getItem('authToken');
+        console.log("logged in: ", loggedIn);
+        return !!loggedIn;
+    };
 
     const navigateToVideo = (video) => {
         console.log("videoUrl: ", video.url);
     };
-
-    // useEffect(() => {
-    //     if (!isLoggedIn()) {
-    //         console.log("user not logged in, redirecting to /landing");
-    //         //navigate("/login");
-    //     }
-
-    //     //navigate("/login");
-    // }, [navigate])
-
 
     return (
         <div className="page-container">
@@ -96,6 +85,7 @@ const Home = () => {
                 <h1 className='category-name'>Public Games</h1>
                 <Link to="/my-videos" className="view-more">View More</Link>
             </div>
+
             <div className="carousel">
                 {/* left arrow */}
                 <button id="left-scroll-public" className="left-scroll" onClick={() => scrollLeft('public-games-list')}>
