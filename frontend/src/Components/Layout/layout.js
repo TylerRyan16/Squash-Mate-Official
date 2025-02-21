@@ -19,6 +19,7 @@ const Layout = ({ children }) => {
                     >
                     </img>
                     <div className="icon-area">
+                        <img src="/assets/icons/notification-bell.png" alt="bell" className="bell-icon"></img>
                         <Link to="/profile"><img src="/assets/icons/profile-icon.png" alt="profile" className="profile-icon"></img></Link>
                     </div>
                 </div>

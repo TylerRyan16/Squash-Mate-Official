@@ -54,6 +54,20 @@
         background-color: rgb(211, 211, 211, 0.5);
         z-index: 50;
     }
+
+    .bell-icon {
+        padding: 0px 5px;
+        height: 65px;
+        width: auto;
+        border-radius: 32px;
+        padding: 15px 15px;
+        z-index: 50;
+    }
+
+    .bell-icon:hover {
+        background-color: rgb(211, 211, 211, 0.5);
+        z-index: 50;
+    }
 }
 
 .main-content {
