@@ -36,12 +36,18 @@ import "./myVideos.scss";
 // };
 
 const videos = [
-  "https://img.youtube.com/vi/23urWKmHS6o/0.jpg",
-  "https://img.youtube.com/vi/BxxfExJR63g/0.jpg",
-  "http://i3.ytimg.com/vi/KDorKy-13ak/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/Cf5dPQ7YeE8/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/Ks_Uxuhz6nc/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/xgXSLLULGyU/hqdefault.jpg"
+  { url: "https://www.youtube.com/watch?v=DKrUjudr69A" },
+  { url: "https://www.youtube.com/watch?v=unmI-kF1ZBc" },
+  { url: "https://www.youtube.com/watch?v=N7jyDk0bXfA" },
+  { url: "https://www.youtube.com/watch?v=wSG-e6667x4" },
+  { url: "https://www.youtube.com/watch?v=9tTOpf5ZEqs" },
+  { url: "https://www.youtube.com/watch?v=CEKvwpIVxX0" },
+  { url: "https://www.youtube.com/watch?v=WPnrQdVZcsI" },
+  { url: "https://www.youtube.com/watch?v=nz1hEjLX-Y8" },
+  { url: "https://www.youtube.com/watch?v=7zJ6REBsMXI" },
+  { url: "https://www.youtube.com/watch?v=RsVJkAig3PE" },
+  { url: "https://www.youtube.com/watch?v=bOL_M3nw6a4" },
+  { url: "https://www.youtube.com/watch?v=A9sNnVtaI2Q" },
 ];
 const MyVideos = () => {
   return (
@@ -60,7 +66,9 @@ const MyVideos = () => {
           <div className="rows">
             {videos.map((element, index) => (
               <div key={index} class="my-videos-video-card">
-                <img class="my-videos-thumbnail" src={element} alt="{`Video ${index}`}" />
+                <a href={element.url} target="_blank" rel="noopener noreferrer">
+                  <img class="my-videos-thumbnail" src={`https://img.youtube.com/vi/${element.url.split('v=')[1]}/0.jpg`} alt={`Video ${index}`} />
+                </a>  
                 <h5 class="video-title">Video Title</h5>
                 <small class="video-title">Updated Today</small>
               </div>
