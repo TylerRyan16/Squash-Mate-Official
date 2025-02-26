@@ -22,14 +22,24 @@
     background-color: green;
 }
 
-/* Style the tab */
+.comment-section{
+    background-color: #9b9b9b;
+    width: 25%;
+    height: 100%;
+}
+
+.video-section{
+    background-color: #9b9b9b;
+    width: 75%;
+    height: auto;
+}
+
 .tab {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
   }
   
-  /* Style the buttons that are used to open the tab content */
   .tab button {
     background-color: inherit;
     float: left;
@@ -40,20 +50,58 @@
     transition: 0.3s;
   }
   
-  /* Change background color of buttons on hover */
   .coach-tabs button:hover {
     background-color: #a7a7a7;
   }
   
-  /* Create an active/current tablink class */
+
   .coach-tabs button.active {
     background-color: #9b9b9b;
   }
   
-  /* Style the tab content */
   .tabcontent {
     display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
   }
+
+  .comment-pic{
+    align-self: flex-start;
+    width: 15%;
+    height: auto;
+    background-color: lightgray;
+    border-radius: 64px;
+}
+
+.icon{
+    width: 100%;
+    height: auto;
+}
+
+.reply-icon{
+  width: 20%;
+}
+
+.reactions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5%;   
+
+  }
+
+  .comment-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  
+    }
+
+.comment {
+ text-wrap: nowrap;
+ flex-grow: 0;
+ flex-shrink: 0;
+}
