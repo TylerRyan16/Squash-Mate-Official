@@ -245,7 +245,7 @@ const Upload = () => {
 
                         {/* DATE ETC */}
                         <div className="input-container">
-                            <label className="floating-label">Date of Play (not required)</label>
+                            <label className="floating-label">Date of Play (optional)</label>
                             <input
                                 type="date"
                                 className="input-zone date"
@@ -259,7 +259,7 @@ const Upload = () => {
 
                         {/* TOURNAMENT NAME */}
                         <div className="input-container">
-                            <label className="floating-label">Tournament Name (not required)</label>
+                            <label className="floating-label">Tournament Name (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone tournament-input"
@@ -269,7 +269,7 @@ const Upload = () => {
                             ></input>
                         </div>
                         <div className="input-container">
-                            <label className="floating-label">Tournament Location (not required)</label>
+                            <label className="floating-label">Tournament Location (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone tournament-input"
@@ -280,7 +280,7 @@ const Upload = () => {
 
                         </div>
                         <div className="input-container">
-                            <label className="floating-label">Description (not required)</label>
+                            <label className="floating-label">Description (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone description"
