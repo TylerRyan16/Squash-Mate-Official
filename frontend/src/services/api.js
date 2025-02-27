@@ -70,3 +70,13 @@ export const getMyVideos = async () => {
         throw error.response?.data || "Failed to fetch video data";
     }
 }
+
+// GET SPECIFIC VIDEO
+export const getSpecificVideo = async (videoID) => {
+    try {
+        const response = await api.get(`/videos/${videoID}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || "Failed to fetch video."
+    }
+}

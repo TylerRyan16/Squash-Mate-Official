@@ -43,7 +43,6 @@ router.get("/my-videos", async (req, res) => {
 // add a new video to database
 router.post("/", async (req, res) => {
     const {title, description, url, type, length, tournament_date, tournament_name, tournament_location, poster, thumbnail} = req.body;
-    console.log("TOURNAMENT DATE IN POST: ", tournament_date);
 
     try {
         const result = await pool.query(
@@ -56,6 +55,29 @@ router.post("/", async (req, res) => {
         console.error(error);
         res.status(500).json({error: "Failed to add video"});
     }
+});
+
+// GET SPECIFIC VIDEO
+router.get("/:id", async (req, res) => {
+    const {id} = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: "Missing video ID" });
+    }
+
+    try {
+        const result = await pool.query(`SELECT * FROM videos WHERE id = $1`, [id]);
+        
+        if (result.rows[0].length === 0){
+            return res.status(404).json({ error: "Video not found" });
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Failed to load specific video"});
+    }
+
 });
 
 module.exports = router;
