@@ -83,7 +83,7 @@ const Home = () => {
             {/* public games */}
             <div className="category-name-button-area">
                 <h1 className='category-name'>Public Games</h1>
-                <Link to="/my-videos" className="view-more">View More</Link>
+                <Link to="/explore" className="view-more">View More</Link>
             </div>
 
             <div className="carousel">
@@ -109,7 +109,7 @@ const Home = () => {
             {/* shared with me */}
             <div className="category-name-button-area">
                 <h1 className='category-name'>Shared With Me</h1>
-                <Link to="/my-videos" className="view-more">View More</Link>
+                <Link to="/shared-with-me" className="view-more">View More</Link>
             </div>           
              
             <div class="carousel">

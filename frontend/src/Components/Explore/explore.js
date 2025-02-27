@@ -25,7 +25,7 @@ const Explore = () => {
   return (
     <div className="page-container">
       <title>Explore</title>
-      <h1>Trending Page</h1>
+      <h1>Explore Page</h1>
       <main>
         <div className="search-filter-container">
           <input type="text" className="horizontal-flex search-input" placeholder="Search..." />
