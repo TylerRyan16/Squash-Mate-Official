@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 // middlewar
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://squash-mates.onrender.com",
     credentials: true
 }));
 app.use(bodyParser.json());
@@ -27,5 +27,5 @@ app.use("/api/comments", commentsRoute);
 // start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on https://squash-mates.onrender.com:${PORT}`);
 });
