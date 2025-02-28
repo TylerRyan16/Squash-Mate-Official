@@ -73,19 +73,15 @@ const Upload = () => {
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
         //  SEND POST REQUEST TO DATABASE
-        const upload = async () => {
-            try {
-                const response = await uploadVideo(videoDetails);
-                const databaseVideoId = response.data.id;
-                navigate(`/video/${databaseVideoId}`);
-            } catch (error) {
-                console.log(error);
-            }
+        try {
+            const response = await uploadVideo(videoDetails);
+            console.log("reponse: ", response);
+
+            const databaseVideoId = response.id;
+            navigate(`/video/${databaseVideoId}`);
+        } catch (error) {
+            console.log(error);
         }
-        upload();
-
-       
-
     };
 
     return (
