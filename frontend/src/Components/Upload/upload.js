@@ -74,7 +74,7 @@ const Upload = () => {
     const handleVideoUpload = async () => {
         //  SEND POST REQUEST TO DATABASE
         try {
-            const response = await axios.post("http://localhost:5000/api/videos", videoDetails);
+            const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
 
             console.log("Video uploaded: ", response.data);
 
@@ -89,7 +89,7 @@ const Upload = () => {
 
         }
 
-        navigate("/video");
+       // navigate(`/video/${databaseVideoId}`);
 
     };
 
