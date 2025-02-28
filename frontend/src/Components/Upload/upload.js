@@ -1,7 +1,7 @@
 import './upload.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from "axios";
+import { uploadVideo } from "../../services/api";
 
 
 const Upload = () => {
@@ -73,23 +73,18 @@ const Upload = () => {
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
         //  SEND POST REQUEST TO DATABASE
-        try {
-            const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
-
-            console.log("Video uploaded: ", response.data);
-
-            navigate("/video");
-        } catch (error) {
-            if (error.response && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error("error creating profile: ", error);
-                alert("An error occurred while creating your profile. Please try again.");
+        const upload = async () => {
+            try {
+                const response = await uploadVideo(videoDetails);
+                const databaseVideoId = response.data.id;
+                navigate(`/video/${databaseVideoId}`);
+            } catch (error) {
+                console.log(error);
             }
-
         }
+        upload();
 
-       // navigate(`/video/${databaseVideoId}`);
+       
 
     };
 
