@@ -1,7 +1,7 @@
 import './upload.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from "axios";
+import { uploadVideo } from "../../services/api";
 
 
 const Upload = () => {
@@ -74,23 +74,14 @@ const Upload = () => {
     const handleVideoUpload = async () => {
         //  SEND POST REQUEST TO DATABASE
         try {
-            const response = await axios.post("http://localhost:5000/api/videos", videoDetails);
+            const response = await uploadVideo(videoDetails);
+            console.log("reponse: ", response);
 
-            console.log("Video uploaded: ", response.data);
-
-            navigate("/video");
+            const databaseVideoId = response.id;
+            navigate(`/video/${databaseVideoId}`);
         } catch (error) {
-            if (error.response && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error("error creating profile: ", error);
-                alert("An error occurred while creating your profile. Please try again.");
-            }
-
+            console.log(error);
         }
-
-        navigate("/video");
-
     };
 
     return (

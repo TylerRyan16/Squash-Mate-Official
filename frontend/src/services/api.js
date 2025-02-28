@@ -80,3 +80,22 @@ export const getSpecificVideo = async (videoID) => {
         throw error.response?.data || "Failed to fetch video."
     }
 }
+
+// UPLOAD VIDEO
+export const uploadVideo = async (videoDetails) => {
+    try {
+        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+
+        console.log("Video uploaded: ", response.data);
+        
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data.error) {
+            alert(error.response.data.error);
+        } else {
+            console.error("error creating profile: ", error);
+            alert("An error occurred while creating your profile. Please try again.");
+        }
+
+    }
+}

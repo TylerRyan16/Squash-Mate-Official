@@ -50,6 +50,12 @@ router.post("/", async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
             [url, poster, title, description, type, length, tournament_name, tournament_date, tournament_location, thumbnail]
         );
+
+
+        if (result.rows.length === 0){
+            return res.status(500).json({error: "Failed to add video"});
+        }
+
         res.status(201).json(result.rows[0]);
     } catch (error){
         console.error(error);
