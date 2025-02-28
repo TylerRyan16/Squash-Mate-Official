@@ -62,8 +62,8 @@ const Home = () => {
 
                 <div id="my-videos-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                        <div className='video-card' >
-                            <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt=''onClick={() => navigate(`/video/${currentVideo.id}`)}/>
+                        <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                            <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt=''/>
                             <h4 className="video-title">{currentVideo.title}</h4>
                             <small className='video-title'>{currentVideo.date_posted}</small>
                         </div>
