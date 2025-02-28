@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 // middlewar
 app.use(cors({
-    origin: "https://squash-mates.onrender.com",
+    origin: ["https://squash-mates.onrender.com", "http://localhost:3000"],
     credentials: true
 }));
 app.use(bodyParser.json());
