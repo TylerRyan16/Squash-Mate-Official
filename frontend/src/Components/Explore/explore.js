@@ -28,7 +28,7 @@ const Explore = () => {
       <h1>Explore Page</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="horizontal-flex search-input" placeholder="Search..." />
+          <input type="text" className="search-input" placeholder="Search..." />
           <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
 
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />

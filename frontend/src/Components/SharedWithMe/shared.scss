@@ -1,0 +1,35 @@
+.shared-video-card{
+    text-align: left;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+    padding-top: 5px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 5px;
+    transition: background-color 0.1s ease-in-out;
+}
+  
+  
+.shared-video-card:hover{
+    background-color: lightgrey;
+}
+
+.shared-thumbnail{
+    width: 100%;    
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 768px){
+    .rows{
+      grid-template-columns: repeat(2,1fr);
+    }
+  }
+  
+  @media screen and (min-width: 767px) and (max-width: 1025px){
+    .rows{
+      grid-template-columns: repeat(3,1fr);
+    }
+}

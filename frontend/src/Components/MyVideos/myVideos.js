@@ -56,21 +56,20 @@ const MyVideos = () => {
       <h1>My Videos Page</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="horizontal-flex search-input" placeholder="Search..." />
+          <input type="text" className="search-input" placeholder="Search..." />
           <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
-
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
 
-        <div class="video-area">
+        <div className="video-area">
           <div className="rows">
             {videos.map((element, index) => (
-              <div key={index} class="my-videos-video-card">
+              <div key={index} className="my-videos-video-card">
                 <a href={element.url} target="_blank" rel="noopener noreferrer">
-                  <img class="my-videos-thumbnail" src={`https://img.youtube.com/vi/${element.url.split('v=')[1]}/0.jpg`} alt={`Video ${index}`} />
+                  <img className="my-videos-thumbnail" src={`https://img.youtube.com/vi/${element.url.split('v=')[1]}/0.jpg`} alt={`Video ${index}`} />
                 </a>  
-                <h5 class="video-title">Video Title</h5>
-                <small class="video-title">Updated Today</small>
+                <h5 className="video-title">Video Title</h5>
+                <small className="video-title">Updated Today</small>
               </div>
             ))}
           </div>

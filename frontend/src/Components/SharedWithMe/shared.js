@@ -26,7 +26,7 @@ const SharedWithMe = () => {
       <h1>Shared with Me</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="horizontal-flex search-input" placeholder="Search..." />
+          <input type="text" className="search-input" placeholder="Search..." />
           <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
@@ -34,21 +34,16 @@ const SharedWithMe = () => {
         <div className="video-area">
           <div className="rows">
             {sharedVideos.map((video, index) => (
-              <div key={index} className="explore-video-card">
+              <div key={index} className="shared-video-card">
                 <a href={video.url} target="_blank" rel="noopener noreferrer">
                   <img 
-                    className="explore-thumbnail" 
+                    className="shared-thumbnail" 
                     src={`https://img.youtube.com/vi/${new URL(video.url).searchParams.get("v")}/0.jpg`} 
                     alt={`Shared Video ${index}`} 
-                    style={{ width: "80%", height: "80%" }} 
                   />
                 </a>
                 <h5 className="video-title">Shared Video</h5>
-                <div className="video-info">
-                    <small className="video-title">Updated Today</small>
-                    <br />
-                    <small className="video-author">By Susan</small>
-                </div>
+                <small className="video-title">Updated Today</small>
               </div>
             ))}
           </div>

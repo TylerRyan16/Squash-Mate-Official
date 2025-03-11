@@ -48,7 +48,7 @@ const Home = () => {
             <h1 className='top-header'>Squash Mate</h1>
             <h2 className='top-header'>Elevate Your Game</h2>
 
-            {/* my videos */}
+            {/* MY VIDEOS */}
             <div className="category-name-button-area">
                 <h1 className='category-name'>My Videos</h1>
                 <Link to="/my-videos" className="view-more">View More</Link>
@@ -76,7 +76,7 @@ const Home = () => {
                 </button>
             </div>
 
-            {/* public games */}
+            {/* PUBLIC GAMES */}
             <div className="category-name-button-area">
                 <h1 className='category-name'>Public Games</h1>
                 <Link to="/explore" className="view-more">View More</Link>
@@ -87,6 +87,7 @@ const Home = () => {
                 <button id="left-scroll-public" className="left-scroll" onClick={() => scrollLeft('public-games-list')}>
                     <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
                 </button>
+                
                 <div id="public-games-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
                         <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
@@ -102,16 +103,16 @@ const Home = () => {
                 </button>
             </div>
 
-            {/* shared with me */}
+            {/* SHARED WITH ME */}
             <div className="category-name-button-area">
                 <h1 className='category-name'>Shared With Me</h1>
                 <Link to="/shared-with-me" className="view-more">View More</Link>
             </div>           
              
-            <div class="carousel">
+            <div className="carousel">
                 {/* left arrow */}
-                <button id="left-scroll-shared" class="left-scroll" onClick={() => scrollLeft('shared-list')}>
-                    <img class='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                <button id="left-scroll-shared" className="left-scroll" onClick={() => scrollLeft('shared-list')}>
+                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
                 </button>
                 <div id="shared-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
