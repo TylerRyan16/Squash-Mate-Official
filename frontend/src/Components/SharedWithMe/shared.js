@@ -1,22 +1,22 @@
 import "./shared.scss";
 
 const sharedVideos = [
-    { url: "https://www.youtube.com/watch?v=ntyBmviVs4M" },
-    { url: "https://www.youtube.com/watch?v=_fIB5xWN6WE" },
-    { url: "https://www.youtube.com/watch?v=pM70TROZQsI" },
-    { url: "https://www.youtube.com/watch?v=NAh9oLs67Cw" },
-    { url: "https://www.youtube.com/watch?v=nV-wPx3fRWE" },
-    { url: "https://www.youtube.com/watch?v=1o2fnTNxE_Q" },
-    { url: "https://www.youtube.com/watch?v=7rMdwqissE0" },
-    { url: "https://www.youtube.com/watch?v=zV92kXblkzk" },
-    { url: "https://www.youtube.com/watch?v=AAGIi62-sAU" },
-    { url: "https://www.youtube.com/watch?v=-Ta80mqCuJs" },
-    { url: "https://www.youtube.com/watch?v=eH-_GMhH-kk" },
-    { url: "https://www.youtube.com/watch?v=fuVU64m1sbw" },
-    { url: "https://www.youtube.com/watch?v=53rGxPbsffQ" },
-    { url: "https://www.youtube.com/watch?v=DzTomOIX6ZQ" },
-    { url: "https://www.youtube.com/watch?v=yrpGYTlCjNQ" },
-    { url: "https://www.youtube.com/watch?v=1d7FDA2M-9E" }
+  { url: "https://www.youtube.com/watch?v=DKrUjudr69A" },
+  { url: "https://www.youtube.com/watch?v=unmI-kF1ZBc" },
+  { url: "https://www.youtube.com/watch?v=N7jyDk0bXfA" },
+  { url: "https://www.youtube.com/watch?v=wSG-e6667x4" },
+  { url: "https://www.youtube.com/watch?v=9tTOpf5ZEqs" },
+  { url: "https://www.youtube.com/watch?v=CEKvwpIVxX0" },
+  { url: "https://www.youtube.com/watch?v=WPnrQdVZcsI" },
+  { url: "https://www.youtube.com/watch?v=nz1hEjLX-Y8" },
+  { url: "https://www.youtube.com/watch?v=7zJ6REBsMXI" },
+  { url: "https://www.youtube.com/watch?v=RsVJkAig3PE" },
+  { url: "https://www.youtube.com/watch?v=bOL_M3nw6a4" },
+  { url: "https://www.youtube.com/watch?v=A9sNnVtaI2Q" },
+  { url: "https://www.youtube.com/watch?v=AE15tULut0k" },
+  { url: "https://www.youtube.com/watch?v=vFJJoJvRHy8" },
+  { url: "https://www.youtube.com/watch?v=FkgLsWV3Rps" },
+  { url: "https://www.youtube.com/watch?v=nfCP-bnY_po" }
 ];
 
 const SharedWithMe = () => {

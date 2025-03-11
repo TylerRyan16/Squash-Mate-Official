@@ -48,6 +48,10 @@ const videos = [
   { url: "https://www.youtube.com/watch?v=RsVJkAig3PE" },
   { url: "https://www.youtube.com/watch?v=bOL_M3nw6a4" },
   { url: "https://www.youtube.com/watch?v=A9sNnVtaI2Q" },
+  { url: "https://www.youtube.com/watch?v=AE15tULut0k" },
+  { url: "https://www.youtube.com/watch?v=vFJJoJvRHy8" },
+  { url: "https://www.youtube.com/watch?v=FkgLsWV3Rps" },
+  { url: "https://www.youtube.com/watch?v=nfCP-bnY_po" },
 ];
 const MyVideos = () => {
   return (

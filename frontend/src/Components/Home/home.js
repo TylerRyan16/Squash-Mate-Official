@@ -76,9 +76,9 @@ const Home = () => {
                 </button>
             </div>
 
-            {/* PUBLIC GAMES */}
+            {/* EXPLORE PAGE */}
             <div className="category-name-button-area">
-                <h1 className='category-name'>Public Games</h1>
+                <h1 className='category-name'>Explore</h1>
                 <Link to="/explore" className="view-more">View More</Link>
             </div>
 
