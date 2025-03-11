@@ -1,25 +1,24 @@
 import "./shared.scss";
+import { getAllVideos } from "../../services/api";
+import { useEffect, useState } from 'react';
 
-const sharedVideos = [
-  { url: "https://www.youtube.com/watch?v=DKrUjudr69A" },
-  { url: "https://www.youtube.com/watch?v=unmI-kF1ZBc" },
-  { url: "https://www.youtube.com/watch?v=N7jyDk0bXfA" },
-  { url: "https://www.youtube.com/watch?v=wSG-e6667x4" },
-  { url: "https://www.youtube.com/watch?v=9tTOpf5ZEqs" },
-  { url: "https://www.youtube.com/watch?v=CEKvwpIVxX0" },
-  { url: "https://www.youtube.com/watch?v=WPnrQdVZcsI" },
-  { url: "https://www.youtube.com/watch?v=nz1hEjLX-Y8" },
-  { url: "https://www.youtube.com/watch?v=7zJ6REBsMXI" },
-  { url: "https://www.youtube.com/watch?v=RsVJkAig3PE" },
-  { url: "https://www.youtube.com/watch?v=bOL_M3nw6a4" },
-  { url: "https://www.youtube.com/watch?v=A9sNnVtaI2Q" },
-  { url: "https://www.youtube.com/watch?v=AE15tULut0k" },
-  { url: "https://www.youtube.com/watch?v=vFJJoJvRHy8" },
-  { url: "https://www.youtube.com/watch?v=FkgLsWV3Rps" },
-  { url: "https://www.youtube.com/watch?v=nfCP-bnY_po" }
-];
 
 const SharedWithMe = () => {
+  const [allVideos, setAllVideos] = useState([]);
+
+  useEffect(() => {
+          const fetchAllVideos = async () => {
+              try {
+                  const videos = await getAllVideos();
+                  setAllVideos(videos);
+              } catch (error) {
+                  console.log(error);
+              }
+          }
+          fetchAllVideos();
+      }, []);
+
+
   return (
     <div className="page-container">
       <title>Shared with me page</title>
@@ -31,19 +30,15 @@ const SharedWithMe = () => {
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
 
-        <div className="video-area">
+        <div className="shared-video-display-area">
           <div className="rows">
-            {sharedVideos.map((video, index) => (
+            {allVideos.map((video, index) => (
               <div key={index} className="shared-video-card">
                 <a href={video.url} target="_blank" rel="noopener noreferrer">
-                  <img 
-                    className="shared-thumbnail" 
-                    src={`https://img.youtube.com/vi/${new URL(video.url).searchParams.get("v")}/0.jpg`} 
-                    alt={`Shared Video ${index}`} 
-                  />
+                <img className="shared-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`}   />
                 </a>
-                <h5 className="video-title">Shared Video</h5>
-                <small className="video-title">Updated Today</small>
+                <h5 className="video-title">{video.title}</h5>
+                <small className="video-title">{video.date_posted}</small>
               </div>
             ))}
           </div>

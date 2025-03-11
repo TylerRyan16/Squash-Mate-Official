@@ -50,6 +50,17 @@ export const getUserData = async () => {
     }
 };
 
+
+// GET LOGGED IN USER NAME
+export const getMyUsername = async () => {
+    try {
+        const response = await api.get("/profiles/my-username");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch username.";
+    }
+};
+
 // GET ALL VIDEOS
 export const getAllVideos = async () => {
     try {
