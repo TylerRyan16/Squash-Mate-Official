@@ -174,7 +174,7 @@ const CreateProfile = () => {
 
                         {/* CLUB LOCKER URL */}
                         <div className="input-container">
-                            <label className="floating-label profile-label">Club Locker URL (not required)</label>
+                            <label className="floating-label profile-label">Club Locker URL (optional)</label>
                             <input
                                 type="text"
                                 name="clubLockerURL"
@@ -186,7 +186,7 @@ const CreateProfile = () => {
 
                         {/* COUNTRY */}
                         <div className="input-container">
-                            <label className="floating-label profile-label">Country (not required)</label>
+                            <label className="floating-label profile-label">Country (optional)</label>
                             <input
                                 type="text"
                                 name="country"

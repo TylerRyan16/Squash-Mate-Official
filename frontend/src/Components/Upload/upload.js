@@ -1,7 +1,7 @@
 import './upload.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from "axios";
+import { uploadVideo } from "../../services/api";
 
 
 const Upload = () => {
@@ -74,23 +74,14 @@ const Upload = () => {
     const handleVideoUpload = async () => {
         //  SEND POST REQUEST TO DATABASE
         try {
-            const response = await axios.post("http://localhost:5000/api/videos", videoDetails);
+            const response = await uploadVideo(videoDetails);
+            console.log("reponse: ", response);
 
-            console.log("Video uploaded: ", response.data);
-
-            navigate("/video");
+            const databaseVideoId = response.id;
+            navigate(`/video/${databaseVideoId}`);
         } catch (error) {
-            if (error.response && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error("error creating profile: ", error);
-                alert("An error occurred while creating your profile. Please try again.");
-            }
-
+            console.log(error);
         }
-
-        navigate("/video");
-
     };
 
     return (
@@ -245,7 +236,7 @@ const Upload = () => {
 
                         {/* DATE ETC */}
                         <div className="input-container">
-                            <label className="floating-label">Date of Play (not required)</label>
+                            <label className="floating-label">Date of Play (optional)</label>
                             <input
                                 type="date"
                                 className="input-zone date"
@@ -259,7 +250,7 @@ const Upload = () => {
 
                         {/* TOURNAMENT NAME */}
                         <div className="input-container">
-                            <label className="floating-label">Tournament Name (not required)</label>
+                            <label className="floating-label">Tournament Name (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone tournament-input"
@@ -269,7 +260,7 @@ const Upload = () => {
                             ></input>
                         </div>
                         <div className="input-container">
-                            <label className="floating-label">Tournament Location (not required)</label>
+                            <label className="floating-label">Tournament Location (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone tournament-input"
@@ -280,7 +271,7 @@ const Upload = () => {
 
                         </div>
                         <div className="input-container">
-                            <label className="floating-label">Description (not required)</label>
+                            <label className="floating-label">Description (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone description"

@@ -28,7 +28,7 @@ const Explore = () => {
       <h1>Explore Page</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="horizontal-flex search-input" placeholder="Search..." />
+          <input type="text" className="search-input" placeholder="Search..." />
           <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
 
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
@@ -39,7 +39,7 @@ const Explore = () => {
             {exploreVideos.map((video, index) => (
               <div key={index} className="explore-video-card">
                 <a href={video.url} target="_blank" rel="noopener noreferrer">
-                  <img className="explore-thumbnail" src={`https://img.youtube.com/vi/${video.url.split('v=')[1]}/0.jpg`} alt={`Explore Video ${index}`} style={{ width: "80%", height: "80%" }} />
+                  <img className="explore-thumbnail" src={`https://img.youtube.com/vi/${video.url.split('v=')[1]}/0.jpg`} alt={`Explore Video ${index}`}  />
                 </a>
                 <h5 className="video-title">Explore Video</h5>
                 <small className="video-title">Updated Today</small>

@@ -1,6 +1,9 @@
 import './video.scss';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
+import { useParams } from 'react-router-dom';
+import { getSpecificVideo } from "../../services/api";
+
 
 function openCoach(evt, coachName){
     var i, tabcontent, tablinks;
@@ -36,8 +39,11 @@ function changeHeart(){
 }
 
 const Video = () => {
-    const [youtubeUrl, setYoutubeUrl] = useState('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); // Default video
-    const [newUrl, setNewUrl] = useState('');
+    const { videoID } = useParams();
+    const [video, setVideo] = useState({
+        
+    });
+
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const playerRef = useRef(null);
@@ -62,6 +68,19 @@ const Video = () => {
         date_posted : "1/1/2025", 
         parent_comment_id: null
     }]
+
+    // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
+    useEffect(() => {
+        const fetchSpecificVideo = async (id) => {
+            try {
+                const currentVideo = await getSpecificVideo(id);
+                setVideo(currentVideo);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSpecificVideo(videoID);
+    }, [])
 
 
     const handlePlayPause = () => {
@@ -96,7 +115,7 @@ const Video = () => {
                  {/* YouTube Video Player */}
                  <ReactPlayer 
                     ref={playerRef}
-                    url={youtubeUrl} 
+                    url={video.url} 
                     playing={playing}
                     controls={false}
                     width="720px" 

@@ -23,29 +23,29 @@ button{
 }
 
 .category-name{
-    align-self: flex-start;
-    margin: 0;
-    padding: 0;
+    padding: 10px;
+    margin-top: 5px;
 }
 
-.view-more-button{
-    margin-right: 2%;
+.view-more{
     text-decoration: none;
+    color: black;
+    margin-right: 3%;
 }
 
-.view-more-button:hover{
+.view-more:hover{
     text-decoration: underline;
 }
 
 .left-scroll-icon{
-    width: 40px;
+    width: 25px;
     transform: scaleX(-1);
 }
 
 .right-scroll-icon{
-    width: 40px;
+    width: 25px;
 }
-  
+
 .carousel {
     width: 95%;
     height: 40vh;
@@ -54,10 +54,12 @@ button{
     align-items: center;
     margin: auto;
     transition: all 0.25s ease-in;
+    border-radius: 8px;
+    margin-bottom: 2%;
 }
 
 .my-videos-list{
-    width: 90%;
+    width: 95%;
     height: 100%;
     display: flex;
     scroll-behavior: smooth;
@@ -65,6 +67,8 @@ button{
     overflow-y: hidden;
     white-space: nowrap;
     gap: clamp(50px, 1vw, 80px);
+    background-color: lightgray;
+
 }
 
 .my-videos-list::-webkit-scrollbar{
@@ -102,6 +106,7 @@ button{
 
 .video-title{
     align-self: flex-start;
+    text-wrap: wrap;
     padding: 0;
     margin: 0;
     padding-bottom: 2px;

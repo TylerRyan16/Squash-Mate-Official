@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://squash-mates.onrender.com/api";
 
 // enable cookies for requests
 axios.defaults.withCredentials = true;
@@ -68,5 +68,34 @@ export const getMyVideos = async () => {
         return response.data;
     } catch (error){
         throw error.response?.data || "Failed to fetch video data";
+    }
+}
+
+// GET SPECIFIC VIDEO
+export const getSpecificVideo = async (videoID) => {
+    try {
+        const response = await api.get(`/videos/${videoID}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || "Failed to fetch video."
+    }
+}
+
+// UPLOAD VIDEO
+export const uploadVideo = async (videoDetails) => {
+    try {
+        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+
+        console.log("Video uploaded: ", response.data);
+        
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data.error) {
+            alert(error.response.data.error);
+        } else {
+            console.error("error creating profile: ", error);
+            alert("An error occurred while creating your profile. Please try again.");
+        }
+
     }
 }
