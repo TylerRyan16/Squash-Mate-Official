@@ -64,8 +64,7 @@ const CreateProfile = () => {
                 return;
             }
 
-            const userData = await createAccount(profileDetails);
-            console.log("profile created: ", userData);
+            await createAccount(profileDetails);
             navigate("/");
         } catch (error) {
             alert(error || "failed to create profile!");

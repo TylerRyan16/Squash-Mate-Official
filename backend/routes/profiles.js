@@ -7,28 +7,34 @@ const pool = require("../config/db.js");
 // add a new profile
 router.post("/", async (req, res) => {
     const {username, password, playerLevel, clubLockerURL, firstName, lastName, country, email, dateOfBirth} = req.body;
+    console.log("CREATING PROFILE IN BACKEND ROUTE.");
 
     const SECRET_KEY = process.env.SECRET_KEY;
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        console.log("ATTEMPTING TO PUT INTO DATABASE.");
         const result = await pool.query(
             `INSERT INTO profiles (username, password, player_level, club_locker_url, first_name, last_name, country, email, date_of_birth)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth`,
             [username, hashedPassword, playerLevel, clubLockerURL || null, firstName, lastName, country ||  null, email, dateOfBirth]
         );
 
+        console.log("PUT INTO DATABASE SUCCESSFULLY");
         // create secure token
         const token = jwt.sign({ userId: result.rows[0].id, username: username}, SECRET_KEY, {expiresIn: "7d"});
+        console.log("TOKEN TOKEN TOKEN: ", token);
 
         // Save a cookie that keeps logged in for 7 days
         res.cookie("authToken", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production", // Ensures HTTPS is required in production
+            sameSite: "none",  // Allows cross-origin requests
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
+        console.log("COOKIE SAVED");
+
 
         console.log("Set-Cookie Header:", res.getHeaders()["set-cookie"]); 
 
@@ -72,9 +78,9 @@ router.post("/login", async (req, res) => {
         // set token in http-only cookie
         res.cookie("authToken", token, {
             httpOnly: true,
-            secure: false,
+            secure: process.env.NODE_ENV === "production", // Ensures HTTPS is required in production
+            sameSite: "none",  // Allows cross-origin requests
             maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: "lax",
         });
 
         // json response
@@ -105,8 +111,8 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (req, res) => {
     res.clearCookie("authToken", {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production", // Ensures HTTPS is required in production
+        sameSite: "none",  // Allows cross-origin requests
     });
 
     res.json({message: "Logged out successfully!"});
