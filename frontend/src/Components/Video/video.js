@@ -26,16 +26,15 @@ function openCoach(evt, coachName){
 }
 
 function changeHeart(){
-    
-    if(heart_icon === "assets/icons/heart-empty.png"){
-        document.getElementById("heart-icon").src = "assets/icons/heart-empty.png";
+    const heart = document.getElementById("heart-icon");
+    if(heart.src === "assets/icons/heart-empty.png"){
+        heart.src = "assets/icons/heart-full.png";
     }
     else{
-        heart_icon = "assets/icons/heart-empty.png"
+        heart.src = "assets/icons/heart-empty.png"
     }
 }
 
-var heart_icon = 'assets/icons/heart-empty.png'
 const Video = () => {
     const [youtubeUrl, setYoutubeUrl] = useState('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); // Default video
     const [newUrl, setNewUrl] = useState('');
@@ -161,7 +160,7 @@ const Video = () => {
                                                 <img className="icon" src='assets\icons\reply.png' alt='' />
                                             </button>
                                             <button onClick={() => changeHeart()} className="reply-icon">
-                                                <img id = "heart-icon" className="icon" src={heart_icon} alt='' />
+                                                <img id = "heart-icon" className="icon" src= "assets/icons/heart-empty.png" alt='' />
                                             </button>
                                         </div>
                                     </div>
