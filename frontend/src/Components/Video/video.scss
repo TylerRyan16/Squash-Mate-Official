@@ -1,37 +1,75 @@
-.video-display-area{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    height: auto;
-    margin: auto;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding: 0;
-    background-color: grey;
+.watch-video-page{
+  width: 90%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 8%;
+  overflow: hidden;
 }
+
+#page-title{
+  align-self: flex-start;
+}
+
+.centered-video-page{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  gap: 25px;
+}
+
+.video-area{
+  background-color: #9b9b9b;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.video-display{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 90%;
+  height: 75%;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
 
 .controls{
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    height: 15%;
-    margin: auto;
-    margin-top: 0;
-    background-color: green;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 90%;
+  height: 25%;
+  margin: auto;
+  margin-top: 0;
+  padding-top: 2%;
 }
 
+
+
+
+
+//COMMENTING
 .comment-section{
-    background-color: #9b9b9b;
-    width: 25%;
-    height: 100%;
+  background-color: #9b9b9b;
+  border-radius: 12px;
+  width: 25%;
+  height: 100%;
 }
 
-.video-section{
-    background-color: #9b9b9b;
-    width: 75%;
-    height: auto;
+.comments-header{
+
 }
 
 .tab {
