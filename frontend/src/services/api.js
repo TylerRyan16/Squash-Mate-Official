@@ -14,7 +14,10 @@ const api = axios.create({
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
     try {
-        const response = await api.post("/profiles", userData);
+        console.log("attempting to create account in api.js");
+        console.log("userData in api.js: ", userData);
+
+        const response = await api.post("/profiles/", userData);
         return response.data;
     } catch (error) {
         throw error.response?.data || "Error creating account";
@@ -47,6 +50,17 @@ export const getUserData = async () => {
         return response.data;
     } catch (error) {
         throw error.response?.data || "Failed to fetch user data";
+    }
+};
+
+
+// GET LOGGED IN USER NAME
+export const getMyUsername = async () => {
+    try {
+        const response = await api.get("/profiles/my-username");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch username.";
     }
 };
 

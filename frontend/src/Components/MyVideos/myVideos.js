@@ -1,55 +1,25 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getAllVideos } from "../../services/api";
 import "./myVideos.scss";
 
-//  useEffect(() => {
-//    // if (videoDetails.type === "Game") {
-//    //     setVideoDetails((prevDetails) => ({
-//    //         ...prevDetails,
-//    //         length: "Single"
-//    //     }));
-//    // }
 
-//    const videoId = extractYouTubeID(url);
-//    setThumbnail(`https://img.youtube.com/vi/${videoId}/0.jpg`);
-//  }, [videoDetails.type]);
-// const [linkEmpty, setLinkEmpty] = useState(true);
-// const [videoUrl, setVideoUrl] = useState("");
-// const [thumbnail, setThumbnail] = useState("");
-
-// const handleVideoInput = (e) => {
-//   const url = e.target.value;
-//   setVideoUrl(url);
-
-//   const videoId = extractYouTubeID(url);
-//   if (videoId) {
-//     setThumbnail(`https://img.youtube.com/vi/${videoId}/0.jpg`);
-//   } else {
-//     setThumbnail("");
-//   }
-// };
-
-// const extractYouTubeID = (url) => {
-//   const regex =
-//     /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^&?/]+)/;
-//   const match = url.match(regex);
-//   return match ? match[1] : null;
-// };
-
-const videos = [
-  { url: "https://www.youtube.com/watch?v=DKrUjudr69A" },
-  { url: "https://www.youtube.com/watch?v=unmI-kF1ZBc" },
-  { url: "https://www.youtube.com/watch?v=N7jyDk0bXfA" },
-  { url: "https://www.youtube.com/watch?v=wSG-e6667x4" },
-  { url: "https://www.youtube.com/watch?v=9tTOpf5ZEqs" },
-  { url: "https://www.youtube.com/watch?v=CEKvwpIVxX0" },
-  { url: "https://www.youtube.com/watch?v=WPnrQdVZcsI" },
-  { url: "https://www.youtube.com/watch?v=nz1hEjLX-Y8" },
-  { url: "https://www.youtube.com/watch?v=7zJ6REBsMXI" },
-  { url: "https://www.youtube.com/watch?v=RsVJkAig3PE" },
-  { url: "https://www.youtube.com/watch?v=bOL_M3nw6a4" },
-  { url: "https://www.youtube.com/watch?v=A9sNnVtaI2Q" },
-];
 const MyVideos = () => {
+
+  const [allVideos, setAllVideos] = useState([]);
+
+  useEffect(() => {
+    const fetchAllVideos = async () => {
+      try {
+        const videos = await getAllVideos();
+        setAllVideos(videos);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAllVideos();
+  }, []);
+
+
   return (
     <div className="page-container">
       <title>My Videos</title>
@@ -61,15 +31,15 @@ const MyVideos = () => {
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
 
-        <div className="video-area">
+        <div className="my-videos-display-area">
           <div className="rows">
-            {videos.map((element, index) => (
+            {allVideos.map((video, index) => (
               <div key={index} className="my-videos-video-card">
-                <a href={element.url} target="_blank" rel="noopener noreferrer">
-                  <img className="my-videos-thumbnail" src={`https://img.youtube.com/vi/${element.url.split('v=')[1]}/0.jpg`} alt={`Video ${index}`} />
-                </a>  
-                <h5 className="video-title">Video Title</h5>
-                <small className="video-title">Updated Today</small>
+                <a href={video.url} target="_blank" rel="noopener noreferrer">
+                  <img className="my-videos-thumbnail" src={video.thumbnail} alt={`Video ${index}`} />
+                </a>
+                <h5 className="video-title">{video.title}</h5>
+                <small className="video-title">{video.date_posted}</small>
               </div>
             ))}
           </div>

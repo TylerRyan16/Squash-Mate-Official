@@ -2,7 +2,6 @@ import { useNavigate, Link } from "react-router-dom";
 import React, { useState } from "react";
 import { createAccount } from "../../services/api";
 import "./createProfile.scss";
-import axios from "axios";
 
 const CreateProfile = () => {
     const navigate = useNavigate();
@@ -65,8 +64,7 @@ const CreateProfile = () => {
                 return;
             }
 
-            const userData = await createAccount(profileDetails);
-            console.log("profile created: ", userData);
+            await createAccount(profileDetails);
             navigate("/");
         } catch (error) {
             alert(error || "failed to create profile!");

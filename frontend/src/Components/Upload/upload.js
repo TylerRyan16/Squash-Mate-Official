@@ -2,6 +2,7 @@ import './upload.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { uploadVideo } from "../../services/api";
+import { getMyUsername } from "../../services/api";
 
 
 const Upload = () => {
@@ -72,6 +73,16 @@ const Upload = () => {
 
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
+        const uploaderName = "";
+
+        try {
+            uploaderName = await getMyUsername();
+            console.log("uploader name: ", uploaderName);
+        } catch (error){
+            console.log(error);
+        }
+
+        videoDetails.poster = uploaderName;
         //  SEND POST REQUEST TO DATABASE
         try {
             const response = await uploadVideo(videoDetails);
