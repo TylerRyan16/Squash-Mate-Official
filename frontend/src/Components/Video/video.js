@@ -26,6 +26,18 @@ function openCoach(evt, coachName) {
 
 }
 
+function changeHeart(){
+    const heart = document.getElementById("heart-icon");
+    console.log(heart.src);
+    if(heart.src.indexOf("/assets/icons/heart-empty.png") != -1){
+        console.log("here");
+        heart.src = "/assets/icons/heart-full.png";
+    }
+    else{
+        heart.src = "/assets/icons/heart-empty.png"
+    }
+}
+
 const Video = () => {
     const { videoID } = useParams();
     const [video, setVideo] = useState({
@@ -35,6 +47,27 @@ const Video = () => {
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const playerRef = useRef(null);
+    const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
+    const bob_comments = [{
+        video_id : "1", 
+        commenter_name : "bob_coach", 
+        comment: "good work", 
+        date_posted : "1/1/2025", 
+        parent_comment_id: null
+    }, {
+        video_id : "1", 
+        commenter_name : "sarah_coach", 
+        comment: "meh work", 
+        date_posted : "1/1/2025", 
+        parent_comment_id: null
+    },
+    {
+        video_id : "1", 
+        commenter_name : "steve_coach", 
+        comment: "bad work", 
+        date_posted : "1/1/2025", 
+        parent_comment_id: null
+    }]
 
     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
     useEffect(() => {
@@ -116,100 +149,57 @@ const Video = () => {
                     </div>
 
 
-                    <div className="comment-section">
-                        <h3 className="comments-header">Comments</h3>
-                        <div class="coach-tabs">
-                            <button class="tablinks" onClick={(event) => openCoach(event, '1')}>Coach #1</button>
-                            <button class="tablinks" onClick={(event) => openCoach(event, '2')}>Coach #2</button>
-                            <button class="tablinks" onClick={(event) => openCoach(event, '3')}>Coach #3</button>
+                <div className="comment-section">
+                <h3>Coaching Feed</h3>
+                <div class="coach-tabs">
+                    {users_commented.map((user, index) => (
+                            <button class="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
+                            
+                    ))}
                         </div>
-                        <div id="1" class="tabcontent">
-                            <div className='comment'>
+
+                        {users_commented.map((user, index) => (<>
+                            <div id= {index} className="tabcontent">
+                            <h3>{user}</h3>
+                            {bob_comments.map(comment_info => (
+                                <><div className='comment'>
                                 <div className='vertical-flex'>
                                     <div className='commenter-info'>
-                                        <div className='horizontal-flex'>
-                                            <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
-                                            <p>Coach Bob</p>
-                                        </div>
-
+                                    <div className='horizontal-flex'>
+                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
+                                        <p>{comment_info.commenter_name}</p>
+                                    </div>
+                                    
                                     </div>
                                     <div className="horizontal-flex">
-                                        <div className='comment'>
-                                            <p>Great Serve</p>
-                                        </div>
+                                    <div className='comment'>
+                                        <p>{comment_info.comment}</p>
+                                    </div>
                                         <div className="reactions">
                                             <button className="reply-icon">
-                                                <img className="icon" src='assets\icons\reply.png' alt='' />
+                                                <img className="icon" src='/assets\icons\reply.png' alt='' />
                                             </button>
-                                            <button className="reply-icon">
-                                                <img className="icon" src='assets\icons\heart-empty.png' alt='' />
+                                            <button onClick={() => changeHeart()} className="reply-icon">
+                                                <img id = "heart-icon" className="icon" src= "/assets/icons/heart-empty.png" alt='' />
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div id="2" class="tabcontent">
-                            <div className='comment'>
-                                <div className='vertical-flex'>
-                                    <div className='commenter-info'>
-                                        <div className='horizontal-flex'>
-                                            <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
-                                            <p>Coach Steve</p>
-                                        </div>
-
-                                    </div>
-                                    <div className="horizontal-flex">
-                                        <div className='comment'>
-                                            <p>Do better</p>
-                                        </div>
-                                        <div className="reactions">
-                                            <button className="reply-icon">
-                                                <img className="icon" src='assets\icons\reply.png' alt='' />
-                                            </button>
-                                            <button className="reply-icon">
-                                                <img className="icon" src='assets\icons\heart-empty.png' alt='' />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="3" class="tabcontent">
-                            <div className='comment'>
-                                <div className='vertical-flex'>
-                                    <div className='commenter-info'>
-                                        <div className='horizontal-flex'>
-                                            <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
-                                            <p>Coach Sarah</p>
-                                        </div>
-
-                                    </div>
-                                    <div className="comment-flex">
-                                        <div className='comment'>
-                                            <p>That was a bad point</p>
-                                        </div>
-                                        <div className="reactions">
-                                            <button className="reply-icon">
-                                                <img className="icon" src='assets\icons\reply.png' alt='' />
-                                            </button>
-                                            <button className="reply-icon">
-                                                <img className="icon" src='assets\icons\heart-empty.png' alt='' />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </div></>
+                            ))}
+                            
+                        </div></>
+                    ))}
+                    <div className="horizontal-flex">
+                        <input type="text" className='input-container' placeholder="Add Comment.."></input>
+                        <button className="comment-button">Post</button>
                     </div>
+                    
                 </div>
-
-
+                </div>
             </div>
-
-        </div>
+            </div>
+            
     );
 }
 
