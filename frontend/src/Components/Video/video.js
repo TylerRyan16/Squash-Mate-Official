@@ -28,14 +28,27 @@ function openCoach(evt, coachName) {
 
 function changeHeart(){
     const heart = document.getElementById("heart-icon");
-    console.log(heart.src);
     if(heart.src.indexOf("/assets/icons/heart-empty.png") != -1){
-        console.log("here");
         heart.src = "/assets/icons/heart-full.png";
     }
     else{
         heart.src = "/assets/icons/heart-empty.png"
     }
+}
+var reply_comment;
+function showReply(commenter_name, comment){
+    const reply_box = document.getElementById("reply-option")
+    const reply_name = document.getElementById("reply-name")
+    const reply_comment = document.getElementById("reply-comment")
+
+    reply_box.style.display = 'block'
+    reply_name.innerText = commenter_name;
+    reply_comment.innerText = comment;
+}
+
+function closeReply(){
+    const reply_box = document.getElementById("reply-option")
+    reply_box.style.display = 'none'
 }
 
 const Video = () => {
@@ -150,6 +163,7 @@ const Video = () => {
 
 
                 <div className="comment-section">
+                <div className='comment-flex'>
                 <h3>Coaching Feed</h3>
                 <div class="coach-tabs">
                     {users_commented.map((user, index) => (
@@ -176,7 +190,7 @@ const Video = () => {
                                         <p>{comment_info.comment}</p>
                                     </div>
                                         <div className="reactions">
-                                            <button className="reply-icon">
+                                            <button className="reply-icon" onClick={() => showReply(comment_info.commenter_name, comment_info.comment)}>
                                                 <img className="icon" src='/assets\icons\reply.png' alt='' />
                                             </button>
                                             <button onClick={() => changeHeart()} className="reply-icon">
@@ -190,11 +204,32 @@ const Video = () => {
                             
                         </div></>
                     ))}
+                    <div className="reply-option" id='reply-option'>
+                        <div className='comment'>
+                                <div className='vertical-flex'>
+                                    <div className='commenter-info'>
+                                    <div className='horizontal-flex'>
+                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
+                                        <p id='reply-name'></p>
+                                    </div>
+                                    </div>
+                                    <div className='comment'>
+                                        <p id='reply-comment'></p>
+                                    </div>
+                        </div>
+                        </div>
+                        <button onClick = {()=>closeReply()} className="x-button">
+                            <img className = "icon" src='/assets/icons/x-icon.png'/>
+                        </button>
+                    </div>
                     <div className="horizontal-flex">
                         <input type="text" className='input-container' placeholder="Add Comment.."></input>
                         <button className="comment-button">Post</button>
                     </div>
                     
+                    
+                    
+                </div>
                 </div>
                 </div>
             </div>
