@@ -66,6 +66,7 @@
   border-radius: 12px;
   width: 25%;
   height: 100%;
+  overflow-y: scroll;
 }
 
 .comments-header{
@@ -99,17 +100,14 @@
   
   .tabcontent {
     display: none;
-    //padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
     overflow-y: scroll;
-    
-    height: auto;
+    height: 72%;
+    flex-grow:0;
+    //flex-grow: 1;
 
   }
 
   .comment-pic{
-    align-self: flex-start;
     width: 15%;
     height: auto;
     background-color: lightgray;
@@ -138,9 +136,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content:flex-start;
     width: 80%;
     height: 100%;
     margin: auto auto;
+    position: relative;
   }
 
 .comment {
@@ -151,13 +151,15 @@
 .comment-button{
   background-color: #315fb9;
   width: 25%;
+  vertical-align: bottom;
 }
 
 .reply-option{
   background-color: #c4c3c3;
-  height: 10%;
   display: none;
-  overflow-y: scroll;
+  height: 10%;
+  width: 100%;
+  position: relative;
 }
 
 .user-comment-section{
@@ -170,4 +172,36 @@
   justify-content: center;
   align-items: center;
   float: right;
+}
+
+.post-section{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  bottom: 0;
+  position:absolute;
+  height: 8%;
+}
+
+.commenter-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.reply-commenter-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 10%;
+  top: 0;
+  position: absolute;
+}
+
+.reply-pic{
+  //align-self: flex-start;
+  width: 10%;
+  height: auto;
+  background-color: lightgray;
+  border-radius: 64px;
 }

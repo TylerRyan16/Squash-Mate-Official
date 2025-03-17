@@ -21,7 +21,7 @@ function openCoach(evt, coachName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(coachName).style.display = "block";
+    document.getElementById(coachName).style.display = "inline";
     evt.currentTarget.className += " active";
 
 }
@@ -37,11 +37,12 @@ function changeHeart(){
 }
 var reply_comment;
 function showReply(commenter_name, comment){
+    console.log("here");
     const reply_box = document.getElementById("reply-option")
     const reply_name = document.getElementById("reply-name")
     const reply_comment = document.getElementById("reply-comment")
 
-    reply_box.style.display = 'block'
+    reply_box.style.display = 'inline'
     reply_name.innerText = commenter_name;
     reply_comment.innerText = comment;
 }
@@ -51,6 +52,39 @@ function closeReply(){
     reply_box.style.display = 'none'
 }
 
+function postComment(){
+    /*const comment = document.getElementById("input-container").value
+    const comment_section = document.getElementById("tabcontent")
+    if (comment != ""){
+        bob_comments.push({
+            video_id : "1", 
+            commenter_name : "You", 
+            comment: comment, 
+            date_posted : "1/1/2025", 
+            parent_comment_id: null
+        })
+    }*/
+}
+var bob_comments = [{
+    video_id : "1", 
+    commenter_name : "bob_coach", 
+    comment: "good work", 
+    date_posted : "1/1/2025", 
+    parent_comment_id: null
+}, {
+    video_id : "1", 
+    commenter_name : "sarah_coach", 
+    comment: "meh work", 
+    date_posted : "1/1/2025", 
+    parent_comment_id: null
+},
+{
+    video_id : "1", 
+    commenter_name : "steve_coach", 
+    comment: "bad work", 
+    date_posted : "1/1/2025", 
+    parent_comment_id: null
+}]
 const Video = () => {
     const { videoID } = useParams();
     const [video, setVideo] = useState({
@@ -61,26 +95,7 @@ const Video = () => {
     const [progress, setProgress] = useState(0);
     const playerRef = useRef(null);
     const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
-    const bob_comments = [{
-        video_id : "1", 
-        commenter_name : "bob_coach", 
-        comment: "good work", 
-        date_posted : "1/1/2025", 
-        parent_comment_id: null
-    }, {
-        video_id : "1", 
-        commenter_name : "sarah_coach", 
-        comment: "meh work", 
-        date_posted : "1/1/2025", 
-        parent_comment_id: null
-    },
-    {
-        video_id : "1", 
-        commenter_name : "steve_coach", 
-        comment: "bad work", 
-        date_posted : "1/1/2025", 
-        parent_comment_id: null
-    }]
+    
 
     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
     useEffect(() => {
@@ -205,26 +220,24 @@ const Video = () => {
                         </div></>
                     ))}
                     <div className="reply-option" id='reply-option'>
-                        <div className='comment'>
-                                <div className='vertical-flex'>
-                                    <div className='commenter-info'>
-                                    <div className='horizontal-flex'>
-                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
-                                        <p id='reply-name'></p>
-                                    </div>
-                                    </div>
-                                    <div className='comment'>
-                                        <p id='reply-comment'></p>
-                                    </div>
-                        </div>
-                        </div>
-                        <button onClick = {()=>closeReply()} className="x-button">
+                    <button onClick = {()=>closeReply()} className="x-button">
                             <img className = "icon" src='/assets/icons/x-icon.png'/>
                         </button>
+                    <div className='comment'>
+                                <div className='vertical-flex'>
+                                    <div className='reply-commenter-info'>
+                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="reply-pic"></img>
+                                        <p id='reply-name'></p>
+                                    </div>
+                                    <p id='reply-comment'></p>
+                                    
+                        </div>
+                        </div>
+                        
                     </div>
-                    <div className="horizontal-flex">
-                        <input type="text" className='input-container' placeholder="Add Comment.."></input>
-                        <button className="comment-button">Post</button>
+                    <div className="post-section">
+                        <input type="text" className='input-container' id = 'input-container' placeholder="Add Comment.."></input>
+                        <button className="comment-button" onClick={() => postComment()}>Post</button>
                     </div>
                     
                     
