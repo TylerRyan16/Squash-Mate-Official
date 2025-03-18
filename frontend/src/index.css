@@ -43,35 +43,35 @@ code {
 }
 
 .input-container{
-    position: relative;
-    width: 100%;
-    height: fit-content;
+  position: relative;
+  width: 100%;
+  height: fit-content;
 }
 
 .floating-label{
-    position: absolute;
-    font-size: 12px;
-    font-weight: 600;
-    width: fit-content;
-    opacity: 1;
-    color: #4c4b51;
-    text-align: left;
-    top: 5px;
-    left: 5px;
-    padding: 0;
-    margin: 0;
+  position: absolute;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+  opacity: 1;
+  color: #4c4b51;
+  text-align: left;
+  top: 5px;
+  left: 5px;
+  padding: 0;
+  margin: 0;
 }
 
 .input-zone {
-    width: 100%;
-    padding-left: 10px;
-    padding-top: clamp(20px, 1.5vw, 35px);
-    padding-bottom: clamp(5px, 1vw, 10px);
-    border-radius: 8px;
-    box-sizing: border-box;
-    border: 2px solid grey;
-    background-color: #b5d4f3;
-    font-size: clamp(20px, 1vw, 24px);
+  width: 100%;
+  padding-left: 10px;
+  padding-top: clamp(20px, 1.5vw, 35px);
+  padding-bottom: clamp(5px, 1vw, 10px);
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: 2px solid grey;
+  background-color: #b5d4f3;
+  font-size: clamp(20px, 1vw, 24px);
 }
 
 .profile-label{

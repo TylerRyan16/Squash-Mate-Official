@@ -1,16 +1,23 @@
 import "./login.scss";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import React, { useState } from "react";
 import { login } from "../../services/api";
 
 
 const Landing = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // grab initial email and password if they hit back on create profile
+    const initialEmail = location.state?.email || "";
+    const initialPassword = location.state?.password || "";
 
     // store email and password
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState(initialEmail);
+    const [password, setPassword] = useState(initialPassword);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -39,15 +46,16 @@ const Landing = () => {
     };
 
     return (
-        <div className="container">
+        <div className="login-container">
             <div className="landing-header-area">
                 <h1 className="app-title">SquashMate</h1>
                 <h3 className="slogan">Elevate Your Game</h3>
             </div>
 
             <div className="items">
-                <h1>Welcome</h1>
                 <form onSubmit={validateUserLogin}>
+                    <h1>Welcome</h1>
+
                     {/* EMAIL */}
                     <div className="input-container">
                         <label className="floating-label">Email</label>
@@ -82,9 +90,16 @@ const Landing = () => {
                     <button className="login-button" type="submit">Login</button>
 
                     <p className="or">Or</p>
-                    <Link to="/create-profile" className="create-profile-button">Sign Up</Link>
+                    <button 
+                        type="button" 
+                        className="create-profile-button"
+                        onClick={() => navigate("/create-profile", {state: {email, password}})}
+                        onMouseDown={(e) => e.preventDefault()}
+                    >Sign Up</button>
 
                 </form>
+
+
 
 
             </div>

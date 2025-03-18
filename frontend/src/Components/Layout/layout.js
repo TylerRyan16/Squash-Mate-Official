@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Sidebar from "../Sidebar/sidebar";
 import "./layout.scss";
 
 const Layout = ({ children }) => {
+    const location = useLocation();
+    const [displayTopNav, setDisplayTopNav] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    useEffect(() => {
+        if (location.pathname.includes("/login") || location.pathname.includes("/create-profile")){
+            setDisplayTopNav(false);
+        };
+    }, [location])
 
     return (
         <div className="layout-container">
@@ -14,13 +22,12 @@ const Layout = ({ children }) => {
             <div className={`content-area-with-top-navbar ${isSidebarOpen ? "sidebar-open" : 'sidebar-closed'}`}>
                 <div className="top-nav-bar">
                     {/* menu button - for smaller screens */}
-                    <img src="/assets/icons/hamburger icon.png" alt="close sidebar button" className="menu-button"
+                    {displayTopNav && <img src="/assets/icons/hamburger icon.png" alt="close sidebar button" className="menu-button"
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    >
-                    </img>
-                    <div className="icon-area">
+                    ></img>}
+                    {displayTopNav && <div className="icon-area">
                         <Link to="/profile"><img src="/assets/icons/profile-icon.png" alt="profile" className="profile-icon"></img></Link>
-                    </div>
+                    </div>}
                 </div>
 
                 <main className="main-content">
