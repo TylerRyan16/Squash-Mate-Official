@@ -1,70 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getAllVideos } from "../../services/api";
 import "./myVideos.scss";
 
-//  useEffect(() => {
-//    // if (videoDetails.type === "Game") {
-//    //     setVideoDetails((prevDetails) => ({
-//    //         ...prevDetails,
-//    //         length: "Single"
-//    //     }));
-//    // }
 
-//    const videoId = extractYouTubeID(url);
-//    setThumbnail(`https://img.youtube.com/vi/${videoId}/0.jpg`);
-//  }, [videoDetails.type]);
-// const [linkEmpty, setLinkEmpty] = useState(true);
-// const [videoUrl, setVideoUrl] = useState("");
-// const [thumbnail, setThumbnail] = useState("");
-
-// const handleVideoInput = (e) => {
-//   const url = e.target.value;
-//   setVideoUrl(url);
-
-//   const videoId = extractYouTubeID(url);
-//   if (videoId) {
-//     setThumbnail(`https://img.youtube.com/vi/${videoId}/0.jpg`);
-//   } else {
-//     setThumbnail("");
-//   }
-// };
-
-// const extractYouTubeID = (url) => {
-//   const regex =
-//     /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^&?/]+)/;
-//   const match = url.match(regex);
-//   return match ? match[1] : null;
-// };
-
-const videos = [
-  "https://img.youtube.com/vi/23urWKmHS6o/0.jpg",
-  "https://img.youtube.com/vi/BxxfExJR63g/0.jpg",
-  "http://i3.ytimg.com/vi/KDorKy-13ak/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/Cf5dPQ7YeE8/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/Ks_Uxuhz6nc/hqdefault.jpg",
-  "http://i3.ytimg.com/vi/xgXSLLULGyU/hqdefault.jpg"
-];
 const MyVideos = () => {
+
+  const [allVideos, setAllVideos] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchAllVideos = async () => {
+      try {
+        const videos = await getAllVideos();
+        setAllVideos(videos);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAllVideos();
+  }, []);
+
+  const filteredVideos = allVideos.filter((video) =>
+    video.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="page-container">
       <title>My Videos</title>
       <h1>My Videos Page</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="horizontal-flex search-input" placeholder="Search..." />
+          <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
           <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
-
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
 
-        <div class="video-area">
+        <div className="my-videos-display-area">
           <div className="rows">
-            {videos.map((element, index) => (
-              <div key={index} class="my-videos-video-card">
-                <img class="my-videos-thumbnail" src={element} alt="{`Video ${index}`}" />
-                <h5 class="video-title">Video Title</h5>
-                <small class="video-title">Updated Today</small>
-              </div>
-            ))}
+          {filteredVideos.length > 0 ? (
+              filteredVideos.map((video, index) => (
+                <div key={index} className="explore-video-card">
+                  <a href={video.url} target="_blank" rel="noopener noreferrer">
+                    <img className="explore-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`} />
+                  </a>
+                  <h5 className="video-title">{video.title}</h5>
+                  <small className="video-title">{video.date_posted}</small>
+                </div>
+              ))
+            ) : (
+              <p>No videos found</p>
+            )}
           </div>
         </div>
       </main>

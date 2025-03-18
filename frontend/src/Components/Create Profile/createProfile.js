@@ -2,7 +2,6 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { createAccount } from "../../services/api";
 import "./createProfile.scss";
-import axios from "axios";
 
 const CreateProfile = () => {
     const navigate = useNavigate();
@@ -77,7 +76,7 @@ const CreateProfile = () => {
             console.error("Error creating your profile!");
         }
     };
-
+  
     // highlight invalid fields of input
     const highlightInvalidFields = () => {
         const missingFields = [];

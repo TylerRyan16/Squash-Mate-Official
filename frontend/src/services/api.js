@@ -14,7 +14,10 @@ const api = axios.create({
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
     try {
-        const response = await api.post("/profiles", userData);
+        console.log("attempting to create account in api.js");
+        console.log("userData in api.js: ", userData);
+
+        const response = await api.post("/profiles/", userData);
         return response.data;
     } catch (error) {
         throw error.response?.data || "Error creating account";
@@ -47,6 +50,17 @@ export const getUserData = async () => {
         return response.data;
     } catch (error) {
         throw error.response?.data || "Failed to fetch user data";
+    }
+};
+
+
+// GET LOGGED IN USER NAME
+export const getMyUsername = async () => {
+    try {
+        const response = await api.get("/profiles/my-username");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch username.";
     }
 };
 
@@ -83,6 +97,26 @@ export const getSpecificVideo = async (videoID) => {
 
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
+    try {
+        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+
+        console.log("Video uploaded: ", response.data);
+        
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data.error) {
+            alert(error.response.data.error);
+        } else {
+            console.error("error creating profile: ", error);
+            alert("An error occurred while creating your profile. Please try again.");
+        }
+
+    }
+}
+
+
+// COMMENT ON VIDEO
+export const commentOnVideo = async (videoDetails) => {
     try {
         const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
 

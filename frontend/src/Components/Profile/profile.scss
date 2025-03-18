@@ -1,10 +1,17 @@
+.profile-page{
+    width: 100%;
+    height: 92vh;
+    display: flex;
+    overflow: hidden;
+}
+
 .left-area{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-left: 5%;
-    width: 25%;
-    min-height: 100vh;
+    width: 50%;
+    min-height: 100%;
     border-right: solid 3px black;
     
     .my-profile{
@@ -50,9 +57,9 @@
     display: flex;
     flex-direction: column;
     gap: clamp(25px, 1.5vw, 35px);
-    width: 100%;
-    min-height: 100vh;
-    padding-top: 8%;
+    width: 50%;
+    min-height: 100%;
+    padding-top: 1%;
     padding-left: 1%;
     padding-right: 3%;
 
@@ -63,8 +70,14 @@
         gap: 5%;
     }
 
+    .security-button-area{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
     // CHANGE PASSWORD
-    .change-password-button{
+    .change-password-button, .logout-button{
         width: (25%, .25vw, 30%);
         padding: 10px 10px;
         font-size: clamp(16px, 1vw, 24px);
@@ -75,7 +88,7 @@
         align-self: flex-start;
     }
 
-    .change-password-button:hover{
+    .change-password-button:hover, .logout-button:hover{
         background-color: red;
         color: white;
     }
