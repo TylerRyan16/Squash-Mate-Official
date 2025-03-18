@@ -71,20 +71,24 @@ var bob_comments = [{
     commenter_name : "bob_coach", 
     comment: "good work", 
     date_posted : "1/1/2025", 
-    parent_comment_id: null
+    parent_comment_id: null, 
+    time_stamp: 128
 }, {
     video_id : "1", 
     commenter_name : "sarah_coach", 
     comment: "meh work", 
     date_posted : "1/1/2025", 
-    parent_comment_id: null
+    parent_comment_id: null,
+    time_stamp: 360
 },
 {
     video_id : "1", 
     commenter_name : "steve_coach", 
     comment: "bad work", 
     date_posted : "1/1/2025", 
-    parent_comment_id: null
+    parent_comment_id: null,
+    time_stamp: 422
+
 }]
 const Video = () => {
     const { videoID } = useParams();
@@ -123,6 +127,12 @@ const Video = () => {
     const handleSeekChange = (e) => {
         const newProgress = parseFloat(e.target.value);
         setProgress(newProgress);
+        playerRef.current.seekTo(newProgress);
+    };
+
+    const jumpToComment = (time) => {
+        const newProgress = time;
+        setProgress(newProgress/playerRef.current?.getDuration());
         playerRef.current.seekTo(newProgress);
     };
 
@@ -177,7 +187,7 @@ const Video = () => {
                         </div>
                     </div>
 
-
+                {/* COMMENT SECTION */}
                 <div className="comment-section">
                 <div className='comment-flex'>
                 <h3>Coaching Feed</h3>
@@ -192,17 +202,18 @@ const Video = () => {
                             <div id= {index} className="tabcontent">
                             <h3>{user}</h3>
                             {bob_comments.map(comment_info => (
-                                <><div className='comment'>
+                                <><div className='comment' onClick={() => jumpToComment(comment_info.time_stamp)}>
                                 <div className='vertical-flex'>
                                     <div className='commenter-info'>
-                                    <div className='horizontal-flex'>
+                                    <div className='info-flex'>
                                         <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
                                         <p>{comment_info.commenter_name}</p>
+                                        <p className="time-stamp">{formatTime(comment_info.time_stamp )}</p>
                                     </div>
                                     
                                     </div>
                                     <div className="horizontal-flex">
-                                    <div className='comment'>
+                                    <div className='comment-text'>
                                         <p>{comment_info.comment}</p>
                                     </div>
                                         <div className="reactions">
@@ -220,6 +231,7 @@ const Video = () => {
                             
                         </div></>
                     ))}
+                    {/* This only shows if you click Reply*/}
                     <div className="reply-option" id='reply-option'>
                     <button onClick = {()=>closeReply()} className="x-button">
                             <img className = "icon" src='/assets/icons/x-icon.png'/>
@@ -236,6 +248,7 @@ const Video = () => {
                         </div>
                         
                     </div>
+                    {/* User types comment here */}
                     <div className="post-section">
                         <input type="text" className='input-container' id = 'input-container' placeholder="Add Comment.."></input>
                         <button className="comment-button" onClick={() => postComment()}>Post</button>
