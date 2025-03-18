@@ -11,7 +11,9 @@ const Layout = ({ children }) => {
     useEffect(() => {
         if (location.pathname.includes("/login") || location.pathname.includes("/create-profile")){
             setDisplayTopNav(false);
-        };
+        } else {
+            setDisplayTopNav(true);
+        }
     }, [location])
 
     return (
