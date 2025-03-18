@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 app.use(cookieParser());
 
-// middlewar
+// middleware
 app.use(cors({
     origin: ["https://squash-mates.onrender.com", "http://localhost:3000", "https://squashmate.vercel.app", "https://squashmate.club", "https://www.squashmate.club"],
     credentials: true

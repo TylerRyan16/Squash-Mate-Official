@@ -1,53 +1,11 @@
-.my-videos-container{
-    margin-left: 7%;
-    width: 93vw;
-    max-width: 100%;
-    height: 100vh;
-    background-color: orange;
-    position: absolute;
-}
-
-.page-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.search-bar-container {
-  width: 90%;
-  margin-bottom: 20px;
-}
-
-.search-icon {
-  position: relative;
-  left: 10px;
-  transform: translateY(150%);
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-}
-
 .search-filter-container {
   display: flex;
   width: 90%;
-  height: 5%;
+  height: fit-content;
   margin: auto;
   align-items: center;
   margin-bottom: 20px;
   gap: 10px;
-}
-
-.search-icon {
-  position: relative;
-  transform: translateX(-45px);
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.filter-icon{
-    width: clamp(25px, 2vw, 42px);
-    width: clamp(25px, 2vw, 42px);
-    cursor: pointer;
 }
 
 .search-input {
@@ -63,29 +21,18 @@
   }
 }
 
-.video-card{
-  text-align: left;
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 8px;
-  padding-top: 5px;
-  justify-content: center;
-  align-items: center;
+.search-icon {
+  position: relative;
+  transform: translateX(-45px);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
-.video-rows{
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 30px;
-  max-width: 90%;
-  margin: 0 auto;
-}
-
-.align{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 80px;
+.filter-icon{
+    width: clamp(25px, 2vw, 42px);
+    height: clamp(25px, 2vw, 42px);
+    cursor: pointer;
 }
 
 .rows{
@@ -97,11 +44,18 @@
 }
 
 .my-videos-video-card{
-  width: 100%;
+  text-align: left;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+  padding-top: 5px;
+  justify-content: center;
+  align-items: center;
   border-radius: 8px;
   padding: 5px;
   transition: background-color 0.1s ease-in-out;
 }
+
 
 .my-videos-video-card:hover{
   background-color: lightgrey;
@@ -111,10 +65,6 @@
   width: 100%;
   border-radius: 5px;
   margin-bottom: 5px;
-}
-
-.video-item:hover{
-  transform: scale(1.1);
 }
 
 @media screen and (max-width: 768px){
