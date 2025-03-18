@@ -51,6 +51,7 @@ const CreateProfile = () => {
 
     // Handle form submission
     const handleCreateProfile = async () => {
+        console.log("called handleCreateProfile on button press in frontend.");
         try {
             if (!passwordValid || profileDetails.firstName == ""
                 || profileDetails.lastName == ""

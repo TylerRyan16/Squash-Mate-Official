@@ -113,3 +113,23 @@ export const uploadVideo = async (videoDetails) => {
 
     }
 }
+
+
+// COMMENT ON VIDEO
+export const commentOnVideo = async (videoDetails) => {
+    try {
+        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+
+        console.log("Video uploaded: ", response.data);
+        
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data.error) {
+            alert(error.response.data.error);
+        } else {
+            console.error("error creating profile: ", error);
+            alert("An error occurred while creating your profile. Please try again.");
+        }
+
+    }
+}

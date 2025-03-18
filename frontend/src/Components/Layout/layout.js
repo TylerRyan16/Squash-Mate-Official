@@ -38,11 +38,12 @@ const Layout = ({ children }) => {
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
                     </img>
-                <div className="icon-area">
-                    {/* Notification Bell */}
-                    <div className="relative" ref={dropdownRef}>
-                        <img 
-                            src="/assets/icons/notification-bell.png" alt="bell" className="bell-icon cursor-pointer"
+
+                    <div className="icon-area">
+                        {/* Notification Bell */}
+                        <div className="relative" ref={dropdownRef}>
+                            <img
+                                src="/assets/icons/notification-bell.png" alt="bell" className="bell-icon cursor-pointer"
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             />
 
