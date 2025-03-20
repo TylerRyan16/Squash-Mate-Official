@@ -4,20 +4,19 @@ import "./sidebar.scss";
 
 // Sidebar component is responsible for displaying the nav menu
 const Sidebar = ({isOpen}) => {
-    // the 'useLocation' hook from react-router-dom provides the current URL path
-    // for example: if you're on "/explore", "location.pathname" will return "/explore"
     const location = useLocation();
 
-    // 'selectedRoute' tracks the current active route
-    // we use 'useState' to store this value and update it dynamically 
+    const hiddenRoutes = ["/login", "/create-profile"];
+
     const [selectedRoute, setSelectedRoute] = useState(location.pathname);
 
-
-    // the 'useEffect' hook runs whenever the dependencies in its array change
-    // here, it updates 'selectedRoute' whenever location changes
     useEffect(() => {
         setSelectedRoute(location.pathname);
-    }, [location]); // this only runs when location changes because its in our dependency array
+    }, [location]); 
+
+    if (hiddenRoutes.includes(location.pathname)){
+        return null;
+    }
 
     return (
         <div className={`sidebar-area ${!isOpen ? 'hidden' : ''}`}>
