@@ -29,4 +29,17 @@ router.post("/", async (req, res) => {
     }
 });
 
+// get a comment from a specific user
+router.get("/comments-from-user", async (req, res) => {
+    const {poster} = req.body;
+
+    try {
+        const result = await pool.query('SELECT * FROM comments WHERE commenter_name = $1', [poster]);
+        res.json(result.rows);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({ error: "Failed to load comments."});
+    }
+});
+
 module.exports = router;
