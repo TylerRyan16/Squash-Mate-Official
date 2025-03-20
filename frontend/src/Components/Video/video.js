@@ -136,6 +136,11 @@ const Video = () => {
         playerRef.current.seekTo(newProgress);
     };
 
+    const commentRatio = (time) =>{
+        const newProgress = time;
+        return newProgress/playerRef.current?.getDuration();
+    }
+
     // format time
     const formatTime = (seconds) => {
         const mins = Math.floor(seconds / 60);
@@ -165,11 +170,11 @@ const Video = () => {
                             />
 
                         </div>
-
                         <div className="controls">
                             <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
 
                             {/* Timeline */}
+                            
                             <input
                                 type="range"
                                 min={0}
@@ -178,7 +183,17 @@ const Video = () => {
                                 value={progress}
                                 onChange={handleSeekChange}
                                 className="timeline-slider"
+                                list = "tickmarks"
                             ></input>
+                            <datalist id="tickmarks">
+                            {bob_comments.map(comment_info => (
+                                <>
+                                {console.log("In here now")}
+                                <option value={console.log((comment_info.time_stamp/700).toString())}></option></>
+                                
+                            ))}
+                            </datalist>
+
 
                             {/* display current time */}
                             <span>
