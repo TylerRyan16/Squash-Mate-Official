@@ -35,6 +35,7 @@ function changeHeart(){
         heart.src = "/assets/icons/heart-empty.png"
     }
 }
+
 var reply_comment;
 function showReply(commenter_name, comment){
     console.log("here");
