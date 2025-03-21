@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../config/db.js");
 
 // get all comments for specific video
+
 router.get("/for-video/:id", async (req, res) => {
     const {id} = req.params;
     const videoID = parseInt(id, 10);
