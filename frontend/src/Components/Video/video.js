@@ -151,6 +151,8 @@ const Video = () => {
             parent_comment_id: null,
         });
 
+        console.log("Comment details: ", commentDetails);
+
         try {
             await commentOnVideo(commentDetails);
         } catch (error) {
