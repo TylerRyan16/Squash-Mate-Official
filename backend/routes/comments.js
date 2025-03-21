@@ -5,7 +5,10 @@ const pool = require("../config/db.js");
 // get all comments for specific video
 router.get("/for-video/:id", async (req, res) => {
     const {id} = req.params;
-    console.log("TTDUDE Saw video ID: ", id);
+    const videoID = parseInt(id, 10);
+    if (isNaN(videoID)) {
+        return res.status(400).json({ error: "VIDEO ID NOT A NUMBER FOR SOME FUCKING REASON" });
+    }
 
     try {
        const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [id]);
