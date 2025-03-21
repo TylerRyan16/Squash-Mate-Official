@@ -4,7 +4,7 @@ const pool = require("../config/db.js");
 
 // get all comments for specific video
 router.get("/:videoID", async (req, res) => {
-    const {videoID} = parseInt(req.params.videoID, 10);
+    const videoID = parseInt(req.params.videoID, 10);
     console.log("TTDUDE Saw video ID: ", videoID);
 
     if (isNaN(videoID)) {
