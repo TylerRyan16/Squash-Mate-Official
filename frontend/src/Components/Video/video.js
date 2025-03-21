@@ -98,20 +98,20 @@ const Video = () => {
         
     });
 
-     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
-    //  useEffect(() => {
-    //     const fetchSpecificVideo = async (id) => {
-    //         try {
-    //             const currentVideo = await getSpecificVideo(id);
-    //             setVideo(currentVideo);
-    //             console.log(`video details: ${currentVideo}`);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
+    //  GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
+     useEffect(() => {
+        const fetchSpecificVideo = async (id) => {
+            try {
+                const currentVideo = await getSpecificVideo(id);
+                setVideo(currentVideo);
+                console.log(`video details: ${currentVideo}`);
+            } catch (error) {
+                console.log(error);
+            }
+        }
         
-    //     fetchSpecificVideo(videoID);
-    // }, [])
+        fetchSpecificVideo(videoID);
+    }, [])
 
     // Grab comments for the video
     useEffect(() => {

@@ -3,12 +3,12 @@ const router = express.Router();
 const pool = require("../config/db.js");
 
 // get all comments for specific video
-router.get("/:videoID", async (req, res) => {
-    const videoID = req.params;
-    console.log("TTDUDE Saw video ID: ", videoID);
+router.get("/:id", async (req, res) => {
+    const id = req.params;
+    console.log("TTDUDE Saw video ID: ", id);
 
     try {
-       const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [videoID]);
+       const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [id]);
        res.json(result.rows);
     } catch (error){
        console.error(error);
