@@ -3,15 +3,20 @@ const router = express.Router();
 const pool = require("../config/db.js");
 
 // get all comments for specific video
-router.get("/:videoID", async (req, res) => {
-    const videoID = req.params;
+
+router.get("/for-video/:id", async (req, res) => {
+    const {id} = req.params;
+    const videoID = parseInt(id, 10);
+    if (isNaN(videoID)) {
+        return res.status(400).json({ error: "VIDEO ID NOT A NUMBER FOR SOME FUCKING REASON" });
+    }
 
     try {
-        const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [videoID]);
-        res.json(result.rows);
+       const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [id]);
+       res.json(result.rows);
     } catch (error){
-        console.error(error);
-        res.status(500).json({ error: "Failed to load comments."});
+       console.error(error);
+       res.status(500).json({ error: "Failed to load comments."});
     }
 });
 

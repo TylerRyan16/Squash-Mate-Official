@@ -144,7 +144,7 @@ export const commentOnVideo = async (data) => {
 export const getCommentsForVideo = async (videoID) => {
     try {
         console.log("SAW VIDEO ID: ", videoID);
-        const response = await api.get(`/comments/${videoID}`)
+        const response = await api.get(`/comments/for-video/${videoID}`)
         console.log("response: ", response);
         return response.data;
     } catch (error){
