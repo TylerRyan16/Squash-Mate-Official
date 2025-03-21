@@ -86,13 +86,6 @@ const Video = () => {
     
     // comment stuff
     const [username, setUsername] = useState("");
-    const [commentDetails, setCommentDetails] = useState({
-        id: null,
-        commenterName: "",
-        comment: "",
-        date_posted: "",
-        parent_comment_id: null,
-    });
     const commentRef = useRef();
 
     // video player stuff
@@ -140,21 +133,22 @@ const Video = () => {
     }, [video])
 
     
-    // COMMENT LOGIC
+    // POST COMMENT
     const postComment = async () => {
         const commentText = commentRef.current.value;
-        setCommentDetails({
+
+        const commentToSend = {
             id: videoID,
             commenterName: username,
             comment: commentText,
-            date_posted: '03-21-2025',
+            date_posted: new Date().toLocaleDateString('en-CA'), // Or format however you'd like
             parent_comment_id: null,
-        });
+        };
 
-        console.log("Comment details: ", commentDetails);
+        console.log("Comment details: ", commentToSend);
 
         try {
-            await commentOnVideo(commentDetails);
+            await commentOnVideo(commentToSend);
         } catch (error) {
             console.error(error);
         }
