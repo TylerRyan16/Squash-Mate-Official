@@ -4,7 +4,7 @@ const pool = require("../config/db.js");
 
 // get all comments for specific video
 router.get("/for-video/:id", async (req, res) => {
-    const id = req.params;
+    const {id} = req.params;
     console.log("TTDUDE Saw video ID: ", id);
 
     try {
