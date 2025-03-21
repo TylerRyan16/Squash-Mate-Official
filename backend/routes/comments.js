@@ -8,11 +8,11 @@ router.get("/:videoID", async (req, res) => {
     console.log("TTDUDE Saw video ID: ", videoID);
 
     try {
-       // const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [videoID]);
-       // res.json(result.rows);
+       const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [videoID]);
+       res.json(result.rows);
     } catch (error){
-       // console.error(error);
-       // res.status(500).json({ error: "Failed to load comments."});
+       console.error(error);
+       res.status(500).json({ error: "Failed to load comments."});
     }
 });
 
