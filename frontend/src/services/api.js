@@ -11,6 +11,8 @@ const api = axios.create({
     header: { "Content-Type": "application/json" },
 });
 
+// PROFILES
+
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
     try {
@@ -64,6 +66,9 @@ export const getMyUsername = async () => {
     }
 };
 
+
+// VIDEOS
+
 // GET ALL VIDEOS
 export const getAllVideos = async () => {
     try {
@@ -114,11 +119,12 @@ export const uploadVideo = async (videoDetails) => {
     }
 }
 
+// COMMENTS
 
 // COMMENT ON VIDEO
-export const commentOnVideo = async (videoDetails) => {
+export const commentOnVideo = async (data) => {
     try {
-        const response = await api.post("/videos", videoDetails);
+        const response = await api.post("/videos", data);
 
         console.log("Video uploaded: ", response.data);
         
