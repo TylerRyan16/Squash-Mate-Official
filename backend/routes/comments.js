@@ -2,10 +2,17 @@ const express = require('express');
 const router = express.Router();
 const pool = require("../config/db.js");
 
-// get all comments
-router.get("/", async (req, res) => {
+// get all comments for specific video
+router.get("/:videoID", async (req, res) => {
+    const {videoID} = parseInt(req.params.videoID, 10);
+    console.log("TTDUDE Saw video ID: ", videoID);
+
+    if (isNaN(videoID)) {
+        return res.status(400).json({ error: "Invalid video ID" });
+    }
+
     try {
-        const result = await pool.query('SELECT * FROM comments');
+        const result = await pool.query('SELECT * FROM comments WHERE video_id = $1', [videoID]);
         res.json(result.rows);
     } catch (error){
         console.error(error);
@@ -29,17 +36,5 @@ router.post("/", async (req, res) => {
     }
 });
 
-// get a comment from a specific user
-router.get("/comments-from-user", async (req, res) => {
-    const {poster} = req.body;
-
-    try {
-        const result = await pool.query('SELECT * FROM comments WHERE commenter_name = $1', [poster]);
-        res.json(result.rows);
-    } catch (error){
-        console.error(error);
-        res.status(500).json({ error: "Failed to load comments."});
-    }
-});
 
 module.exports = router;

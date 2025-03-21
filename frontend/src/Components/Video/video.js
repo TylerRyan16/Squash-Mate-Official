@@ -2,7 +2,7 @@ import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
-import { getSpecificVideo } from "../../services/api";
+import { getSpecificVideo, getCommentsForVideo } from "../../services/api";
 
 
 function openCoach(evt, coachName) {
@@ -37,6 +37,7 @@ function changeHeart(){
 }
 
 var reply_comment;
+
 function showReply(commenter_name, comment){
     console.log("here");
     const reply_box = document.getElementById("reply-option")
@@ -66,6 +67,7 @@ function postComment(){
         })
     }*/
 }
+
 var bob_comments = [{
     video_id : "1", 
     commenter_name : "bob_coach", 
@@ -93,28 +95,53 @@ var bob_comments = [{
 const Video = () => {
     const { videoID } = useParams();
     const [video, setVideo] = useState({
-
+        
     });
+
+     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
+    //  useEffect(() => {
+    //     const fetchSpecificVideo = async (id) => {
+    //         try {
+    //             const currentVideo = await getSpecificVideo(id);
+    //             setVideo(currentVideo);
+    //             console.log(`video details: ${currentVideo}`);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+        
+    //     fetchSpecificVideo(videoID);
+    // }, [])
+
+    // Grab comments for the video
+    useEffect(() => {
+        const fetchComments = async (id) => {
+            try {
+                const comments = await getCommentsForVideo(id);
+                console.log("comments: ", comments);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        console.log("Fetching comments for video ID:", videoID); 
+        fetchComments(videoID);
+    }, [video])
+
+    
+    // COMMENT LOGIC
+
+    // show all the comments
+    const filterAllComments = () => {
+
+    };
+
 
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const playerRef = useRef(null);
+
     const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
     
-
-    // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
-    useEffect(() => {
-        const fetchSpecificVideo = async (id) => {
-            try {
-                const currentVideo = await getSpecificVideo(id);
-                setVideo(currentVideo);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchSpecificVideo(videoID);
-    }, [])
-
 
     const handlePlayPause = () => {
         setPlaying((prev) => !prev);
@@ -188,8 +215,9 @@ const Video = () => {
                             <datalist id="tickmarks">
                             {bob_comments.map(comment_info => (
                                 <>
-                                {console.log("In here now")}
-                                <option value={console.log((comment_info.time_stamp/700).toString())}></option></>
+                                {/* {console.log("In here now")} */}
+                                {/* <option value={console.log((comment_info.time_stamp/700).toString())}></option></> */}
+                                <option value={""}></option></>
                                 
                             ))}
                             </datalist>
@@ -207,8 +235,9 @@ const Video = () => {
                 <div className='comment-flex'>
                 <h3>Coaching Feed</h3>
                 <div class="coach-tabs">
+                            <button className="tablinks" onClick={() => filterAllComments}></button>
                     {users_commented.map((user, index) => (
-                            <button class="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
+                            <button className="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
                             
                     ))}
                         </div>
