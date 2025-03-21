@@ -98,7 +98,7 @@ export const getSpecificVideo = async (videoID) => {
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
     try {
-        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+        const response = await axios.post("/videos", videoDetails);
 
         console.log("Video uploaded: ", response.data);
         
@@ -118,7 +118,7 @@ export const uploadVideo = async (videoDetails) => {
 // COMMENT ON VIDEO
 export const commentOnVideo = async (videoDetails) => {
     try {
-        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+        const response = await axios.post("/videos", videoDetails);
 
         console.log("Video uploaded: ", response.data);
         
@@ -127,9 +127,26 @@ export const commentOnVideo = async (videoDetails) => {
         if (error.response && error.response.data.error) {
             alert(error.response.data.error);
         } else {
-            console.error("error creating profile: ", error);
-            alert("An error occurred while creating your profile. Please try again.");
+            console.error("error commenting on video: ", error);
+            alert("An error occurred while commenting on this video.");
         }
 
+    }
+}
+
+// GET COMMETNS ON VIDEO
+export const getCommentsForVideo = async (videoID) => {
+    try {
+        console.log("SAW VIDEO ID: ", videoID);
+        const response = await axios.get(`/comments/${videoID}`)
+        console.log("response: ", response);
+        return response.data;
+    } catch (error){
+        if (error.response && error.response.data.error){
+            alert(error.response.data.error);
+        } else {
+            console.error("error grabbing comments: ", error);
+            alert("An error occurred while grabbing the comments. Please try again.");
+        }
     }
 }
