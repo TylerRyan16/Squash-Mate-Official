@@ -98,7 +98,7 @@ export const getSpecificVideo = async (videoID) => {
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
     try {
-        const response = await axios.post("/videos", videoDetails);
+        const response = await api.post("/videos", videoDetails);
 
         console.log("Video uploaded: ", response.data);
         
@@ -118,7 +118,7 @@ export const uploadVideo = async (videoDetails) => {
 // COMMENT ON VIDEO
 export const commentOnVideo = async (videoDetails) => {
     try {
-        const response = await axios.post("/videos", videoDetails);
+        const response = await api.post("/videos", videoDetails);
 
         console.log("Video uploaded: ", response.data);
         
@@ -138,7 +138,7 @@ export const commentOnVideo = async (videoDetails) => {
 export const getCommentsForVideo = async (videoID) => {
     try {
         console.log("SAW VIDEO ID: ", videoID);
-        const response = await axios.get(`/comments/${videoID}`)
+        const response = await api.get(`/comments/${videoID}`)
         console.log("response: ", response);
         return response.data;
     } catch (error){
