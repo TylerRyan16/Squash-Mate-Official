@@ -124,10 +124,8 @@ export const uploadVideo = async (videoDetails) => {
 // COMMENT ON VIDEO
 export const commentOnVideo = async (data) => {
     try {
-        const response = await api.post("/comments", data);
-
-        console.log("Video uploaded: ", response.data);
-        
+        console.log("commenting on video with data: ", data);
+        const response = await api.post("/comments", data);        
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
