@@ -60,6 +60,7 @@ export const getUserData = async () => {
 export const getMyUsername = async () => {
     try {
         const response = await api.get("/profiles/my-username");
+        console.log("response.data: ", response.data);
         return response.data;
     } catch (error){
         throw error.response?.data || "Failed to fetch username.";
