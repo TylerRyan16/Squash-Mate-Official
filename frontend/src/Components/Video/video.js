@@ -108,6 +108,7 @@ const Video = () => {
         const getUser = async () => {
             try{
                 const username = await getMyUsername();
+                console.log("username: ", username);
                 setUsername(username);
             } catch (error){
                 console.error(error);
