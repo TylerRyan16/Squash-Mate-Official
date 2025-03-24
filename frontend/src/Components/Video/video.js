@@ -141,17 +141,17 @@ const Video = () => {
             id: videoID,
             commenterName: username,
             comment: commentText,
-            date_posted: new Date().toLocaleDateString('en-CA'), // Or format however you'd like
+            date_posted: new Date().toLocaleDateString('en-CA'),
             parent_comment_id: null,
         };
 
-        console.log("Comment details: ", commentToSend);
-
         try {
-            await commentOnVideo(commentToSend);
-        } catch (error) {
+           await commentOnVideo(commentToSend);
+        } catch (error){
             console.error(error);
         }
+
+        console.log("Comment details: ", commentToSend);
     }
 
     const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
