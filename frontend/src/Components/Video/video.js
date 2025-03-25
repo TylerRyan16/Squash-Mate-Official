@@ -6,12 +6,17 @@ import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername } 
 
 
 function openCoach(evt, coachName) {
-    var i, tabcontent, tablinks;
+    var i, tabcontent, tablinks, timestamps;
 
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
+    }
+    timestamps = document.getElementsByClassName("timestamps");
+    console.log(timestamps);
+    for (i = 0; i < timestamps.length; i++) {
+        timestamps[i].style.display = "none";
     }
 
     // Get all elements with class="tablinks" and remove the class "active"
@@ -23,6 +28,7 @@ function openCoach(evt, coachName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(coachName).style.display = "inline";
     evt.currentTarget.className += " active";
+    document.getElementById("timestamp"+coachName).style.display = "inline";
 
 }
 
@@ -36,10 +42,19 @@ function changeHeart(){
     }
 }
 
+function playPause(){
+    const heart = document.getElementById("heart-icon");
+    if(heart.src.indexOf("/assets/icons/heart-empty.png") != -1){
+        heart.src = "/assets/icons/heart-full.png";
+    }
+    else{
+        heart.src = "/assets/icons/heart-empty.png"
+    }
+}
+
 var reply_comment;
 
 function showReply(commenter_name, comment){
-    console.log("here");
     const reply_box = document.getElementById("reply-option")
     const reply_name = document.getElementById("reply-name")
     const reply_comment = document.getElementById("reply-comment")
@@ -76,6 +91,46 @@ var bob_comments = [{
     date_posted : "1/1/2025", 
     parent_comment_id: null,
     time_stamp: 422
+
+},{
+video_id : "1", 
+commenter_name : "bob_coach", 
+comment: "Bad serve", 
+date_posted : "1/1/2025", 
+parent_comment_id: null, 
+time_stamp: 400
+}, {
+video_id : "1", 
+commenter_name : "sarah_coach", 
+comment: "You could try harder here", 
+date_posted : "1/1/2025", 
+parent_comment_id: null,
+time_stamp: 502
+},
+{
+video_id : "1", 
+commenter_name : "steve_coach", 
+comment: "Yeah also bad...", 
+date_posted : "1/1/2025", 
+parent_comment_id: null,
+time_stamp: 50
+
+},
+ 
+{video_id : "1", 
+commenter_name : "bob_coach", 
+comment: "I liked this move", 
+date_posted : "1/1/2025", 
+parent_comment_id: null,
+time_stamp: 480
+},
+{
+video_id : "1", 
+commenter_name : "steve_coach", 
+comment: "That was good form", 
+date_posted : "1/1/2025", 
+parent_comment_id: null,
+time_stamp: 450
 
 }]
 
@@ -181,11 +236,16 @@ const Video = () => {
         const newProgress = time;
         setProgress(newProgress/playerRef.current?.getDuration());
         playerRef.current.seekTo(newProgress);
+        const comment = document.getElementById(time);
+        bob_comments.forEach(comment_info =>
+            document.getElementById(comment_info.time_stamp).style.borderColor = "#f1f1f1"
+        );
+        comment.style.borderColor = "black";
     };
 
     const commentRatio = (time) =>{
         const newProgress = time;
-        return newProgress/playerRef.current?.getDuration();
+        return (newProgress/playerRef.current?.getDuration()).toFixed(2);
     }
 
     // format time
@@ -217,11 +277,12 @@ const Video = () => {
                             />
 
                         </div>
+                        
                         <div className="controls">
-                            <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                            <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
 
                             {/* Timeline */}
-                            
+                            <div className="range-slider">
                             <input
                                 type="range"
                                 min={0}
@@ -232,15 +293,22 @@ const Video = () => {
                                 className="timeline-slider"
                                 list = "tickmarks"
                             ></input>
-                            <datalist id="tickmarks">
-                            {bob_comments.map(comment_info => (
+                            <div className = "slider-background">
+                            {users_commented.map((user, index) => (
                                 <>
-                                {/* {console.log("In here now")} */}
-                                {/* <option value={console.log((comment_info.time_stamp/700).toString())}></option></> */}
-                                <option value={""}></option></>
+                                <div className="timestamps" id= {"timestamp" + index}>
+                                    {bob_comments.filter(comment_info => comment_info.commenter_name === user).map(comment_info => (
+                                    <>
+                                    <div className="tick" style={{left: (commentRatio(comment_info.time_stamp) * 100 + 0.5) +"%"}} onClick={() => jumpToComment(comment_info.time_stamp)}></div></>
                                 
+                                    ))}
+                                </div>
+                                </>
                             ))}
-                            </datalist>
+                            
+                            </div>
+                            </div>
+                            
 
 
                             {/* display current time */}
@@ -265,8 +333,8 @@ const Video = () => {
                         {users_commented.map((user, index) => (<>
                             <div id= {index} className="tabcontent">
                             <h3>{user}</h3>
-                            {bob_comments.map(comment_info => (
-                                <><div className='comment' onClick={() => jumpToComment(comment_info.time_stamp)}>
+                            {bob_comments.filter(comment_info => comment_info.commenter_name === user).map(comment_info => (
+                                <><div className='comment' id={comment_info.time_stamp} onClick={() => jumpToComment(comment_info.time_stamp)}>
                                 <div className='vertical-flex'>
                                     <div className='commenter-info'>
                                     <div className='info-flex'>
