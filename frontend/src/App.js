@@ -26,7 +26,7 @@ function App() {
           <Route path="/upload" element={<Upload />}> </Route>
           <Route path="/my-videos" element={<MyVideos />}> </Route>
           <Route path="/shared-with-me" element={<SharedWithMe />}> </Route>
-          <Route path="/video" element={<Video />}> </Route>
+          <Route path="/video/:videoID" element={<Video />}> </Route>
           <Route path="/profile" element={<Profile />}> </Route>
           <Route path="/camps" element={<Camps />}> </Route>
         </Routes>

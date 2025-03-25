@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { getAllVideos } from "../../services/api";
+import { getAllVideos, getMyUsername } from "../../services/api";
 import "./myVideos.scss";
 
 const MyVideos = () => {

@@ -24,7 +24,7 @@
 
 .top-nav-bar {
     width: 100%;
-    height: 8%;
+    height: 8vh;
     padding-right: 1%;
     padding-left: 1%;
     padding-top: 5px;
@@ -41,20 +41,61 @@
     }
 
     .profile-icon {
-        padding: 0px 5px;
-        height: 65px;
+        padding: 0;
+        height: 63%;
         width: auto;
-        border-radius: 32px;
-        padding: 15px 15px;
+        border-radius: 100%;
+        margin: 30% -50%;
         z-index: 50;
-
     }
 
     .profile-icon:hover {
         background-color: rgb(211, 211, 211, 0.5);
         z-index: 50;
     }
+
+    .bell-icon {
+        padding: 0;
+        height: 70%;
+        width: auto;
+        border-radius: 100%;
+        margin: 20% -70%;
+        z-index: 50;
+        cursor: pointer;
+    }
+
+    .bell-icon:hover {
+        background-color: rgb(211, 211, 211, 0.5);
+        z-index: 50;
+    }
 }
+
+.dropdown-menu {
+    position: absolute;
+    top: 9%;
+    right: 2%;
+    width: 20%;
+    background-color: white;
+    border-radius: 2%;
+    border: 5px solid #4693e1;
+    z-index: 50;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu li {
+    padding: 4%;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f4f4f4;
+}
+
 
 .main-content {
     overflow: auto;

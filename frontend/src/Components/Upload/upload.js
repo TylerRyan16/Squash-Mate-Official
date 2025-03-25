@@ -1,7 +1,8 @@
 import './upload.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from "axios";
+import { uploadVideo } from "../../services/api";
+import { getMyUsername } from "../../services/api";
 
 
 const Upload = () => {
@@ -18,6 +19,10 @@ const Upload = () => {
         tournament_date: "",
         tournament_name: "",
         tournament_location: "",
+        player1_name: "",
+        player2_name: "",
+        player1_color: "#000000",
+        player2_color: "#000000",
         poster: "",
         thumbnail: "",
     });
@@ -72,25 +77,26 @@ const Upload = () => {
 
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
-        //  SEND POST REQUEST TO DATABASE
+        const uploaderName = "";
+
         try {
-            const response = await axios.post("http://localhost:5000/api/videos", videoDetails);
-
-            console.log("Video uploaded: ", response.data);
-
-            navigate("/video");
-        } catch (error) {
-            if (error.response && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error("error creating profile: ", error);
-                alert("An error occurred while creating your profile. Please try again.");
-            }
-
+            uploaderName = await getMyUsername();
+            console.log("uploader name: ", uploaderName);
+        } catch (error){
+            console.log(error);
         }
 
-        navigate("/video");
+        videoDetails.poster = uploaderName;
+        //  SEND POST REQUEST TO DATABASE
+        try {
+            const response = await uploadVideo(videoDetails);
+            console.log("reponse: ", response);
 
+            const databaseVideoId = response.id;
+            navigate(`/video/${databaseVideoId}`);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -245,7 +251,7 @@ const Upload = () => {
 
                         {/* DATE ETC */}
                         <div className="input-container">
-                            <label className="floating-label">Date of Play (not required)</label>
+                            <label className="floating-label">Date of Play (optional)</label>
                             <input
                                 type="date"
                                 className="input-zone date"
@@ -259,7 +265,7 @@ const Upload = () => {
 
                         {/* TOURNAMENT NAME */}
                         <div className="input-container">
-                            <label className="floating-label">Tournament Name (not required)</label>
+                            <label className="floating-label">Tournament Name (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone tournament-input"
@@ -269,7 +275,7 @@ const Upload = () => {
                             ></input>
                         </div>
                         <div className="input-container">
-                            <label className="floating-label">Tournament Location (not required)</label>
+                            <label className="floating-label">Tournament Location (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone tournament-input"
@@ -277,10 +283,9 @@ const Upload = () => {
                                 value={videoDetails.tournament_location}
                                 onChange={handleVideoInput}
                             ></input>
-
                         </div>
                         <div className="input-container">
-                            <label className="floating-label">Description (not required)</label>
+                            <label className="floating-label">Description (optional)</label>
                             <input
                                 type="text"
                                 className="input-zone description"
@@ -289,6 +294,48 @@ const Upload = () => {
                                 onChange={handleVideoInput}
                             ></input>
                         </div>
+
+                        {/* PLAYER INFO */}
+                        <div className="input-container">
+                            <label className="floating-label">Player 1 Name</label>
+                            <input
+                                type="text"
+                                className="input-zone tournament-input"
+                                name="player1_name"
+                                value={videoDetails.player1_name}
+                                onChange={handleVideoInput}
+                            ></input>
+                        </div>
+                        <div className="input-container">
+                            <label className="floating-label">Player 2 Name</label>
+                            <input
+                                type="text"
+                                className="input-zone tournament-input"
+                                name="player2_name"
+                                value={videoDetails.player1_name}
+                                onChange={handleVideoInput}
+                            ></input>
+                        </div>
+                        {/* <div className="input-container">
+                            <label className="floating-label">Player 1 Jersey Color</label>
+                            <input
+                                type="color"
+                                className="input-zone"
+                                name="player1_color"
+                                value={videoDetails.player1_color}
+                                onChange={handleVideoInput}
+                            ></input>
+                        </div> */}
+                        {/* <div className="input-container">
+                            <label className="floating-label">Player 2 Jersey Color</label>
+                            <input
+                                type="color"
+                                className="input-zone"
+                                name="player2_color"
+                                value={videoDetails.player2_color}
+                                onChange={handleVideoInput}
+                            ></input>
+                        </div> */}
                         <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
 
                     </div>

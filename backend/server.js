@@ -12,9 +12,9 @@ const cookieParser = require("cookie-parser");
 const app = express();
 app.use(cookieParser());
 
-// middlewar
+// middleware
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: ["https://squash-mates.onrender.com", "http://localhost:3000", "https://squashmate.vercel.app", "https://squashmate.club", "https://www.squashmate.club"],
     credentials: true
 }));
 app.use(bodyParser.json());
@@ -27,5 +27,5 @@ app.use("/api/comments", commentsRoute);
 // start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
