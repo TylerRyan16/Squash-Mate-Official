@@ -1,3 +1,26 @@
+@thumb-w: 3rem;
+@thumb-h: 3rem;
+@thumb-pad: .5rem;
+@ot-w: 25rem;
+@ot-h: (@thumb-h * .5);
+@it-w: (@ot-w - (@thumb-pad * 2));
+@it-h: .25rem;
+
+@clr-list: hsl(45, 80%, 35%);
+
+@fb50: fade(black, 50);
+@fb35: fade(black, 35);
+@fb25: fade(black, 25);
+@fb15: fade(black, 15);
+@fw25: fade(white, 25);
+@fw15: fade(white, 15);
+
+@bg: #202428;
+@ot-bg: #303236;
+@it-bg: darken(@bg, 10);
+@thumb-bg: #66696B;
+
+
 .watch-video-page{
   width: 90%;
   height: 80%;
@@ -56,15 +79,47 @@
   padding-top: 2%;
 }
 
-.timeline-slider{
-  //appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px;
-  border-radius: 20px;
+.timeline-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 30px;
+  border-radius: 25px;
+  /*margin-bottom: 5vh;*/
+}
+.range-slider{
+  position: relative;
+  width: 100%;
+
+}
+.play-pause{
+  width: 30%;
+  align-self: right;
+}
+.slider-background{
+    position: absolute;
+    background: transparent;
+    width: 100%;
+    content: "";
+    height: 60%;
+    top: 20%;
+    pointer-events: none;
+  }
+
+.tick{
+  position: absolute;
+  background: black;
+  width: 0.5%;
+  height: 100%;
+  left: 50%;
+  pointer-events:all;
 }
 
-
-
+.tick:hover{
+  transform: scale(1.5);
+}
 
 //COMMENTING
 .comment-section{
@@ -122,11 +177,11 @@
 }
 
 .reply-icon{
-  width: 30%;
+  width: 100%;
 }
 
 .reactions {
-  width: 100%;
+  width: 30%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -156,6 +211,7 @@
 .comment-text {
   flex-grow: 0;
   flex-shrink: 0;
+  width: 70%;
  }
 
 .comment-button{
