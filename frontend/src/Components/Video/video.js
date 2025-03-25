@@ -85,6 +85,7 @@ const Video = () => {
     const [video, setVideo] = useState({});
     
     // comment stuff
+    const [videoComments, setVideoComments] = useState([]);
     const [username, setUsername] = useState("");
     const commentRef = useRef();
 
@@ -119,17 +120,20 @@ const Video = () => {
         fetchSpecificVideo(videoID);
     }, [])
 
+    const fetchComments = async (id) => {
+        try {
+            const comments = await getCommentsForVideo(id);
+            setVideoComments(comments);
+
+            console.log("comments: ", comments);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    console.log("Fetching comments for video ID:", videoID); 
+
     // Grab comments for the video
     useEffect(() => {
-        const fetchComments = async (id) => {
-            try {
-                const comments = await getCommentsForVideo(id);
-                console.log("comments: ", comments);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        console.log("Fetching comments for video ID:", videoID); 
         fetchComments(videoID);
     }, [video])
 
@@ -148,6 +152,7 @@ const Video = () => {
 
         try {
            await commentOnVideo(commentToSend);
+           fetchComments(videoID);
         } catch (error){
             console.error(error);
         }
