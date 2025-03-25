@@ -16,9 +16,6 @@ const api = axios.create({
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
     try {
-        console.log("attempting to create account in api.js");
-        console.log("userData in api.js: ", userData);
-
         const response = await api.post("/profiles/", userData);
         return response.data;
     } catch (error) {
@@ -72,7 +69,6 @@ export const getMyUsername = async () => {
 // GET ALL VIDEOS
 export const getAllVideos = async () => {
     try {
-        console.log("Getting videos in api");
         const response = await api.get("/videos/all-videos");
         return response.data;
     } catch (error){
@@ -124,9 +120,8 @@ export const uploadVideo = async (videoDetails) => {
 // COMMENT ON VIDEO
 export const commentOnVideo = async (data) => {
     try {
-        console.log("attempting to cmment on video.");
-        const response = await api.post("/comments", data);
-        
+        console.log("commenting on video with data: ", data);
+        const response = await api.post("/comments", data);        
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
@@ -142,9 +137,7 @@ export const commentOnVideo = async (data) => {
 // GET COMMETNS ON VIDEO
 export const getCommentsForVideo = async (videoID) => {
     try {
-        console.log("SAW VIDEO ID: ", videoID);
         const response = await api.get(`/comments/for-video/${videoID}`)
-        console.log("response: ", response);
         return response.data;
     } catch (error){
         if (error.response && error.response.data.error){

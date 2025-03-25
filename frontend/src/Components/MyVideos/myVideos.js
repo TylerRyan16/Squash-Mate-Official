@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getAllVideos, getMyUsername } from "../../services/api";
 import "./myVideos.scss";
 
-
 const MyVideos = () => {
-
   const [allVideos, setAllVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const filterRef = useRef(null);
+  const calendarRef = useRef(null);
 
   useEffect(() => {
     const grabMyUsername = async () => {
@@ -25,15 +27,29 @@ const MyVideos = () => {
       } catch (error) {
         console.log(error);
       }
-    }
-    
+    };
     grabMyUsername();
     fetchAllVideos();
   }, []);
 
+  // Close dropdown and calendar when clicking outside
   const filteredVideos = allVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setIsFilterOpen(false);
+      }
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setIsCalendarOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="page-container">
@@ -43,16 +59,48 @@ const MyVideos = () => {
         <div className="search-filter-container">
           <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
           <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
-          <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
+          
+          {/* Filter Icon and Dropdown */}
+          <div className="relative" ref={filterRef}>
+            <img 
+              src="/assets/icons/filter-icon.png" 
+              alt="filter icon" 
+              className="filter-icon cursor-pointer"
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            />
+            
+            {isFilterOpen && (
+              <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border z-50">
+                <h3 className="text-sm font-semibold text-gray-700 px-3 py-2 border-b">Filter by</h3>
+                <ul className="py-2">
+                  <li 
+                    className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
+                    onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                  >
+                    Date Posted
+                  </li>
+                  <li className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer">Match Type</li>
+                  <li className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer">Player Level</li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Calendar Dropdown */}
+        {isCalendarOpen && (
+          <div className="absolute mt-2 w-64 bg-white shadow-lg rounded-lg border z-50 p-4" ref={calendarRef}>
+            <input type="date" className="w-full p-2 border rounded" />
+          </div>
+        )}
 
         <div className="my-videos-display-area">
           <div className="rows">
           {filteredVideos.length > 0 ? (
               filteredVideos.map((video, index) => (
-                <div key={index} className="explore-video-card">
+                <div key={index} className="my-videos-video-card">
                   <a href={video.url} target="_blank" rel="noopener noreferrer">
-                    <img className="explore-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`} />
+                    <img className="my-videos-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`} />
                   </a>
                   <h5 className="video-title">{video.title}</h5>
                   <small className="video-title">{video.date_posted}</small>
