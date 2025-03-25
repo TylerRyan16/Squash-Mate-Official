@@ -22,7 +22,6 @@ const Explore = () => {
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
   return (
     <div className="page-container">
       <title>Explore</title>

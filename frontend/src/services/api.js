@@ -11,12 +11,11 @@ const api = axios.create({
     header: { "Content-Type": "application/json" },
 });
 
+// PROFILES
+
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
     try {
-        console.log("attempting to create account in api.js");
-        console.log("userData in api.js: ", userData);
-
         const response = await api.post("/profiles/", userData);
         return response.data;
     } catch (error) {
@@ -64,10 +63,12 @@ export const getMyUsername = async () => {
     }
 };
 
+
+// VIDEOS
+
 // GET ALL VIDEOS
 export const getAllVideos = async () => {
     try {
-        console.log("Getting videos in api");
         const response = await api.get("/videos/all-videos");
         return response.data;
     } catch (error){
@@ -98,7 +99,7 @@ export const getSpecificVideo = async (videoID) => {
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
     try {
-        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
+        const response = await api.post("/videos", videoDetails);
 
         console.log("Video uploaded: ", response.data);
         
@@ -114,22 +115,36 @@ export const uploadVideo = async (videoDetails) => {
     }
 }
 
+// COMMENTS
 
 // COMMENT ON VIDEO
-export const commentOnVideo = async (videoDetails) => {
+export const commentOnVideo = async (data) => {
     try {
-        const response = await axios.post("https://squash-mates.onrender.com/api/videos", videoDetails);
-
-        console.log("Video uploaded: ", response.data);
-        
+        console.log("commenting on video with data: ", data);
+        const response = await api.post("/comments", data);        
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
             alert(error.response.data.error);
         } else {
-            console.error("error creating profile: ", error);
-            alert("An error occurred while creating your profile. Please try again.");
+            console.error("error commenting on video: ", error);
+            alert("An error occurred while commenting on this video.");
         }
 
+    }
+}
+
+// GET COMMETNS ON VIDEO
+export const getCommentsForVideo = async (videoID) => {
+    try {
+        const response = await api.get(`/comments/for-video/${videoID}`)
+        return response.data;
+    } catch (error){
+        if (error.response && error.response.data.error){
+            alert(error.response.data.error);
+        } else {
+            console.error("error grabbing comments: ", error);
+            alert("An error occurred while grabbing the comments. Please try again.");
+        }
     }
 }

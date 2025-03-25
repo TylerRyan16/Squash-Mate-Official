@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllVideos } from "../../services/api";
+import { getAllVideos, getMyUsername } from "../../services/api";
 import "./myVideos.scss";
 
 
@@ -9,6 +9,15 @@ const MyVideos = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    const grabMyUsername = async () => {
+      try{
+        const username = await getMyUsername();
+        console.log("your username: ", username);
+      } catch (error){
+        console.log(error);
+      }
+    }
+
     const fetchAllVideos = async () => {
       try {
         const videos = await getAllVideos();
@@ -17,6 +26,8 @@ const MyVideos = () => {
         console.log(error);
       }
     }
+    
+    grabMyUsername();
     fetchAllVideos();
   }, []);
 

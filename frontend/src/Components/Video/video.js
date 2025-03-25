@@ -2,7 +2,7 @@ import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
-import { getSpecificVideo } from "../../services/api";
+import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername } from "../../services/api";
 
 
 function openCoach(evt, coachName) {
@@ -53,6 +53,7 @@ function playPause(){
 }
 
 var reply_comment;
+
 function showReply(commenter_name, comment){
     const reply_box = document.getElementById("reply-option")
     const reply_name = document.getElementById("reply-name")
@@ -68,19 +69,6 @@ function closeReply(){
     reply_box.style.display = 'none'
 }
 
-function postComment(){
-    /*const comment = document.getElementById("input-container").value
-    const comment_section = document.getElementById("tabcontent")
-    if (comment != ""){
-        bob_comments.push({
-            video_id : "1", 
-            commenter_name : "You", 
-            comment: comment, 
-            date_posted : "1/1/2025", 
-            parent_comment_id: null
-        })
-    }*/
-}
 var bob_comments = [{
     video_id : "1", 
     commenter_name : "bob_coach", 
@@ -145,31 +133,85 @@ parent_comment_id: null,
 time_stamp: 450
 
 }]
+
 const Video = () => {
+    // video stuff
     const { videoID } = useParams();
-    const [video, setVideo] = useState({
+    const [video, setVideo] = useState({});
+    
+    // comment stuff
+    const [username, setUsername] = useState("");
+    const commentRef = useRef();
 
-    });
-
+    // video player stuff
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const playerRef = useRef(null);
-    const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
-    
 
-    // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD
-    useEffect(() => {
+     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD & USERNAME
+     useEffect(() => {
         const fetchSpecificVideo = async (id) => {
             try {
                 const currentVideo = await getSpecificVideo(id);
                 setVideo(currentVideo);
+                console.log(`video details: ${currentVideo}`);
             } catch (error) {
                 console.log(error);
             }
         }
+
+        const getUser = async () => {
+            try{
+                const {username} = await getMyUsername();
+                console.log("username: ", username);
+                setUsername(username);
+            } catch (error){
+                console.error(error);
+            }
+        }
+        
+        getUser();
         fetchSpecificVideo(videoID);
     }, [])
 
+    // Grab comments for the video
+    useEffect(() => {
+        const fetchComments = async (id) => {
+            try {
+                const comments = await getCommentsForVideo(id);
+                console.log("comments: ", comments);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        console.log("Fetching comments for video ID:", videoID); 
+        fetchComments(videoID);
+    }, [video])
+
+    
+    // POST COMMENT
+    const postComment = async () => {
+        const commentText = commentRef.current.value;
+
+        const commentToSend = {
+            id: videoID,
+            commenterName: username,
+            comment: commentText,
+            date_posted: new Date().toLocaleDateString('en-CA'),
+            parent_comment_id: null,
+        };
+
+        try {
+           await commentOnVideo(commentToSend);
+        } catch (error){
+            console.error(error);
+        }
+
+        console.log("Comment details: ", commentToSend);
+    }
+
+    const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
+    
 
     const handlePlayPause = () => {
         setPlaying((prev) => !prev);
@@ -276,8 +318,9 @@ const Video = () => {
                 <div className='comment-flex'>
                 <h3>Coaching Feed</h3>
                 <div class="coach-tabs">
+                            <button className="tablinks"></button>
                     {users_commented.map((user, index) => (
-                            <button class="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
+                            <button className="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
                             
                     ))}
                         </div>
@@ -298,7 +341,7 @@ const Video = () => {
                                     </div>
                                     <div className="horizontal-flex">
                                     <div className='comment-text'>
-                                        <p>{comment_info.comment}</p>
+                                        <p id="comment">{comment_info.comment}</p>
                                     </div>
                                         <div className="reactions">
                                             <button className="reply-icon" onClick={() => showReply(comment_info.commenter_name, comment_info.comment)}>
@@ -334,7 +377,7 @@ const Video = () => {
                     </div>
                     {/* User types comment here */}
                     <div className="post-section">
-                        <input type="text" className='input-container' id = 'input-container' placeholder="Add Comment.."></input>
+                        <input type="text" className='input-container' id = 'input-container' placeholder="Add Comment.."  ref={commentRef}></input>
                         <button className="comment-button" onClick={() => postComment()}>Post</button>
                     </div>
                     
