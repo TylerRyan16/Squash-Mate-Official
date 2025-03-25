@@ -6,43 +6,27 @@ import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername } 
 
 
 function openCoach(evt, coachName) {
-    var i, tabcontent, tablinks, timestamps;
+    // var i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    timestamps = document.getElementsByClassName("timestamps");
-    console.log(timestamps);
-    for (i = 0; i < timestamps.length; i++) {
-        timestamps[i].style.display = "none";
-    }
+    // // Get all elements with class="tabcontent" and hide them
+    // tabcontent = document.getElementsByClassName("tabcontent");
+    // for (i = 0; i < tabcontent.length; i++) {
+    //     tabcontent[i].style.display = "none";
+    // }
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    // // Get all elements with class="tablinks" and remove the class "active"
+    // tablinks = document.getElementsByClassName("tablinks");
+    // for (i = 0; i < tablinks.length; i++) {
+    //     tablinks[i].className = tablinks[i].className.replace(" active", "");
+    // }
 
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(coachName).style.display = "inline";
-    evt.currentTarget.className += " active";
-    document.getElementById("timestamp" + coachName).style.display = "inline";
+    // // Show the current tab, and add an "active" class to the button that opened the tab
+    // document.getElementById(coachName).style.display = "inline";
+    // evt.currentTarget.className += " active";
 
 }
 
 function changeHeart() {
-    const heart = document.getElementById("heart-icon");
-    if (heart.src.indexOf("/assets/icons/heart-empty.png") != -1) {
-        heart.src = "/assets/icons/heart-full.png";
-    }
-    else {
-        heart.src = "/assets/icons/heart-empty.png"
-    }
-}
-
-function playPause() {
     const heart = document.getElementById("heart-icon");
     if (heart.src.indexOf("/assets/icons/heart-empty.png") != -1) {
         heart.src = "/assets/icons/heart-full.png";
@@ -92,47 +76,6 @@ var bob_comments = [{
     parent_comment_id: null,
     time_stamp: 422
 
-}, {
-    video_id: "1",
-    commenter_name: "bob_coach",
-    comment: "Bad serve",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 400
-}, {
-    video_id: "1",
-    commenter_name: "sarah_coach",
-    comment: "You could try harder here",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 502
-},
-{
-    video_id: "1",
-    commenter_name: "steve_coach",
-    comment: "Yeah also bad...",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 50
-
-},
-
-{
-    video_id: "1",
-    commenter_name: "bob_coach",
-    comment: "I liked this move",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 480
-},
-{
-    video_id: "1",
-    commenter_name: "steve_coach",
-    comment: "That was good form",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 450
-
 }]
 
 const Video = () => {
@@ -143,6 +86,7 @@ const Video = () => {
     // comment stuff
     const [videoComments, setVideoComments] = useState([]);
     const [username, setUsername] = useState("");
+    const [noComments, setNoComments] = useState(true);
     const commentRef = useRef();
 
     // video player stuff
@@ -156,7 +100,6 @@ const Video = () => {
             try {
                 const currentVideo = await getSpecificVideo(id);
                 setVideo(currentVideo);
-                console.log(`video details: ${currentVideo}`);
             } catch (error) {
                 console.log(error);
             }
@@ -165,7 +108,6 @@ const Video = () => {
         const getUser = async () => {
             try {
                 const { username } = await getMyUsername();
-                console.log("username: ", username);
                 setUsername(username);
             } catch (error) {
                 console.error(error);
@@ -180,13 +122,15 @@ const Video = () => {
         try {
             const comments = await getCommentsForVideo(id);
             setVideoComments(comments);
-
-            console.log("comments: ", comments);
+            if (comments.length === 0) {
+                setNoComments(true);
+            } else {
+                setNoComments(false);
+            }
         } catch (error) {
             console.error(error);
         }
     }
-    console.log("Fetching comments for video ID:", videoID);
 
     // Grab comments for the video
     useEffect(() => {
@@ -194,7 +138,7 @@ const Video = () => {
     }, [video])
 
 
-    // POST COMMENT
+    // COMMENT LOGIC
     const postComment = async () => {
         const commentText = commentRef.current.value;
 
@@ -213,11 +157,7 @@ const Video = () => {
             console.error(error);
         }
 
-        console.log("Comment details: ", commentToSend);
     }
-
-    const users_commented = ["bob_coach", "sarah_coach", "steve_coach"]
-
 
     const handlePlayPause = () => {
         setPlaying((prev) => !prev);
@@ -237,16 +177,11 @@ const Video = () => {
         const newProgress = time;
         setProgress(newProgress / playerRef.current?.getDuration());
         playerRef.current.seekTo(newProgress);
-        const comment = document.getElementById(time);
-        bob_comments.forEach(comment_info =>
-            document.getElementById(comment_info.time_stamp).style.borderColor = "#f1f1f1"
-        );
-        comment.style.borderColor = "black";
     };
 
     const commentRatio = (time) => {
         const newProgress = time;
-        return (newProgress / playerRef.current?.getDuration()).toFixed(2);
+        return newProgress / playerRef.current?.getDuration();
     }
 
     // format time
@@ -255,7 +190,6 @@ const Video = () => {
         const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
         return `${mins}:${secs}`;
     };
-
 
 
     return (
@@ -273,43 +207,34 @@ const Video = () => {
                                 controls={false}
                                 width="720px"
                                 height="405px"
-                                onPlay={() => console.log('Video started')}
                                 onProgress={handleProgress}
                             />
 
                         </div>
-
                         <div className="controls">
-                            <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
+                            <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
 
                             {/* Timeline */}
-                            <div className="range-slider">
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    step={0.01}
-                                    value={progress}
-                                    onChange={handleSeekChange}
-                                    className="timeline-slider"
-                                    list="tickmarks"
-                                ></input>
-                                <div className="slider-background">
-                                    {users_commented.map((user, index) => (
-                                        <>
-                                            <div className="timestamps" id={"timestamp" + index}>
-                                                {bob_comments.filter(comment_info => comment_info.commenter_name === user).map(comment_info => (
-                                                    <>
-                                                        <div className="tick" style={{ left: (commentRatio(comment_info.time_stamp) * 100 + 0.5) + "%" }} onClick={() => jumpToComment(comment_info.time_stamp)}></div></>
 
-                                                ))}
-                                            </div>
-                                        </>
-                                    ))}
+                            <input
+                                type="range"
+                                min={0}
+                                max={1}
+                                step={0.01}
+                                value={progress}
+                                onChange={handleSeekChange}
+                                className="timeline-slider"
+                                list="tickmarks"
+                            ></input>
+                            <datalist id="tickmarks">
+                                {bob_comments.map(comment_info => (
+                                    <>
+                                        {/* {console.log("In here now")} */}
+                                        {/* <option value={console.log((comment_info.time_stamp/700).toString())}></option></> */}
+                                        <option value={""}></option></>
 
-                                </div>
-                            </div>
-
+                                ))}
+                            </datalist>
 
 
                             {/* display current time */}
@@ -321,75 +246,60 @@ const Video = () => {
 
                     {/* COMMENT SECTION */}
                     <div className="comment-section">
-                        <div className='comment-flex'>
-                            <h3>Coaching Feed</h3>
+                        <div className="comment-section-top-bar">
+                            <h2>Coaching Feed</h2>
                             <div class="coach-tabs">
                                 <button className="tablinks"></button>
-                                {users_commented.map((user, index) => (
+
+                                {/* {users_commented.map((user, index) => (
                                     <button className="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
 
-                                ))}
+                                ))} */}
                             </div>
-
-                            {users_commented.map((user, index) => (<>
-                                <div id={index} className="tabcontent">
-                                    <h3>{user}</h3>
-                                    {bob_comments.filter(comment_info => comment_info.commenter_name === user).map(comment_info => (
-                                        <><div className='comment' id={comment_info.time_stamp} onClick={() => jumpToComment(comment_info.time_stamp)}>
-                                            <div className='vertical-flex'>
-                                                <div className='commenter-info'>
-                                                    <div className='info-flex'>
-                                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-pic"></img>
-                                                        <p>{comment_info.commenter_name}</p>
-                                                        <p className="time-stamp">{formatTime(comment_info.time_stamp)}</p>
-                                                    </div>
-
-                                                </div>
-                                                <div className="horizontal-flex">
-                                                    <div className='comment-text'>
-                                                        <p id="comment">{comment_info.comment}</p>
-                                                    </div>
-                                                    <div className="reactions">
-                                                        <button className="reply-icon" onClick={() => showReply(comment_info.commenter_name, comment_info.comment)}>
-                                                            <img className="icon" src='/assets\icons\reply.png' alt='' />
-                                                        </button>
-                                                        <button onClick={() => changeHeart()} className="reply-icon">
-                                                            <img id="heart-icon" className="icon" src="/assets/icons/heart-empty.png" alt='' />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div></>
-                                    ))}
-
-                                </div></>
-                            ))}
-                            {/* This only shows if you click Reply*/}
-                            <div className="reply-option" id='reply-option'>
-                                <button onClick={() => closeReply()} className="x-button">
-                                    <img className="icon" src='/assets/icons/x-icon.png' />
-                                </button>
-                                <div className='comment'>
-                                    <div className='vertical-flex'>
-                                        <div className='reply-commenter-info'>
-                                            <img src='/assets/squash-guy.jpg' alt='profile cover' className="reply-pic"></img>
-                                            <p id='reply-name'></p>
-                                        </div>
-                                        <p id='reply-comment'></p>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            {/* User types comment here */}
-                            <div className="post-section">
-                                <input type="text" className='input-container' id='input-container' placeholder="Add Comment.." ref={commentRef}></input>
-                                <button className="comment-button" onClick={() => postComment()}>Post</button>
-                            </div>
-
-
 
                         </div>
+
+
+
+                        <div className="comments-area">
+                            {noComments && <h4 className='no-comments-text'>No Comments to Display</h4>}
+
+                            {videoComments.map(commentInfo => (
+                                <div className="specific-comment">
+                                    <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+
+                                    <div className="comment-content">
+                                        <div className="comment-top-bar">
+                                            <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
+                                            <p className="date-posted">{commentInfo.date_posted.slice(0, 10)}</p>
+                                        </div>
+
+                                        <div className="comment">
+                                            <p>{commentInfo.comment}</p>
+                                        </div>
+
+                                        <p className="reply-button">Reply</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* User types comment here */}
+                        <div className="post-section">
+                            <div className="input-container">
+                                <textarea
+                                    className='comment-input'
+                                    id='input-container'
+                                    placeholder="Add Comment.."
+                                    ref={commentRef}
+                                    maxLength={200}
+                                />
+                            </div>
+                            <button className="comment-button" onClick={() => postComment()}>Post</button>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
