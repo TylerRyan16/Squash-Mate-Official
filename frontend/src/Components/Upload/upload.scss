@@ -69,7 +69,7 @@
     height: 100%;
     margin: 0 auto;
     display: flex;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 
@@ -81,7 +81,8 @@
     height: 50%;
     align-self: flex-start;
     border: none;
-    overflow: hidden;
+    overflow: scroll;
+
 }
 
 
@@ -130,7 +131,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: hidden;
+    overflow-y: scroll;
     gap: 2%;
 }
 

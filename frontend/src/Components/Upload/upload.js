@@ -1,8 +1,9 @@
 import './upload.scss';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { uploadVideo } from "../../services/api";
 import { getMyUsername } from "../../services/api";
+import ReactPlayer from 'react-player';
 
 
 const Upload = () => {
@@ -10,6 +11,12 @@ const Upload = () => {
 
     const [thumbnail, setThumbnail] = useState('');
     const [continuePressed, setContinuePressed] = useState(false);
+    const [continue2Pressed, setContinue2Pressed] = useState(false);
+    const playerRef = useRef(null);
+    const [playing, setPlaying] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+
     const [videoDetails, setVideoDetails] = useState({
         title: "",
         description: "",
@@ -69,6 +76,14 @@ const Upload = () => {
         }
     };
 
+    const handleContinue2Pressed = () => {
+        if (videoDetails.title && videoDetails.url && videoDetails.type && videoDetails.length) {
+            setContinue2Pressed(true);
+        } else {
+            alert("Please fill in all fields!");
+        }
+    };
+
     const extractYouTubeID = (url) => {
         const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^&?/]+)/;
         const match = url.match(regex);
@@ -98,6 +113,9 @@ const Upload = () => {
             console.log(error);
         }
     };
+    const handleProgress = (state) => {
+        setProgress(state.progress);
+    };
 
     return (
         <div className="page-container">
@@ -105,7 +123,7 @@ const Upload = () => {
 
 
             {/* PAGE ONE */}
-            {!continuePressed && <div className="page-one">
+            {!continuePressed && !continue2Pressed && <div className="page-one">
                 {/* LINK */}
                 <div className="input-container">
                     <label className="floating-label">URL (required)</label>
@@ -169,7 +187,7 @@ const Upload = () => {
 
 
             {/* PAGE TWO */}
-            {continuePressed && <div className="page-two">
+            {continuePressed && !continue2Pressed && <div className="page-two">
                 {/* LEFT */}
                 <div className='left-area'>
                     <button className="back-button"
@@ -336,7 +354,7 @@ const Upload = () => {
                                 onChange={handleVideoInput}
                             ></input>
                         </div> */}
-                        <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
+                        <button className="continue-button" onClick={handleContinue2Pressed}>Continue</button>
 
                     </div>
 
@@ -350,8 +368,26 @@ const Upload = () => {
                         <p id="video-title">{videoDetails.title}</p>
                         <p id="uploader">Uploader Name</p>
                     </div>
+
                 </div>
             </div>}
+            {/*PAGE THREE*/}
+            {continuePressed && continue2Pressed && <div className="page-three">
+                <button className="back-button"
+                        onClick={() => setContinue2Pressed(prevState => !prevState)}
+                    >Back</button>
+                     {/* YouTube Video Player */}
+                        <ReactPlayer
+                            ref={playerRef}
+                            url={videoDetails.url}
+                            playing={playing}
+                            controls={false}
+                            width="720px"
+                            height="405px"
+                            onProgress={handleProgress}
+                                                />
+                <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
+                </div>}
         </div>
     );
 }
