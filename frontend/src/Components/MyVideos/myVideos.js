@@ -4,6 +4,7 @@ import "./myVideos.scss";
 
 const MyVideos = () => {
   const [allVideos, setAllVideos] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isMatchTypeOpen, setIsMatchTypeOpen] = useState(false);
@@ -16,6 +17,15 @@ const MyVideos = () => {
   const playerLevelRef = useRef(null);
 
   useEffect(() => {
+    const grabMyUsername = async () => {
+      try{
+        const username = await getMyUsername();
+        console.log("your username: ", username);
+      } catch (error){
+        console.log(error);
+      }
+    }
+
     const fetchAllVideos = async () => {
       try {
         const videos = await getAllVideos();
@@ -25,7 +35,12 @@ const MyVideos = () => {
       }
     };
     fetchAllVideos();
+    grabMyUsername();
   }, []);
+
+  const filteredVideos = allVideos.filter((video) =>
+    video.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -75,8 +90,8 @@ const MyVideos = () => {
       <h1>My Videos Page</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="search-input" placeholder="Search..." />
-          <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
+        <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
+        <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
 
           <div className="relative" ref={filterRef}>
             <img 
@@ -148,6 +163,23 @@ const MyVideos = () => {
               </button>
             </div>
           )}
+        </div>
+        <div className="my-videos-display-area">
+          <div className="rows">
+          {filteredVideos.length > 0 ? (
+              filteredVideos.map((video, index) => (
+                <div key={index} className="my-videos-video-card">
+                  <a href={video.url} target="_blank" rel="noopener noreferrer">
+                    <img className="my-videos-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`} />
+                  </a>
+                  <h5 className="video-title">{video.title}</h5>
+                  <small className="video-title">{video.date_posted}</small>
+                </div>
+              ))
+            ) : (
+              <p>No videos found</p>
+            )}
+          </div>
         </div>
       </main>
     </div>
