@@ -7,8 +7,14 @@ const MyVideos = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isMatchTypeOpen, setIsMatchTypeOpen] = useState(false);
+  const [isPlayerLevelOpen, setIsPlayerLevelOpen] = useState(false);
+  const [selectedPlayerLevel, setSelectedPlayerLevel] = useState("");
+  const [selectedMatchType, setSelectedMatchType] = useState("");
   const filterRef = useRef(null);
   const calendarRef = useRef(null);
+  const matchTypeRef = useRef(null);
+  const playerLevelRef = useRef(null);
 
   useEffect(() => {
     const grabMyUsername = async () => {
@@ -28,21 +34,27 @@ const MyVideos = () => {
         console.log(error);
       }
     };
-    grabMyUsername();
     fetchAllVideos();
+    grabMyUsername();
   }, []);
 
-  // Close dropdown and calendar when clicking outside
   const filteredVideos = allVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (filterRef.current && !filterRef.current.contains(event.target)) {
+      if (
+        filterRef.current && !filterRef.current.contains(event.target) &&
+        calendarRef.current && !calendarRef.current.contains(event.target) &&
+        matchTypeRef.current && !matchTypeRef.current.contains(event.target) &&
+        playerLevelRef.current && !playerLevelRef.current.contains(event.target)
+      ) {
         setIsFilterOpen(false);
-      }
-      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
         setIsCalendarOpen(false);
+        setIsMatchTypeOpen(false);
+        setIsPlayerLevelOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -51,49 +63,107 @@ const MyVideos = () => {
     };
   }, []);
 
+  const handleFilterClick = (filterType) => {
+    setIsCalendarOpen(filterType === 'Date Posted' ? !isCalendarOpen : false);
+    setIsMatchTypeOpen(filterType === 'Match Type' ? !isMatchTypeOpen : false);
+    setIsPlayerLevelOpen(filterType === 'Player Level' ? !isPlayerLevelOpen : false);
+  };
+
+  const handleMatchTypeClick = (type) => {
+    setSelectedMatchType(type);
+  };
+
+  const handlePlayerLevelClick = (level) => {
+    setSelectedPlayerLevel(level);
+  };
+
+  const handleFilterIconClick = () => {
+    setIsFilterOpen(!isFilterOpen);
+    setIsCalendarOpen(false);
+    setIsMatchTypeOpen(false);
+    setIsPlayerLevelOpen(false);
+  };
+
   return (
     <div className="page-container">
       <title>My Videos</title>
       <h1>My Videos Page</h1>
       <main>
         <div className="search-filter-container">
-          <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
-          <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
-          
-          {/* Filter Icon and Dropdown */}
+        <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
+        <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
+
           <div className="relative" ref={filterRef}>
             <img 
               src="/assets/icons/filter-icon.png" 
               alt="filter icon" 
               className="filter-icon cursor-pointer"
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              onClick={handleFilterIconClick}
             />
-            
             {isFilterOpen && (
-              <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border z-50">
-                <h3 className="text-sm font-semibold text-gray-700 px-3 py-2 border-b">Filter by</h3>
-                <ul className="py-2">
-                  <li 
-                    className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
-                    onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-                  >
-                    Date Posted
-                  </li>
-                  <li className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer">Match Type</li>
-                  <li className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer">Player Level</li>
+              <div className="dropdown-menu">
+                <h3 className="dropdown-title">Filter by</h3>
+                <ul>
+                  <li onClick={() => handleFilterClick('Date Posted')}>Date Posted</li>
+                  <li onClick={() => handleFilterClick('Match Type')}>Match Type</li>
+                  <li onClick={() => handleFilterClick('Player Level')}>Player Level</li>
                 </ul>
               </div>
             )}
           </div>
+
+          {isCalendarOpen && (
+            <div className="calendar-container" ref={calendarRef}>
+              <input type="date" className="calendar-input" />
+            </div>
+          )}
+
+          {isMatchTypeOpen && (
+            <div className="match-type-container" ref={matchTypeRef}>
+              <button 
+                className={`match-type-button ${selectedMatchType === 'Match' ? 'selected' : ''}`} 
+                onClick={() => handleMatchTypeClick('Match')}
+              >
+                Match
+              </button>
+              <button 
+                className={`match-type-button ${selectedMatchType === 'Game' ? 'selected' : ''}`} 
+                onClick={() => handleMatchTypeClick('Game')}
+              >
+                Game
+              </button>
+              <button 
+                className={`match-type-button ${selectedMatchType === 'Casual' ? 'selected' : ''}`} 
+                onClick={() => handleMatchTypeClick('Casual')}
+              >
+                Casual
+              </button>
+            </div>
+          )}
+
+          {isPlayerLevelOpen && (
+            <div className="player-level-container" ref={playerLevelRef}>
+              <button 
+                className={`player-level-button ${selectedPlayerLevel === 'Beginner' ? 'selected' : ''}`} 
+                onClick={() => handlePlayerLevelClick('Beginner')}
+              >
+                Beginner
+              </button>
+              <button 
+                className={`player-level-button ${selectedPlayerLevel === 'Intermediate' ? 'selected' : ''}`} 
+                onClick={() => handlePlayerLevelClick('Intermediate')}
+              >
+                Intermediate
+              </button>
+              <button 
+                className={`player-level-button ${selectedPlayerLevel === 'Professional' ? 'selected' : ''}`} 
+                onClick={() => handlePlayerLevelClick('Professional')}
+              >
+                Professional
+              </button>
+            </div>
+          )}
         </div>
-
-        {/* Calendar Dropdown */}
-        {isCalendarOpen && (
-          <div className="absolute mt-2 w-64 bg-white shadow-lg rounded-lg border z-50 p-4" ref={calendarRef}>
-            <input type="date" className="w-full p-2 border rounded" />
-          </div>
-        )}
-
         <div className="my-videos-display-area">
           <div className="rows">
           {filteredVideos.length > 0 ? (
