@@ -377,6 +377,8 @@ const Upload = () => {
                         onClick={() => setContinue2Pressed(prevState => !prevState)}
                     >Back</button>
                      {/* YouTube Video Player */}
+                     <h3>Add Marks to Video</h3>
+                     <div className="upload-video-centered" >
                         <ReactPlayer
                             ref={playerRef}
                             url={videoDetails.url}
@@ -385,7 +387,32 @@ const Upload = () => {
                             width="720px"
                             height="405px"
                             onProgress={handleProgress}
-                                                />
+                                                /></div>
+                    <div className = "point-controls">
+                        <button className="point-button">+</button>
+                        <button className="point-button">-</button>
+                        <div className="point-display">
+
+                        </div>
+                        <button className="point-button">+</button>
+                        <button className="point-button">-</button>
+                    </div>
+                    <div className="call-controls">
+                        <div className="player1-calls">
+                            <button className="call-button">Yes Let</button>
+                            <button className="call-button">No Let</button>
+                            <button className="call-button">Stroke</button>
+                            <button className="call-button">Fault</button>
+                        </div>
+                        {/*<hr></hr>*/}
+                        <div className="player2-calls">
+                            <button className="call-button">Yes Let</button>
+                            <button className="call-button">No Let</button>
+                            <button className="call-button">Stroke</button>
+                            <button className="call-button">Fault</button>
+                        </div>
+                            
+                    </div>
                 <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
                 </div>}
         </div>
