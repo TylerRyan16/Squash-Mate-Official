@@ -1,59 +1,64 @@
-.watch-video-page {
-  width: 90%;
-  height: 80%;
+.watch-video-page-column {
+  width: 95%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   margin: auto;
-  margin-bottom: 8%;
   overflow: hidden;
 }
 
 #page-title {
-  align-self: flex-start;
+  text-align: start;
+  margin: 0;
+  padding: 5px;
+  width: 92%;
+  margin: auto;
+
 }
 
-.centered-video-page {
+.video-comments-section-row {
   width: 100%;
-  height: 100%;
+  height: 93%;
   display: flex;
-  margin: auto;
   justify-content: center;
   gap: 25px;
 }
 
 .video-area {
-  background-color: #9b9b9b;
-  border-radius: 12px;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 75%;
   height: 100%;
-  justify-content: space-between;
 }
 
-.video-display {
+.react-player-wrapper {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-end;
-  width: 90%;
-  height: 75%;
-  margin: auto;
-  margin-top: 0;
-  margin-bottom: 0;
+  width: 100%;
   padding: 0;
+  padding-top: 56.25%;
+
 }
 
+.react-player {
+  position: absolute; 
+  left: auto;
+  top: 0;
+}
 
 .controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  width: 90%;
-  height: 25%;
-  margin: auto;
-  margin-top: 0;
-  padding-top: 2%;
+  width: 100%;
+  height:7%;
 }
 
 .timeline-slider {
@@ -71,7 +76,7 @@
 .comment-section {
   background-color: #9b9b9b;
   border-radius: 12px;
-  width: 25%;
+  width: 30%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -83,16 +88,21 @@
 
 .comment-section-top-bar {
   width: 100%;
-  height: 10%;
+  height: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+#coaching-header{
+  margin: 0;
+  padding: 5px;
+}
+
 .comments-area {
-  width: 95%;
-  height: 75%;
-  overflow-y: scroll;
+  width: 98%;
+  height: 80%;
+  overflow-y: auto;
   scrollbar-width: thin;
   background-color: #888888;
   border-radius: 16px;
@@ -107,7 +117,7 @@
   background-color: azure;
   border-radius: 16px;
   width: 100%;
-  height: 25%;
+  height: 20%;
   display: flex;
   flex-direction: row;
   margin-bottom: 5px;
@@ -116,12 +126,13 @@
 
 .comment-profile-pic {
   width: 15%;
-  height: auto;
+  height: 50%;
   background-color: lightgray;
   border-radius: 64px;
+  margin-top: 1%;
 }
 
-.comment-content{
+.comment-div{
   width: 100%;
   height: 100%;
   padding-left: 1%;
@@ -158,16 +169,40 @@
   height: 55%;
   overflow: hidden;       
   text-overflow: ellipsis;  
+  font-size: clamp(10px, 1vw, 14px);
+}
+
+.comment-button-area{
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.right-comment-button-area{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+}
+
+.like-button{
+  height: 100%;
+}
+
+.view-more-button{
+  font-size: clamp(8px, 1vw, 12px);
+}
+
+.reply-icon{
+  height: 75%;
 }
 
 .reply-button{
-  width: auto;
-  position: absolute;
-  bottom: 4%;
-  right: 3%;
   cursor: pointer;
   font-weight: 500px;
-  font-size: clamp(16px, 1vw, 32px);
+  font-size: clamp(12px, 1vw, 16px);
   margin: 0;
   padding: 0;
 

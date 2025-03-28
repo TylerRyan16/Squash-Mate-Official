@@ -194,28 +194,32 @@ const Video = () => {
 
     return (
         <div className="page-container">
-            <div className="watch-video-page">
-                <h1 id="page-title">Watch Video</h1>
-                <div className="centered-video-page">
+            <h1 id="page-title">Watch Video</h1>
+            <div className="watch-video-page-column">
+                <div className="video-comments-section-row">
+
+
+
                     <div className="video-area">
-                        <div className="video-display">
+
+
+                        <div className="react-player-wrapper">
                             {/* YouTube Video Player */}
                             <ReactPlayer
                                 ref={playerRef}
                                 url={video.url}
                                 playing={playing}
                                 controls={false}
-                                width="720px"
-                                height="405px"
+                                width="95%"
+                                height="90%"
+                                className="react-player"
                                 onProgress={handleProgress}
                             />
-
                         </div>
+
+
                         <div className="controls">
                             <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-
-                            {/* Timeline */}
-
                             <input
                                 type="range"
                                 min={0}
@@ -229,25 +233,26 @@ const Video = () => {
                             <datalist id="tickmarks">
                                 {bob_comments.map(comment_info => (
                                     <>
-                                        {/* {console.log("In here now")} */}
-                                        {/* <option value={console.log((comment_info.time_stamp/700).toString())}></option></> */}
+
                                         <option value={""}></option></>
 
                                 ))}
                             </datalist>
 
 
-                            {/* display current time */}
                             <span>
                                 {formatTime(progress * (playerRef.current?.getDuration() || 0))} / {formatTime(playerRef.current?.getDuration() || 0)}
                             </span>
                         </div>
+
+
                     </div>
+
 
                     {/* COMMENT SECTION */}
                     <div className="comment-section">
                         <div className="comment-section-top-bar">
-                            <h2>Coaching Feed</h2>
+                            <h2 id="coaching-header">Coaching Feed</h2>
                             <div class="coach-tabs">
                                 <button className="tablinks"></button>
 
@@ -268,7 +273,7 @@ const Video = () => {
                                 <div className="specific-comment">
                                     <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
 
-                                    <div className="comment-content">
+                                    <div className="comment-div">
                                         <div className="comment-top-bar">
                                             <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
                                             <p className="date-posted">{commentInfo.date_posted.slice(0, 10)}</p>
@@ -278,7 +283,17 @@ const Video = () => {
                                             <p>{commentInfo.comment}</p>
                                         </div>
 
-                                        <p className="reply-button">Reply</p>
+                                        <div className="comment-button-area">
+                                            <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
+
+                                            <p className="view-more-button">View More</p>
+
+                                            <div className="right-comment-button-area">
+                                                <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
+                                                <p className="reply-button">Reply</p>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             ))}

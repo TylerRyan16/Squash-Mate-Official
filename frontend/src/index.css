@@ -19,7 +19,7 @@ code {
   flex-direction: column;
   width: 100vw;
   max-width: 100%;
-  height: 100vh;
+  height: 93vh;
 }
 
 .page-header{
@@ -50,28 +50,25 @@ code {
 
 .floating-label{
   position: absolute;
+  left: 0;
+  top: 0;
   font-size: 12px;
   font-weight: 600;
-  width: fit-content;
   opacity: 1;
   color: #4c4b51;
-  text-align: left;
-  top: 5px;
-  left: 5px;
-  padding: 0;
-  margin: 0;
 }
 
 .input-zone {
   width: 100%;
   padding-left: 10px;
-  padding-top: clamp(20px, 1.5vw, 35px);
+  padding-top: clamp(20px, 3vw, 30px);
   padding-bottom: clamp(5px, 1vw, 10px);
   border-radius: 8px;
   box-sizing: border-box;
   border: 2px solid grey;
   background-color: #b5d4f3;
   font-size: clamp(20px, 1vw, 24px);
+  margin: 0px 0px;
 }
 
 .profile-label{
