@@ -392,6 +392,13 @@ const Upload = () => {
                         <button className="point-button">+</button>
                         <button className="point-button">-</button>
                         <div className="point-display">
+                            <div className="player1-color"></div>
+                            <p className='player-name'>Name1</p>
+                            <div className="player1-serve-num">1</div>
+                            <div className='score-background'><p className="score">5 - 2</p></div>
+                            <div className="player2-serve-num">0</div>
+                            <p className='player-name'>Name2</p>
+                            <div className="player2-color"></div>
 
                         </div>
                         <button className="point-button">+</button>
