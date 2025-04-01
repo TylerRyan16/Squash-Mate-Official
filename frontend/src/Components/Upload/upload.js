@@ -415,7 +415,7 @@ const Upload = () => {
                             </div>
                         </div>
                     </div>
-                        <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
+                        <button className="continue2-button" onClick={handleContinue2Pressed}>Continue</button>
 
                     </div>
 
