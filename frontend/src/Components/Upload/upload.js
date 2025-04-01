@@ -32,6 +32,21 @@ const Upload = () => {
         player2_color: "#000000",
         poster: "",
         thumbnail: "",
+        player1_score: 0,
+        player2_score: 0,
+        game_details:{
+            player1:{
+            "Yes Let":[],
+            "No Let":[],
+            "Stroke":[],
+            "Fault":[]},
+            player2:{
+                "Yes Let":[],
+                "No Let":[],
+                "Stroke":[],
+                "Fault":[]
+            }
+        }
     });
 
     useEffect(() => {
@@ -89,6 +104,45 @@ const Upload = () => {
         const match = url.match(regex);
         return match ? match[1] : null;
     };
+
+    const increaseScore = (player_score, score_ref) => {
+        document.getElementById(player_score).textContent ++;
+        score_ref ++;
+        const winner = checkGameWin();
+        console.log(winner);
+        if(winner){
+            document.getElementById(winner+"_wins").textContent ++;
+            document.getElementById("player1_score").textContent = 0;
+            document.getElementById("player2_score").textContent = 0;
+        }
+    }
+    const decreaseScore = (player_score) => {
+        if(document.getElementById(player_score).textContent > 0){
+            document.getElementById(player_score).textContent --;
+            videoDetails.player1_score --;
+        }
+        const winner = checkGameWin();
+        if(winner){
+            document.getElementById(winner+"_wins").textContent ++;
+            document.getElementById("player1_score").textContent = 0;
+            document.getElementById("player2_score").textContent = 0;
+        }
+        
+    }
+
+    const checkGameWin = ()=>{
+        // check player1 win
+        console.log(videoDetails.player1_score);
+        if(videoDetails.player1_score >= 11 && videoDetails.player1_score-videoDetails.player2_score >= 2){
+            console.log("WIN");
+            return "player1";
+        }
+        //check player2 win
+        if(videoDetails.player2_score >= 11 && videoDetails.player2_score-videoDetails.player1_score >= 2){
+            return "player2";
+        }
+        return null;
+    }
 
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
@@ -389,34 +443,34 @@ const Upload = () => {
                             onProgress={handleProgress}
                                                 /></div>
                     <div className = "point-controls">
-                        <button className="point-button">+</button>
-                        <button className="point-button">-</button>
+                        <button className="point-button" onClick={() => increaseScore("player1_score", videoDetails.player1_score)}>+</button>
+                        <button className="point-button" onClick={() => decreaseScore("player1_score")}>-</button>
                         <div className="point-display">
                             <div className="player1-color"></div>
-                            <p className='player-name'>Name1</p>
-                            <div className="player1-serve-num">1</div>
-                            <div className='score-background'><p className="score">5 - 2</p></div>
-                            <div className="player2-serve-num">0</div>
-                            <p className='player-name'>Name2</p>
+                            <p className='player-name'>{videoDetails.player1_name}</p>
+                            <div className="player1_wins">0</div>
+                            <div className='score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
+                            <div className="player2_wins">0</div>
+                            <p className='player-name'>{videoDetails.player2_name}</p>
                             <div className="player2-color"></div>
 
                         </div>
-                        <button className="point-button">+</button>
-                        <button className="point-button">-</button>
+                        <button className="point-button" onClick={() => increaseScore("player2_score", videoDetails.player2_score)}>+</button>
+                        <button className="point-button"onClick={() => decreaseScore("player2_score")}>-</button>
                     </div>
                     <div className="call-controls">
                         <div className="player1-calls">
-                            <button className="call-button">Yes Let</button>
-                            <button className="call-button">No Let</button>
-                            <button className="call-button">Stroke</button>
-                            <button className="call-button">Fault</button>
+                            <button className="call-button" onClick={()=>(videoDetails.game_details.player1["Yes Let"].push(playerRef.current?.getCurrentTime()))}>Yes Let</button>
+                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player1["No Let"].push(playerRef.current?.getCurrentTime()))}>No Let</button>
+                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player1["Stroke"].push(playerRef.current?.getCurrentTime()))}>Stroke</button>
+                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player1["Fault"].push(playerRef.current?.getCurrentTime()))}>Fault</button>
                         </div>
                         {/*<hr></hr>*/}
                         <div className="player2-calls">
-                            <button className="call-button">Yes Let</button>
-                            <button className="call-button">No Let</button>
-                            <button className="call-button">Stroke</button>
-                            <button className="call-button">Fault</button>
+                            <button className="call-button" onClick={()=>(videoDetails.game_details.player2["Yes Let"].push(playerRef.current?.getCurrentTime()))}>Yes Let</button>
+                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player2["No Let"].push(playerRef.current?.getCurrentTime()))}>No Let</button>
+                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player2["No Let"].push(playerRef.current?.getCurrentTime()))}>Stroke</button>
+                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player2["No Let"].push(playerRef.current?.getCurrentTime()))}>Fault</button>
                         </div>
                             
                     </div>
