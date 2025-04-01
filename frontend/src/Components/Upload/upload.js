@@ -367,48 +367,55 @@ const Upload = () => {
                             ></input>
                         </div>
 
-                        {/* PLAYER INFO */}
-                        <div className="input-container">
-                            <label className="floating-label">Player 1 Name</label>
-                            <input
-                                type="text"
-                                className="input-zone tournament-input"
-                                name="player1_name"
-                                value={videoDetails.player1_name}
-                                onChange={handleVideoInput}
-                            ></input>
+                    {/* PLAYER INFO */}
+                    <div className="player-info">
+                        <div className="player-row">
+                            <div className="input-container name-input">
+                                <label className="floating-label">Player 1 Name</label>
+                                <input
+                                    type="text"
+                                    className="input-zone tournament-input"
+                                    name="player1_name"
+                                    value={videoDetails.player1_name}
+                                    onChange={handleVideoInput}
+                                />
+                            </div>
+                            <div className="input-container color-input">
+                                <label className="floating-label">Player 1 Jersey Color</label>
+                                <input
+                                    type="color"
+                                    className="input-zone"
+                                    name="player1_color"
+                                    value={videoDetails.player1_color}
+                                    onChange={handleVideoInput}
+                                />
+                            </div>
                         </div>
-                        <div className="input-container">
-                            <label className="floating-label">Player 2 Name</label>
-                            <input
-                                type="text"
-                                className="input-zone tournament-input"
-                                name="player2_name"
-                                value={videoDetails.player1_name}
-                                onChange={handleVideoInput}
-                            ></input>
+
+                        <div className="player-row">
+                            <div className="input-container name-input">
+                                <label className="floating-label">Player 2 Name</label>
+                                <input
+                                    type="text"
+                                    className="input-zone tournament-input"
+                                    name="player2_name"
+                                    value={videoDetails.player2_name}
+                                    onChange={handleVideoInput}
+                                />
+                            </div>
+                            <div className="input-container color-input">
+                                <label className="floating-label">Player 2 Jersey Color</label>
+                                <input
+                                    type="color"
+                                    className="input-zone"
+                                    name="player2_color"
+                                    value={videoDetails.player2_color}
+                                    onChange={handleVideoInput}
+                                />
+                            </div>
                         </div>
-                        {/* <div className="input-container">
-                            <label className="floating-label">Player 1 Jersey Color</label>
-                            <input
-                                type="color"
-                                className="input-zone"
-                                name="player1_color"
-                                value={videoDetails.player1_color}
-                                onChange={handleVideoInput}
-                            ></input>
-                        </div> */}
-                        {/* <div className="input-container">
-                            <label className="floating-label">Player 2 Jersey Color</label>
-                            <input
-                                type="color"
-                                className="input-zone"
-                                name="player2_color"
-                                value={videoDetails.player2_color}
-                                onChange={handleVideoInput}
-                            ></input>
-                        </div> */}
-                        <button className="continue-button" onClick={handleContinue2Pressed}>Continue</button>
+                    </div>
+                        <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
 
                     </div>
 
