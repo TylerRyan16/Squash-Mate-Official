@@ -36,7 +36,6 @@ function changeHeart() {
     }
 }
 
-var reply_comment;
 
 function showReply(commenter_name, comment) {
     const reply_box = document.getElementById("reply-option")
@@ -87,6 +86,7 @@ const Video = () => {
     const [videoComments, setVideoComments] = useState([]);
     const [username, setUsername] = useState("");
     const [noComments, setNoComments] = useState(true);
+    const [replyingComment, setReplyingComment] = useState(null);
     const commentRef = useRef();
 
     // video player stuff
@@ -105,6 +105,7 @@ const Video = () => {
             }
         }
 
+        // get your username
         const getUser = async () => {
             try {
                 const { username } = await getMyUsername();
@@ -118,6 +119,7 @@ const Video = () => {
         fetchSpecificVideo(videoID);
     }, [])
 
+    // grab all comments on video
     const fetchComments = async (id) => {
         try {
             const comments = await getCommentsForVideo(id);
@@ -156,8 +158,33 @@ const Video = () => {
         } catch (error) {
             console.error(error);
         }
-
     }
+
+
+    // SET REPLYING
+    const setReplyingTo = (commentData) => {
+        setReplyingComment(commentData);
+        commentRef.current.value = `@${commentData.commenter_name} `
+        commentRef.current.focus();
+        console.log("comment data: ", commentData);
+    };
+
+    // REPLY TO COMMENT
+    const replyToComment = (commentData) => {
+        const commentText = commentRef.current.value;
+
+        console.log("id: ", commentData.id);
+
+        const commentToSend = {
+            id: videoID,
+            commenterName: username,
+            comment: commentText,
+            date_posted: new Date().toLocaleDateString('en-CA'),
+            parent_comment_id: commentData.id,
+        }
+
+        console.log("comment data: ", commentData);
+    };
 
     const handlePlayPause = () => {
         setPlaying((prev) => !prev);
@@ -190,7 +217,6 @@ const Video = () => {
         const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
         return `${mins}:${secs}`;
     };
-
 
     return (
         <div className="page-container">
@@ -288,7 +314,7 @@ const Video = () => {
 
                                             <p className="view-more-button">View More</p>
 
-                                            <div className="right-comment-button-area">
+                                            <div className="right-comment-button-area" onClick={() => setReplyingTo(commentInfo)}>
                                                 <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
                                                 <p className="reply-button">Reply</p>
                                             </div>
@@ -299,21 +325,43 @@ const Video = () => {
                             ))}
                         </div>
 
-                        {/* User types comment here */}
-                        <div className="post-section">
-                            <div className="input-container">
-                                <textarea
-                                    className='comment-input'
-                                    id='input-container'
-                                    placeholder="Add Comment.."
-                                    ref={commentRef}
-                                    maxLength={200}
-                                />
+                        <div className="comment-input-bar">
+
+                            {/* User types comment here */}
+                            {!replyingComment && <div className="post-section">
+                                <div className="input-container">
+                                    <textarea
+                                        className='comment-input'
+                                        id='input-container'
+                                        placeholder="Add Comment.."
+                                        ref={commentRef}
+                                        maxLength={200}
+                                    />
+                                </div>
+                                <button className="comment-button" onClick={() => postComment()}>Post</button>
+                            </div>}
+
+                            {replyingComment && <div className="reply-section">
+
+                                <div className="reply-input-section">
+                                    <div className="close-button-column">
+                                        <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => setReplyingComment(null)}></img>
+                                        <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-icon"></img>
+                                    </div>
+                                    <div className="reply-input-container">
+                                        <textarea
+                                            className='comment-input'
+                                            placeholder="Reply.."
+                                            ref={commentRef}
+                                            maxLength={200}
+                                        />
+                                    </div>
+                                </div>
+
+                                <button className="post-reply-button" onClick={() => replyToComment()}>Post</button>
                             </div>
-                            <button className="comment-button" onClick={() => postComment()}>Post</button>
+                            }
                         </div>
-
-
 
                     </div>
                 </div>

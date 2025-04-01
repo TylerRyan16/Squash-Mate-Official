@@ -45,7 +45,7 @@
 }
 
 .react-player {
-  position: absolute; 
+  position: absolute;
   left: auto;
   top: 0;
 }
@@ -58,7 +58,7 @@
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  height:7%;
+  height: 7%;
 }
 
 .timeline-slider {
@@ -94,7 +94,7 @@
   align-items: center;
 }
 
-#coaching-header{
+#coaching-header {
   margin: 0;
   padding: 5px;
 }
@@ -109,7 +109,7 @@
   padding: 5px;
 }
 
-.no-comments-text{
+.no-comments-text {
   justify-self: center;
 }
 
@@ -132,7 +132,7 @@
   margin-top: 1%;
 }
 
-.comment-div{
+.comment-div {
   width: 100%;
   height: 100%;
   padding-left: 1%;
@@ -141,125 +141,92 @@
   justify-content: flex-start;
   align-items: flex-start;
 
-  h4{
+  h4 {
     padding: 0;
     margin: 0;
   }
 
-  p{
+  p {
     padding: 0;
     margin: 0;
   }
 }
 
-.comment-top-bar{
+.comment-top-bar {
   width: 100%;
   height: 20%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
-  .date-posted{
+  .date-posted {
     margin-right: 3%;
   }
 }
 
-.comment{
+.comment {
   width: 100%;
   height: 55%;
-  overflow: hidden;       
-  text-overflow: ellipsis;  
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: clamp(10px, 1vw, 14px);
 }
 
-.comment-button-area{
+.comment-button-area {
   width: 100%;
   height: 25%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 
-.right-comment-button-area{
+.right-comment-button-area {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: fit-content;
+  margin-right: 10px;
 }
 
-.like-button{
+.like-button {
   height: 100%;
+  cursor: pointer;
 }
 
-.view-more-button{
+.view-more-button {
   font-size: clamp(8px, 1vw, 12px);
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
-.reply-icon{
-  height: 75%;
+.reply-icon {
+  height: 25px;
+  cursor: pointer;
 }
 
-.reply-button{
+.reply-button {
   cursor: pointer;
   font-weight: 500px;
   font-size: clamp(12px, 1vw, 16px);
   margin: 0;
   padding: 0;
 
-  &:hover{
+  &:hover {
     text-decoration: underline;
   }
 }
 
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-
-.coach-tabs button:hover {
-  background-color: #a7a7a7;
-}
-
-
-.coach-tabs button.active {
-  background-color: #838383;
-}
-
-.tabcontent {
-  overflow-y: scroll;
-  height: 72%;
-  flex-grow: 0;
-
-}
-
-
-.reactions {
+.comment-input-bar {
   width: 100%;
+  height: 15%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5%;
-
-}
-
-.x-button {
-  width: 10%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  float: right;
+  flex-direction: column;
 }
 
 // TYPE COMMENT / POST BUTTON AREA
@@ -267,13 +234,78 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  bottom: 0;
-  position: absolute;
-  height: 15%;
-  width: 95%;
+  width: 100%;
+  height: 100%;
 }
 
-.input-container{
+.reply-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.reply-input-section{
+  position: relative;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.close-button-column{
+  width: 10%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.reply-icon {
+  width: 25px;
+}
+
+.reply-input-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-reply-button {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 10px;
+  left: 7px;
+  cursor: pointer;
+}
+
+.post-reply-button{
+  background-color: #315fb9;
+  width: 25%;
+  padding: 25px;
+  margin-left: 5px;
+  border-radius: 8px;
+  font-size: clamp(16px, 1.5vw, 28px);
+  vertical-align: bottom;
+}
+
+.comment-button{
+  background-color: #315fb9;
+  width: 25%;
+  padding: 25px;
+  margin-left: 5px;
+  border-radius: 8px;
+  font-size: clamp(16px, 1.5vw, 28px);
+  vertical-align: bottom;
+}
+
+.input-container {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -293,17 +325,11 @@
   font-size: clamp(12px, .8vw, 18px);
   line-height: 1;
   overflow-y: auto;
-  scrollbar-width:thin;
+  scrollbar-width: thin;
 
 
-  &::placeholder{
+  &::placeholder {
     font-size: 12px;
     vertical-align: top;
   }
-}
-
-.comment-button {
-  background-color: #315fb9;
-  width: 25%;
-  vertical-align: bottom;
 }
