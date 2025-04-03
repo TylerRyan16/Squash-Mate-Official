@@ -1,59 +1,64 @@
-.watch-video-page {
-  width: 90%;
-  height: 80%;
+.watch-video-page-column {
+  width: 95%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   margin: auto;
-  margin-bottom: 8%;
   overflow: hidden;
 }
 
 #page-title {
-  align-self: flex-start;
+  text-align: start;
+  margin: 0;
+  padding: 5px;
+  width: 92%;
+  margin: auto;
+
 }
 
-.centered-video-page {
+.video-comments-section-row {
   width: 100%;
-  height: 100%;
+  height: 93%;
   display: flex;
-  margin: auto;
   justify-content: center;
   gap: 25px;
 }
 
 .video-area {
-  background-color: #9b9b9b;
-  border-radius: 12px;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 75%;
   height: 100%;
-  justify-content: space-between;
 }
 
-.video-display {
+.react-player-wrapper {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-end;
-  width: 90%;
-  height: 75%;
-  margin: auto;
-  margin-top: 0;
-  margin-bottom: 0;
+  width: 100%;
   padding: 0;
+  padding-top: 56.25%;
+
 }
 
+.react-player {
+  position: absolute;
+  left: auto;
+  top: 0;
+}
 
 .controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  width: 90%;
-  height: 25%;
-  margin: auto;
-  margin-top: 0;
-  padding-top: 2%;
+  width: 100%;
+  height: 7%;
 }
 
 .timeline-slider {
@@ -71,7 +76,7 @@
 .comment-section {
   background-color: #9b9b9b;
   border-radius: 12px;
-  width: 25%;
+  width: 30%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -83,23 +88,28 @@
 
 .comment-section-top-bar {
   width: 100%;
-  height: 10%;
+  height: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+#coaching-header {
+  margin: 0;
+  padding: 5px;
+}
+
 .comments-area {
-  width: 95%;
-  height: 75%;
-  overflow-y: scroll;
+  width: 98%;
+  height: 80%;
+  overflow-y: auto;
   scrollbar-width: thin;
   background-color: #888888;
   border-radius: 16px;
   padding: 5px;
 }
 
-.no-comments-text{
+.no-comments-text {
   justify-self: center;
 }
 
@@ -107,7 +117,7 @@
   background-color: azure;
   border-radius: 16px;
   width: 100%;
-  height: 25%;
+  height: 20%;
   display: flex;
   flex-direction: row;
   margin-bottom: 5px;
@@ -116,12 +126,13 @@
 
 .comment-profile-pic {
   width: 15%;
-  height: auto;
+  height: 50%;
   background-color: lightgray;
   border-radius: 64px;
+  margin-top: 1%;
 }
 
-.comment-content{
+.comment-div {
   width: 100%;
   height: 100%;
   padding-left: 1%;
@@ -130,101 +141,92 @@
   justify-content: flex-start;
   align-items: flex-start;
 
-  h4{
+  h4 {
     padding: 0;
     margin: 0;
   }
 
-  p{
+  p {
     padding: 0;
     margin: 0;
   }
 }
 
-.comment-top-bar{
+.comment-top-bar {
   width: 100%;
   height: 20%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
-  .date-posted{
+  .date-posted {
     margin-right: 3%;
   }
 }
 
-.comment{
+.comment {
   width: 100%;
   height: 55%;
-  overflow: hidden;       
-  text-overflow: ellipsis;  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(10px, 1vw, 14px);
 }
 
-.reply-button{
-  width: auto;
-  position: absolute;
-  bottom: 4%;
-  right: 3%;
-  cursor: pointer;
-  font-weight: 500px;
-  font-size: clamp(16px, 1vw, 32px);
-  margin: 0;
-  padding: 0;
+.comment-button-area {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  &:hover{
+.right-comment-button-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin-right: 10px;
+}
+
+.like-button {
+  height: 100%;
+  cursor: pointer;
+}
+
+.view-more-button {
+  font-size: clamp(8px, 1vw, 12px);
+  cursor: pointer;
+
+  &:hover {
     text-decoration: underline;
   }
 }
 
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
+.reply-icon {
+  height: 25px;
   cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
 }
 
-.coach-tabs button:hover {
-  background-color: #a7a7a7;
+.reply-button {
+  cursor: pointer;
+  font-weight: 500px;
+  font-size: clamp(12px, 1vw, 16px);
+  margin: 0;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
-
-.coach-tabs button.active {
-  background-color: #838383;
-}
-
-.tabcontent {
-  overflow-y: scroll;
-  height: 72%;
-  flex-grow: 0;
-
-}
-
-
-.reactions {
+.comment-input-bar {
   width: 100%;
+  height: 15%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5%;
-
-}
-
-.x-button {
-  width: 10%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  float: right;
+  flex-direction: column;
 }
 
 // TYPE COMMENT / POST BUTTON AREA
@@ -232,13 +234,78 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  bottom: 0;
-  position: absolute;
-  height: 15%;
-  width: 95%;
+  width: 100%;
+  height: 100%;
 }
 
-.input-container{
+.reply-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.reply-input-section{
+  position: relative;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.close-button-column{
+  width: 10%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.reply-icon {
+  width: 25px;
+}
+
+.reply-input-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-reply-button {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 10px;
+  left: 7px;
+  cursor: pointer;
+}
+
+.post-reply-button{
+  background-color: #315fb9;
+  width: 25%;
+  padding: 25px;
+  margin-left: 5px;
+  border-radius: 8px;
+  font-size: clamp(16px, 1.5vw, 28px);
+  vertical-align: bottom;
+}
+
+.comment-button{
+  background-color: #315fb9;
+  width: 25%;
+  padding: 25px;
+  margin-left: 5px;
+  border-radius: 8px;
+  font-size: clamp(16px, 1.5vw, 28px);
+  vertical-align: bottom;
+}
+
+.input-container {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -258,17 +325,11 @@
   font-size: clamp(12px, .8vw, 18px);
   line-height: 1;
   overflow-y: auto;
-  scrollbar-width:thin;
+  scrollbar-width: thin;
 
 
-  &::placeholder{
+  &::placeholder {
     font-size: 12px;
     vertical-align: top;
   }
-}
-
-.comment-button {
-  background-color: #315fb9;
-  width: 25%;
-  vertical-align: bottom;
 }
