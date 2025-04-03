@@ -1,3 +1,9 @@
+.page-header{
+    margin: 0;
+    padding: 0;
+    margin-left: 5%;
+}
+
 .page-one {
     align-self: flex-start;
     display: flex;
@@ -65,22 +71,51 @@
 
 // PAGE TWO
 .page-two {
-    width: 90%;
-    height: 100vh;
+    width: 95%;
+    height: 90%;
     margin: 0 auto;
     display: flex;
+    flex-direction: row;
     overflow: auto;
 }
 
-.left-area {
+.left-vertical-upload{
+    width: 70%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1%;
+    justify-content: space-between;
+    align-items: center;
+}
+.upload-input-2{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.left-upload-input-section{
     width: 50%;
     height: 100%;
-    align-self: flex-start;
-    border: none;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 3%;
+}
+
+.best-of-area{
+    width: 100%;
+    height: fit-content;
+}
+
+.right-upload-input-section{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
 }
 
 .player-info {
@@ -98,14 +133,7 @@
     width: 100%;
 }
 
-.input-container.name-input {
-    width: 75%;
-}
 
-.input-container.color-input {
-    height: auto;
-    width: 25%;
-}
 
 .back-button {
     width: 35%;
@@ -117,43 +145,6 @@
     cursor: pointer;
     align-self: flex-start;
     margin-bottom: 0.5%;
-}
-
-.detail-display-background {
-    width: 100%;
-    border-radius: 12px;
-    background-color: #b5d4f3;
-    padding: 5px;
-    border: 2px solid grey;
-
-
-    h2 {
-        font-size: 20px;
-        padding: 5px;
-        margin: 0;
-    }
-
-    p {
-        font-size: 18px;
-        margin: 0;
-        padding-top: 5px;
-    }
-
-    .detail-row {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-}
-
-//  MORE DETAILS
-.more-details {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: hidden;
-    gap: 2%;
 }
 
 .match-length-area {
@@ -181,65 +172,83 @@
     font-size: clamp(18px, 1.8vw, 32px);
 }
 
-.date {
-    width: 50%;
-}
 
 .description {
-    padding-bottom: 10%;
+    padding-bottom: 20%;
     font-size: 16px;
 }
 
 // UPLOAD
 .upload-button {
-    width: 100%;
+    width: 50%;
     background-color: #315fb9;
     color: white;
     padding: 5px;
     border-radius: 8px;
     font-size: 32px;
     cursor: pointer;
-    align-self: flex-start;
+    
 }
 
 .right-area {
     display: flex;
     flex-direction: column;
-    width: 50%;
-    max-height: inherit;
+    width: 30%;
     align-items: center;
-
-    .right-background {
-        width: 80%;
-        height: fit-content;
-        border-radius: 12px;
-    }
-
+    max-height: inherit;
 
     h1 {
-        width: 75%;
-    }
-
-    #video-title {
-        width: 75%;
-        font-size: 24px;
-        font-weight: 500;
         margin: 0;
         padding: 0;
     }
+}
 
-    #uploader {
+.detail-display-background {
+    width: 100%;
+    border-radius: 12px;
+    padding: 5px;
+
+    h4{
+        margin: 0;
+        padding: 0;
+    }
+    p {
         font-size: 18px;
-        margin-top: 1%;
+        margin: 0;
+        padding-top: 5px;
+    }
+
+    .detail-row {
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
 }
 
-.page-two-thumbnail {
+
+#video-title {
     width: 75%;
-    height: auto;
-    max-height: inherit;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
 }
 
+#uploader {
+    font-size: 18px;
+    margin-top: 1%;
+}
+
+.page-two-thumbnail {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+
+
+
+
+// TABLET
 @media screen and (max-width: 1025px) {
     .detail-display-background {
         width: 100%;

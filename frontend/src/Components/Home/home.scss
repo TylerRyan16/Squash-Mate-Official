@@ -48,7 +48,7 @@ button{
 
 .carousel {
     width: 95%;
-    height: 40vh;
+    height: 55vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -79,10 +79,9 @@ button{
     display: flex;
     flex-direction: column;
     scroll-snap-align: center;
-    width: clamp(300px, 1vw, 700px);
-    height: auto;
+    width: clamp(450px, 1vw, 700px);
+    height: 100%;
     border-radius: 8px;
-    margin-bottom: 8px;
     padding: 5px;
     cursor: pointer;
 
@@ -94,15 +93,31 @@ button{
 }
 
 .home-video-thumbnail{
-    width: clamp(290px, 1vw, 690px);
+    width: clamp(450px, 1vw, 690px);
+    height: clamp(300px, 1vw, 550px);
     scroll-snap-align: center;
     margin-bottom: 8px;
     padding-top: 5px;
+    border-radius: 12px;
 
     transition: transform 0.15s ease-in-out;
 }
 
+.title-area{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    background-color: green;
+}
 
+.uploader-cover-pic{
+    height: 35px;
+    width: auto;
+    border-radius: 50%;
+}
 
 .video-title{
     align-self: flex-start;
@@ -110,6 +125,28 @@ button{
     padding: 0;
     margin: 0;
     padding-bottom: 2px;
+
+    white-space: nowrap;     
+    overflow: hidden;          
+    text-overflow: ellipsis;   
+}
+
+
+
+.poster-date-area{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: orange;
+}
+
+.video-uploader, .video-date{
+    padding: 0;
+    margin: 0;
+    font-size: clamp(8px, 1vw, 14px);
+    font-weight: 400;
+    opacity: .8;
 }
 
 
