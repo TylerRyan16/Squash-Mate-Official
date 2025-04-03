@@ -39,12 +39,19 @@ const Upload = () => {
             "Yes Let":[],
             "No Let":[],
             "Stroke":[],
-            "Fault":[]},
+            "Fault":[],
+            "Gain Point":[],
+            "Lose Point":[],
+            "Win":[]},
+
             player2:{
                 "Yes Let":[],
                 "No Let":[],
                 "Stroke":[],
-                "Fault":[]
+                "Fault":[],
+                "Gain Point":[],
+                "Lose Point":[],
+                "Win":[]
             }
         }
     });
@@ -57,6 +64,22 @@ const Upload = () => {
             }));
         }
     }, [videoDetails.type]);
+
+    const handlePlayPause = () => {
+        setPlaying((prev) => !prev);
+    };
+
+    const handleSeekChange = (e) => {
+        const newProgress = parseFloat(e.target.value);
+        setProgress(newProgress);
+        playerRef.current.seekTo(newProgress);
+    };
+
+    const commentRatio = (time) =>{
+        const newProgress = time;
+        //return newProgress/playerRef.current?.getDuration();
+        return (newProgress/playerRef.current?.getDuration()).toFixed(2);
+    }
 
     // HANDLE VIDEO INPUT
     const handleVideoInput = (e) => {
@@ -105,27 +128,52 @@ const Upload = () => {
         return match ? match[1] : null;
     };
 
-    const increaseScore = (player_score, score_ref) => {
+    const increaseScore = (player_score) => {
         document.getElementById(player_score).textContent ++;
-        score_ref ++;
+        if(player_score.includes('1')){
+            videoDetails.player1_score ++;
+            displayCall("Gain Point", 1);
+        }
+        if(player_score.includes('2')){
+            videoDetails.player2_score ++;
+            displayCall("Gain Point", 2);
+        }
+        
         const winner = checkGameWin();
-        console.log(winner);
+        console.log(winner+"_wins");
         if(winner){
             document.getElementById(winner+"_wins").textContent ++;
             document.getElementById("player1_score").textContent = 0;
             document.getElementById("player2_score").textContent = 0;
+            videoDetails.player1_score = 0;
+            videoDetails.player2_score = 0;
         }
     }
     const decreaseScore = (player_score) => {
         if(document.getElementById(player_score).textContent > 0){
             document.getElementById(player_score).textContent --;
-            videoDetails.player1_score --;
+            if(player_score.includes('1')){
+                videoDetails.player1_score --;
+                displayCall("Lose Point", 1);
+            }
+            if(player_score.includes('2')){
+                videoDetails.player2_score --;
+                displayCall("Lose Point", 2);
+            }
         }
         const winner = checkGameWin();
         if(winner){
+            if(winner.includes('1')){
+                displayCall("Win", 1);
+            }
+            if(winner.includes('2')){
+                displayCall("Win", 2);
+            }
             document.getElementById(winner+"_wins").textContent ++;
             document.getElementById("player1_score").textContent = 0;
             document.getElementById("player2_score").textContent = 0;
+            videoDetails.player1_score = 0;
+            videoDetails.player2_score = 0;
         }
         
     }
@@ -142,6 +190,26 @@ const Upload = () => {
             return "player2";
         }
         return null;
+    }
+
+    const displayCall = (callName, playerNum)=>{
+        console.log(callName);
+        if(playerNum == 1){
+            videoDetails.game_details.player1[callName].push(playerRef.current?.getCurrentTime());
+            const length = videoDetails.game_details.player1[callName].length;
+            const timestamps = document.getElementById("timestamps")
+            timestamps.innerHTML+= "<div class='tick' id='tick"+ playerNum +callName.toString()+length+"'><span class='tooltiptext'>"+videoDetails.player1_name+" " +callName.toString()+"</span></div>";
+            const tick = document.getElementById("tick" + playerNum +callName.toString()+length);
+        tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) +'%'
+        }
+        if(playerNum == 2){
+            videoDetails.game_details.player2[callName].push(playerRef.current?.getCurrentTime());
+            const length = videoDetails.game_details.player2[callName].length;
+            const timestamps = document.getElementById("timestamps")
+            timestamps.innerHTML+= "<div class='tick' id='tick"+ playerNum +callName.toString()+length+"'><span class='tooltiptext'>"+videoDetails.player2_name+" "+callName.toString()+"</span></div>";
+            const tick = document.getElementById("tick" + playerNum +callName.toString()+length);
+        tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) +'%'
+        }
     }
 
     // VIDEO UPLOAD
@@ -448,18 +516,40 @@ const Upload = () => {
                             width="720px"
                             height="405px"
                             onProgress={handleProgress}
-                                                /></div>
+                                                />
+                        <div className="upload-video-controls">
+                            <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                            <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
+                        {/* Timeline */}
+
+                        <div className="range-slider">
+                            <input
+                                type="range"
+                                min={0}
+                                max={1}
+                                step={0.01}
+                                value={progress}
+                                onChange={handleSeekChange}
+                                className="timeline-slider"
+                            ></input>
+                            <div className = "slider-background">
+                                <div id="timestamps">
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
                     <div className = "point-controls">
                         <button className="point-button" onClick={() => increaseScore("player1_score", videoDetails.player1_score)}>+</button>
                         <button className="point-button" onClick={() => decreaseScore("player1_score")}>-</button>
                         <div className="point-display">
-                            <div className="player1-color"></div>
+                            <div className="player1-color" id='player1-color'style={{backgroundColor:videoDetails.player1_color}}></div>
                             <p className='player-name'>{videoDetails.player1_name}</p>
-                            <div className="player1_wins">0</div>
+                            <div className="player1_wins" id="player1_wins">0</div>
                             <div className='score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
-                            <div className="player2_wins">0</div>
+                            <div className="player2_wins" id="player2_wins">0</div>
                             <p className='player-name'>{videoDetails.player2_name}</p>
-                            <div className="player2-color"></div>
+                            <div className="player2-color" style={{backgroundColor:videoDetails.player2_color}}></div>
 
                         </div>
                         <button className="point-button" onClick={() => increaseScore("player2_score", videoDetails.player2_score)}>+</button>
@@ -467,17 +557,17 @@ const Upload = () => {
                     </div>
                     <div className="call-controls">
                         <div className="player1-calls">
-                            <button className="call-button" onClick={()=>(videoDetails.game_details.player1["Yes Let"].push(playerRef.current?.getCurrentTime()))}>Yes Let</button>
-                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player1["No Let"].push(playerRef.current?.getCurrentTime()))}>No Let</button>
-                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player1["Stroke"].push(playerRef.current?.getCurrentTime()))}>Stroke</button>
-                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player1["Fault"].push(playerRef.current?.getCurrentTime()))}>Fault</button>
+                            <button className="call-button" onClick={()=>displayCall("Yes Let", 1)}>Yes Let</button>
+                            <button className="call-button" onClick = {()=>displayCall("No Let", 1)}>No Let</button>
+                            <button className="call-button" onClick = {()=>displayCall("Stroke", 1)}>Stroke</button>
+                            <button className="call-button" onClick = {()=>displayCall("Fault", 1)}>Fault</button>
                         </div>
                         {/*<hr></hr>*/}
                         <div className="player2-calls">
-                            <button className="call-button" onClick={()=>(videoDetails.game_details.player2["Yes Let"].push(playerRef.current?.getCurrentTime()))}>Yes Let</button>
-                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player2["No Let"].push(playerRef.current?.getCurrentTime()))}>No Let</button>
-                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player2["No Let"].push(playerRef.current?.getCurrentTime()))}>Stroke</button>
-                            <button className="call-button" onClick = {()=>(videoDetails.game_details.player2["No Let"].push(playerRef.current?.getCurrentTime()))}>Fault</button>
+                            <button className="call-button" onClick={()=>displayCall("Yes Let", 2)}>Yes Let</button>
+                            <button className="call-button" onClick = {()=>displayCall("No Let", 2)}>No Let</button>
+                            <button className="call-button" onClick = {()=>displayCall("Stroke", 2)}>Stroke</button>
+                            <button className="call-button" onClick = {()=>displayCall("Fault", 2)}>Fault</button>
                         </div>
                             
                     </div>
