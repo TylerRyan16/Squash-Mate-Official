@@ -9,6 +9,7 @@ import ReactPlayer from 'react-player';
 const Upload = () => {
     const navigate = useNavigate();
 
+
     const [thumbnail, setThumbnail] = useState('');
     const [continuePressed, setContinuePressed] = useState(false);
     const [continue2Pressed, setContinue2Pressed] = useState(false);
@@ -84,9 +85,8 @@ const Upload = () => {
     // HANDLE VIDEO INPUT
     const handleVideoInput = (e) => {
         const { name, value } = e.target;
-        console.log("name: ", name);
-        console.log("value: ", value);
-
+        console.log(name);
+        console.log(value);
         setVideoDetails((prevDetails) => ({
             ...prevDetails,
             [name]: value
@@ -214,23 +214,19 @@ const Upload = () => {
 
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
-        const uploaderName = "";
-
+        
         try {
-            uploaderName = await getMyUsername();
-            console.log("uploader name: ", uploaderName);
-        } catch (error){
-            console.log(error);
-        }
+            const uploader = await getMyUsername();
+            console.log("uploader name: ", uploader);
 
-        videoDetails.poster = uploaderName;
-        //  SEND POST REQUEST TO DATABASE
-        try {
+            videoDetails.poster = uploader.username;
+
             const response = await uploadVideo(videoDetails);
             console.log("reponse: ", response);
 
             const databaseVideoId = response.id;
             navigate(`/video/${databaseVideoId}`);
+
         } catch (error) {
             console.log(error);
         }
@@ -310,192 +306,189 @@ const Upload = () => {
 
             {/* PAGE TWO */}
             {continuePressed && !continue2Pressed && <div className="page-two">
-                {/* LEFT */}
-                <div className='left-area'>
-                    <button className="back-button"
-                        onClick={() => setContinuePressed(prevState => !prevState)}
-                    >Back</button>
-                    <div className="detail-display-background">
-                        <div className='detail-row'>
-                            <h2>Title: </h2>
-                            <p> {videoDetails.title}</p>
-                        </div>
-                        <div className='detail-row'>
-                            <h2>Link: </h2>
-                            <p> {videoDetails.url}</p>
-                        </div>
-                        <div className='detail-row'>
-                            <h2>Type: </h2>
-                            <p> {videoDetails.type}</p>
-                        </div>
-                    </div>
+                {/* <button className="back-button"
+                    onClick={() => setContinuePressed(prevState => !prevState)}
+                >Back</button> */}
 
-                    {/* MORE DETAILS */}
-                    <div className="more-details">
+<div className="left-vertical-upload">
+                    <div className="upload-input-2">
+                        <div className="left-upload-input-section">
+                            {/* MORE DETAILS */}
 
-                        {/* LENGTH: TYPE = MATCH */}
-                        {videoDetails.type === "Match" &&
-                            <div className='match-length-area'>
-                                <button
-                                    className={`match-length-button ${videoDetails.length === 'Five' ? 'selected' : ''}`}
-                                    name="length"
-                                    value="Five"
-                                    onClick={handleVideoInput}
-                                >Five</button>
-                                <button
-                                    className={`match-length-button ${videoDetails.length === 'Seven' ? 'selected' : ''}`}
-                                    name="length"
-                                    value="Seven"
-                                    onClick={handleVideoInput}
+                            {/* LENGTH: TYPE = MATCH */}
+                            <div className="best-of-area">
+                                <p>Best Of</p>
+                                {videoDetails.type === "Match" &&
+                                    <div className='match-length-area'>
+                                        <button
+                                            className={`match-length-button ${videoDetails.length === 'Five' ? 'selected' : ''}`}
+                                            name="length"
+                                            value="Five"
+                                            onClick={handleVideoInput}
+                                        >Five</button>
+                                        <button
+                                            className={`match-length-button ${videoDetails.length === 'Seven' ? 'selected' : ''}`}
+                                            name="length"
+                                            value="Seven"
+                                            onClick={handleVideoInput}
 
-                                >Seven</button>
+                                        >Seven</button>
+                                    </div>
+                                }
                             </div>
-                        }
 
-                        {/* LENGTH: TYPE = GAME */}
-                        {videoDetails.type === "Game" &&
-                            <div className='match-length-area'>
-                                <button
-                                    className={`match-length-button ${videoDetails.length === 'Single' ? 'selected' : ''}`}
-                                    name="length"
-                                    value="Single"
-                                    onClick={handleVideoInput}
-                                >Single Game</button>
+                            {/* LENGTH: TYPE = GAME */}
+                            {videoDetails.type === "Game" &&
+                                <div className='match-length-area'>
+                                    <button
+                                        className={`match-length-button ${videoDetails.length === 'Single' ? 'selected' : ''}`}
+                                        name="length"
+                                        value="Single"
+                                        onClick={handleVideoInput}
+                                    >Single Game</button>
+                                </div>
+                            }
+
+                            {/* LENGTH: TYPE = GAME */}
+                            {videoDetails.type === "Casual" &&
+                                <div className='match-length-area'>
+                                    <button
+                                        className={`match-length-button three ${videoDetails.length === 'Single' ? 'selected' : ''}`}
+                                        name="length"
+                                        value="Single"
+                                        onClick={handleVideoInput}
+                                    >Single Game</button>
+                                    <button
+                                        className={`match-length-button three ${videoDetails.length === 'Five' ? 'selected' : ''}`}
+                                        name="length"
+                                        value="Five"
+                                        onClick={handleVideoInput}
+                                    >Five</button>
+                                    <button
+                                        className={`match-length-button three ${videoDetails.length === 'Seven' ? 'selected' : ''}`}
+                                        name="length"
+                                        value="Seven"
+                                        onClick={handleVideoInput}
+
+                                    >Seven</button>
+                                </div>
+                            }
+
+                            {/* DATE ETC */}
+                            <div className="input-container">
+                                <label className="floating-label">Date of Play (optional)</label>
+                                <input
+                                    type="date"
+                                    className="input-zone date"
+                                    name="tournament_date"
+                                    value={videoDetails.tournament_date}
+                                    onChange={handleVideoInput}
+                                ></input>
+
                             </div>
-                        }
-
-                        {/* LENGTH: TYPE = GAME */}
-                        {videoDetails.type === "Casual" &&
-                            <div className='match-length-area'>
-                                <button
-                                    className={`match-length-button three ${videoDetails.length === 'Single' ? 'selected' : ''}`}
-                                    name="length"
-                                    value="Single"
-                                    onClick={handleVideoInput}
-                                >Single Game</button>
-                                <button
-                                    className={`match-length-button three ${videoDetails.length === 'Five' ? 'selected' : ''}`}
-                                    name="length"
-                                    value="Five"
-                                    onClick={handleVideoInput}
-                                >Five</button>
-                                <button
-                                    className={`match-length-button three ${videoDetails.length === 'Seven' ? 'selected' : ''}`}
-                                    name="length"
-                                    value="Seven"
-                                    onClick={handleVideoInput}
-
-                                >Seven</button>
-                            </div>
-                        }
-
-                        {/* DATE ETC */}
-                        <div className="input-container">
-                            <label className="floating-label">Date of Play (optional)</label>
-                            <input
-                                type="date"
-                                className="input-zone date"
-                                name="tournament_date"
-                                value={videoDetails.tournament_date}
-                                onChange={handleVideoInput}
-                            ></input>
-
-                        </div>
 
 
-                        {/* TOURNAMENT NAME */}
-                        <div className="input-container">
-                            <label className="floating-label">Tournament Name (optional)</label>
-                            <input
-                                type="text"
-                                className="input-zone tournament-input"
-                                name="tournament_name"
-                                value={videoDetails.tournament_name}
-                                onChange={handleVideoInput}
-                            ></input>
-                        </div>
-                        <div className="input-container">
-                            <label className="floating-label">Tournament Location (optional)</label>
-                            <input
-                                type="text"
-                                className="input-zone tournament-input"
-                                name="tournament_location"
-                                value={videoDetails.tournament_location}
-                                onChange={handleVideoInput}
-                            ></input>
-                        </div>
-                        <div className="input-container">
-                            <label className="floating-label">Description (optional)</label>
-                            <input
-                                type="text"
-                                className="input-zone description"
-                                name="description"
-                                value={videoDetails.description}
-                                onChange={handleVideoInput}
-                            ></input>
-                        </div>
-
-                    {/* PLAYER INFO */}
-                    <div className="player-info">
-                        <div className="player-row">
-                            <div className="input-container name-input">
-                                <label className="floating-label">Player 1 Name</label>
+                            {/* TOURNAMENT NAME */}
+                            <div className="input-container">
+                                <label className="floating-label">Tournament Name (optional)</label>
                                 <input
                                     type="text"
                                     className="input-zone tournament-input"
-                                    name="player1_name"
-                                    value={videoDetails.player1_name}
+                                    name="tournament_name"
+                                    value={videoDetails.tournament_name}
                                     onChange={handleVideoInput}
-                                />
+                                ></input>
                             </div>
-                            <div className="input-container color-input">
-                                <label className="floating-label">Player 1 Jersey Color</label>
-                                <input
-                                    type="color"
-                                    className="input-zone"
-                                    name="player1_color"
-                                    value={videoDetails.player1_color}
-                                    onChange={handleVideoInput}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="player-row">
-                            <div className="input-container name-input">
-                                <label className="floating-label">Player 2 Name</label>
+                            <div className="input-container">
+                                <label className="floating-label">Tournament Location (optional)</label>
                                 <input
                                     type="text"
                                     className="input-zone tournament-input"
-                                    name="player2_name"
-                                    value={videoDetails.player2_name}
+                                    name="tournament_location"
+                                    value={videoDetails.tournament_location}
                                     onChange={handleVideoInput}
-                                />
+                                ></input>
                             </div>
-                            <div className="input-container color-input">
-                                <label className="floating-label">Player 2 Jersey Color</label>
-                                <input
-                                    type="color"
-                                    className="input-zone"
-                                    name="player2_color"
-                                    value={videoDetails.player2_color}
-                                    onChange={handleVideoInput}
-                                />
+
+                            {/* PLAYER INFO */}
+                            <div className="player-info">
+                                <div className="player-row">
+                                    <div className="input-container name-input">
+                                        <label className="floating-label">Player 1 Name</label>
+                                        <input
+                                            type="text"
+                                            className="input-zone tournament-input"
+                                            name="player1_name"
+                                            value={videoDetails.player1_name}
+                                            onChange={handleVideoInput}
+                                        />
+                                    </div>
+                                    <div className="input-container color-input">
+                                        <label className="floating-label">Player 1 Jersey Color</label>
+                                        <input
+                                            type="color"
+                                            className="input-zone"
+                                            name="player1_color"
+                                            value={videoDetails.player1_color}
+                                            onChange={handleVideoInput}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="player-row">
+                                    <div className="input-container name-input">
+                                        <label className="floating-label">Player 2 Name</label>
+                                        <input
+                                            type="text"
+                                            className="input-zone tournament-input"
+                                            name="player2_name"
+                                            value={videoDetails.player2_name}
+                                            onChange={handleVideoInput}
+                                        />
+                                    </div>
+                                    <div className="input-container color-input">
+                                        <label className="floating-label">Player 2 Jersey Color</label>
+                                        <input
+                                            type="color"
+                                            className="input-zone"
+                                            name="player2_color"
+                                            value={videoDetails.player2_color}
+                                            onChange={handleVideoInput}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                        <button className="continue2-button" onClick={handleContinue2Pressed}>Continue</button>
 
+                        <div className="right-upload-input-section">
+
+                            <div className="input-container">
+                                <label className="floating-label">Description (optional)</label>
+                                <input
+                                    type="text"
+                                    className="input-zone description"
+                                    name="description"
+                                    value={videoDetails.description}
+                                    onChange={handleVideoInput}
+                                ></input>
+                            </div>
+
+                        </div>
                     </div>
 
+                    <button className="continue2-button" onClick={handleContinue2Pressed}>Continue</button>
+                    
                 </div>
+
+
 
                 {/* RIGHT */}
                 <div className="right-area">
-                    <div className="right-background">
-                        <h1>Preview</h1>
-                        <img src={thumbnail} className="page-two-thumbnail" alt="video thumbnail"></img>
-                        <p id="video-title">{videoDetails.title}</p>
-                        <p id="uploader">Uploader Name</p>
+                    <h1>Preview</h1>
+                    <img src={thumbnail} className="page-two-thumbnail" alt="video thumbnail"></img>
+                    <div className="detail-display-background">
+                        <h4> {videoDetails.title}</h4>
+                        <p> {videoDetails.type}</p>
                     </div>
 
                 </div>
