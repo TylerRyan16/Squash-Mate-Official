@@ -42,13 +42,13 @@ router.get("/my-videos", async (req, res) => {
 
 // add a new video to database
 router.post("/", async (req, res) => {
-    const {title, description, url, type, length, tournament_date, tournament_name, tournament_location, poster, thumbnail} = req.body;
-
+    console.log("posting");
+    const {title, description, url, type, length, tournament_date, tournament_name, tournament_location, player1_name, player2_name, player1_color, player2_color, poster, thumbnail, player1_score, player2_score, game_details} = req.body;
     try {
         const result = await pool.query(
-            `INSERT INTO videos (url, poster, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
-            [url, poster, title, description, type, length, tournament_name, tournament_date, tournament_location, thumbnail]
+            `INSERT INTO videos (url, poster, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail, player1_name, player2_name, player1_color, player2_color, player1_score, player2_score, game_details)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`,
+            [url, poster, title, description, type, length, tournament_name, tournament_date, tournament_location, thumbnail, player1_name, player2_name, player1_color, player2_color, player1_score, player2_score, game_details]
         );
 
 
