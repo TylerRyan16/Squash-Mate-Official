@@ -118,8 +118,14 @@ const Video = () => {
         getUser();
         fetchSpecificVideo(videoID);
     }, [])
+    var parsed_game_details = {}
+    for(const evt in video.game_details){
+        const spaceIndex = video.game_details[evt].indexOf(' ');
+        const time = video.game_details[evt].substring(0, spaceIndex);
+        const secondPart = video.game_details[evt].substring(spaceIndex + 1);
+        parsed_game_details[time] = secondPart;
 
-    // grab all comments on video
+    }
     const fetchComments = async (id) => {
         try {
             const comments = await getCommentsForVideo(id);
@@ -192,7 +198,76 @@ const Video = () => {
 
     const handleProgress = (state) => {
         setProgress(state.progress);
+        setScoreBoard();
     };
+
+    function setScoreBoard() {
+        const currTime = playerRef.current?.getCurrentTime();
+        const sortedTimes = Object.keys(parsed_game_details).sort();
+        document.getElementById("player1_score").textContent = 0;
+        document.getElementById("player2_score").textContent = 0;
+        document.getElementById("player1_wins").textContent = 0;
+        document.getElementById("player2_wins").textContent = 0;
+        for(const time in sortedTimes){
+            if(currTime >= sortedTimes[time]){
+                const evt = parsed_game_details[sortedTimes[time]].split(" ");
+                if(evt[1] === "Gain"){
+                    if(evt[0]===video.player1_name){
+                        document.getElementById("player1_score").textContent ++;
+                    }
+                    if(evt[0]===video.player2_name){
+                        document.getElementById("player2_score").textContent ++;
+                    }
+                }
+                if(evt[1] === "Lose"){
+                    if(evt[0]===video.player1_name){
+                        document.getElementById("player1_score").textContent --;
+                    }
+                    if(evt[0]===video.player2_name){
+                        document.getElementById("player2_score").textContent --;
+                    } 
+                }
+                if(evt[1] === "Win"){
+                    if(evt[0]===video.player1_name){
+                        document.getElementById("player1_wins").textContent ++;
+                    }
+                    if(evt[0]===video.player2_name){
+                        document.getElementById("player2_wins").textContent ++;
+                    } 
+                }
+            }
+        }
+        /*
+        for(const time in sortedTimes){
+            if(currTime >= time){
+                const evt = parsed_game_details[time].split(" ");
+                if(evt[1] === "Gain"){
+                    if(evt[0]===video.player1_name){
+                        document.getElementById("player1_score").textContent ++;
+                    }
+                    if(evt[0]===video.player2_name){
+                        document.getElementById("player2_score").textContent ++;
+                    }
+                }
+                if(evt[1] === "Lose"){
+                    if(evt[0]===video.player1_name){
+                        document.getElementById("player1_score").textContent --;
+                    }
+                    if(evt[0]===video.player2_name){
+                        document.getElementById("player2_score").textContent --;
+                    } 
+                }
+                if(evt[1] === "Win"){
+                    if(evt[0]===video.player1_name){
+                        document.getElementById("player1_wins").textContent ++;
+                    }
+                    if(evt[0]===video.player2_name){
+                        document.getElementById("player2_wins").textContent ++;
+                    } 
+                }
+            }
+        }*/
+    }
 
     const handleSeekChange = (e) => {
         const newProgress = parseFloat(e.target.value);
@@ -237,33 +312,42 @@ const Video = () => {
                                 playing={playing}
                                 controls={false}
                                 width="95%"
-                                height="90%"
+                                height="100%"
                                 className="react-player"
                                 onProgress={handleProgress}
                             />
+                        
                         </div>
 
+                       <div className="video-point-display">
+                            <div className="video-player1-color" id='player1-color'style={{backgroundColor:video.player1_color}}></div>
+                            <p className='video-player-name'>{video.player1_name}</p>
+                            <div className="video-player1_wins" id="player1_wins">0</div>
+                            <div className='video-score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
+                            <div className="video-player2_wins" id="player2_wins">0</div>
+                            <p className='video-player-name'>{video.player2_name}</p>
+                            <div className="video-player2-color" style={{backgroundColor:video.player2_color}}></div>
+                        </div>
 
                         <div className="controls">
-                            <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-                            <input
-                                type="range"
-                                min={0}
-                                max={1}
-                                step={0.01}
-                                value={progress}
-                                onChange={handleSeekChange}
-                                className="timeline-slider"
-                                list="tickmarks"
-                            ></input>
-                            <datalist id="tickmarks">
-                                {bob_comments.map(comment_info => (
-                                    <>
-
-                                        <option value={""}></option></>
-
-                                ))}
-                            </datalist>
+                        <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
+                            <div className="range-slider">
+                                <input
+                                    type="range"
+                                    min={0}
+                                    max={1}
+                                    step={0.01}
+                                    value={progress}
+                                    onChange={handleSeekChange}
+                                    className="timeline-slider"
+                                ></input>
+                                <div className = "slider-background">
+                                    <div id="timestamps">
+                                        {Object.keys(parsed_game_details).map(time => (<div className='tick' style={{left:(commentRatio(time) * 100 + 0.5) +'%'}}><span class='tooltiptext'>{parsed_game_details[time]}</span></div>)
+                                    )}
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <span>

@@ -35,7 +35,7 @@ const Upload = () => {
         thumbnail: "",
         player1_score: 0,
         player2_score: 0,
-        game_details:{
+        game_details:[]/*{
             player1:{
             "Yes Let":[],
             "No Let":[],
@@ -54,7 +54,7 @@ const Upload = () => {
                 "Lose Point":[],
                 "Win":[]
             }
-        }
+        }*/
     });
 
     useEffect(() => {
@@ -195,16 +195,16 @@ const Upload = () => {
     const displayCall = (callName, playerNum)=>{
         console.log(callName);
         if(playerNum == 1){
-            videoDetails.game_details.player1[callName].push(playerRef.current?.getCurrentTime());
-            const length = videoDetails.game_details.player1[callName].length;
+            videoDetails.game_details.push(playerRef.current?.getCurrentTime() + " " + videoDetails.player1_name + " " + callName)
+            const length = videoDetails.game_details.length;
             const timestamps = document.getElementById("timestamps")
             timestamps.innerHTML+= "<div class='tick' id='tick"+ playerNum +callName.toString()+length+"'><span class='tooltiptext'>"+videoDetails.player1_name+" " +callName.toString()+"</span></div>";
             const tick = document.getElementById("tick" + playerNum +callName.toString()+length);
         tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) +'%'
         }
         if(playerNum == 2){
-            videoDetails.game_details.player2[callName].push(playerRef.current?.getCurrentTime());
-            const length = videoDetails.game_details.player2[callName].length;
+            videoDetails.game_details.push(playerRef.current?.getCurrentTime() + " " + videoDetails.player2_name + " " + callName)
+            const length = videoDetails.game_details.length;
             const timestamps = document.getElementById("timestamps")
             timestamps.innerHTML+= "<div class='tick' id='tick"+ playerNum +callName.toString()+length+"'><span class='tooltiptext'>"+videoDetails.player2_name+" "+callName.toString()+"</span></div>";
             const tick = document.getElementById("tick" + playerNum +callName.toString()+length);
@@ -214,7 +214,7 @@ const Upload = () => {
 
     // VIDEO UPLOAD
     const handleVideoUpload = async () => {
-        
+        console.log(videoDetails);
         try {
             const uploader = await getMyUsername();
             console.log("uploader name: ", uploader);

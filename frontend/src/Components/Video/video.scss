@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   margin: auto;
-  overflow: hidden;
+  overflow: hide;
 }
 
 #page-title {
@@ -18,41 +18,45 @@
 
 .video-comments-section-row {
   width: 100%;
-  height: 93%;
+  height: 98%;
   display: flex;
   justify-content: center;
   gap: 25px;
 }
 
 .video-area {
-  position: relative;
+  //position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 75%;
   height: 100%;
+  gap: 2px;
 }
 
 .react-player-wrapper {
-  position: relative;
+  //position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 0;
-  padding-top: 56.25%;
+  //padding: 0;
+  //padding-top: 56.25%;
+  height:100%;
 
 }
 
 .react-player {
-  position: absolute;
+  //position: absolute;
   left: auto;
   top: 0;
+  
+
 }
 
 .controls {
-  position: absolute;
-  bottom: 0;
+  //position: absolute;
+  //bottom: 0;
   left: 0;
   display: flex;
   justify-content: center;
@@ -324,4 +328,71 @@
     font-size: 12px;
     vertical-align: top;
   }
+}
+
+
+.video-point-display{
+  background-color: rgb(208, 207, 207);
+  border-radius: 30px;
+  //bottom: 7%;
+  width: 20%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border: 0.2rem  rgb(61, 61, 61) solid;
+}
+.video-player1-color{
+  //position: relative;
+  flex-grow:1;
+  min-height: 100%;
+  background-color: aquamarine;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+
+
+}
+.video-player2-color{
+  flex-grow:1;
+  min-height: 100%;
+  background-color: red;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+
+
+}
+.video-player-name{
+  width: 25%;
+  text-align: center;
+}
+
+.video-player1_wins{
+  min-height: 100%;
+  background-color: #315fb9;
+  align-content: center;
+  color: white;
+  width: 5%;
+  text-align: center;
+}
+.video-player2_wins{
+  min-height: 100%;
+  background-color: #315fb9;
+  align-content: center;
+  color: white;
+  width: 5%;
+  text-align: center;
+
+}
+.video-score-background{
+  background-color: rgb(61, 61, 61);
+  color:white;
+  min-height: 100%;
+  text-align: center;
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 7%;
 }
