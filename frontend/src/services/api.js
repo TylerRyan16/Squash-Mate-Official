@@ -98,6 +98,8 @@ export const getSpecificVideo = async (videoID) => {
 
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
+    console.log("HEREE");
+    console.log(videoDetails);
     try {
         const response = await api.post("/videos", videoDetails);
 
