@@ -82,12 +82,12 @@ button{
     display:none;
 }
 
-.video-card{
+.home-video-card{
     display: flex;
     flex-direction: column;
     scroll-snap-align: center;
     width: clamp(460px, 1vw, 700px);
-    height: 95%;
+    height: 100%;
     border-radius: 8px;
     padding: 5px;
     cursor: pointer;
@@ -95,17 +95,17 @@ button{
     transition: background-color 0.15s ease-in-out;
 }
 
-.video-card:hover{
+.home-video-card:hover{
     background-color: #A9A9A9;
 }
 
-.home-video-thumbnail{
-    width: clamp(450px, 1vw, 690px);
-    height: clamp(300px, 1vw, 550px);
-    scroll-snap-align: center;
+.home-thumbnail{
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 12px;
     margin-bottom: 8px;
     padding-top: 5px;
-    border-radius: 12px;
 
     transition: transform 0.15s ease-in-out;
 }
@@ -126,7 +126,7 @@ button{
 }
 
 .video-title{
-    font-size: clamp(12px, 1vw, 18px);
+    font-size: clamp(14px, 1vw, 18px);
     align-self: flex-start;
     text-wrap: wrap;
     padding: 0;

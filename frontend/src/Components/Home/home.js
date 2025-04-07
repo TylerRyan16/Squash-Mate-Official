@@ -62,8 +62,8 @@ const Home = () => {
 
                 <div id="my-videos-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                        <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
+                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                             <div className="title-area">
                                 <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
                                 <h4 className="video-title">{currentVideo.title}</h4>
@@ -96,8 +96,8 @@ const Home = () => {
 
                 <div id="public-games-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                       <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                       <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
+                       <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                       <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                        <div className="title-area">
                            <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
                            <h4 className="video-title">{currentVideo.title}</h4>
@@ -128,8 +128,8 @@ const Home = () => {
                 </button>
                 <div id="shared-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                        <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                        <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
+                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                        <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                         <div className="title-area">
                             <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
                             <h4 className="video-title">{currentVideo.title}</h4>
