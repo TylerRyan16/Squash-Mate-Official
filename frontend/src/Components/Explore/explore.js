@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom";
 import { getAllVideos } from "../../services/api";
 import "./explore.scss";
 
 const Explore = () => {
+  const navigate = useNavigate();
   const [allVideos, setAllVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -37,13 +39,17 @@ const Explore = () => {
           <div className="rows">
             {filteredVideos.length > 0 ? (
               filteredVideos.map((video, index) => (
-                <div key={index} className="explore-video-card">
-                  <a href={video.url} target="_blank" rel="noopener noreferrer">
-                    <img className="explore-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`} />
-                  </a>
-                  <h5 className="video-title">{video.title}</h5>
-                  <small className="video-title">{video.date_posted}</small>
+                <div className='explore-video-card' onClick={() => navigate(`/video/${video.id}`)}>
+                <img className="explore-thumbnail" src={video.thumbnail} alt='' />
+                <div className="title-area">
+                  <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                  <h4 className="video-title">{video.title}</h4>
                 </div>
+                <div className="poster-date-area">
+                  <p className="video-uploader">{video.poster}</p>
+                  <small className='video-date'>{video.date_posted}</small>
+                </div>
+              </div>
               ))
             ) : (
               <p>No videos found</p>
