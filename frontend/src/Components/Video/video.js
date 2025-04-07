@@ -88,6 +88,7 @@ const Video = () => {
     const [noComments, setNoComments] = useState(true);
     const [replyingComment, setReplyingComment] = useState(null);
     const commentRef = useRef();
+    const bottomRef = useRef(null);
 
     // video player stuff
     const [playing, setPlaying] = useState(false);
@@ -143,22 +144,56 @@ const Video = () => {
     // COMMENT LOGIC
     const postComment = async () => {
         const commentText = commentRef.current.value;
+        const currentDate = new Date().toLocaleDateString('en-CA');
+        const parent_id = replyingComment.id;
+        console.log("comment we are replying to: ", replyingComment);
+        console.log("VIDEO ID we are replying to: ", replyingComment.video_id);
+        console.log("COMMENT ID we are replying to: ", replyingComment.id);
 
-        const commentToSend = {
-            id: videoID,
-            commenterName: username,
-            comment: commentText,
-            date_posted: new Date().toLocaleDateString('en-CA'),
-            parent_comment_id: null,
-        };
 
-        try {
-            await commentOnVideo(commentToSend);
-            fetchComments(videoID);
-        } catch (error) {
-            console.error(error);
+        // if reply
+        if (replyingComment){
+            const commentToSend = {
+                video_id: videoID,
+                commenterName: username,
+                comment: commentText,
+                date_posted: currentDate,
+                parent_comment_id: parent_id,
+            };
+        } 
+
+        // regular comment
+        else {
+            const commentToSend = {
+                video_id: videoID,
+                commenterName: username,
+                comment: commentText,
+                date_posted: currentDate,
+                parent_comment_id: null,
+            };
+    
+            // clear comment textarea
+            commentRef.current.value = "";
+    
+            try {
+                await commentOnVideo(commentToSend);
+                await fetchComments(videoID);
+    
+            } catch (error) {
+                console.error(error);
+            }
+    
         }
+        
     }
+
+    // SCROLL TO NEW COMMENT WHEN POSTED
+    useEffect(() => {
+        console.log("should be scrolling");
+        if (videoComments.length > 0 && bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [videoComments]);
 
 
     // SET REPLYING
@@ -169,23 +204,29 @@ const Video = () => {
         console.log("comment data: ", commentData);
     };
 
-    // REPLY TO COMMENT
-    const replyToComment = (commentData) => {
-        const commentText = commentRef.current.value;
 
-        console.log("id: ", commentData.id);
+    const closeReply = () => {
+        setReplyingComment(null);
+        commentRef.current.value = "";
+    }
 
-        const commentToSend = {
-            id: videoID,
-            commenterName: username,
-            comment: commentText,
-            date_posted: new Date().toLocaleDateString('en-CA'),
-            parent_comment_id: commentData.id,
-        }
+    // END REPLY
 
-        console.log("comment data: ", commentData);
+    // COMMENT MARKING
+    const jumpToComment = (time) => {
+        const newProgress = time;
+        setProgress(newProgress / playerRef.current?.getDuration());
+        playerRef.current.seekTo(newProgress);
     };
 
+    const commentRatio = (time) => {
+        const newProgress = time;
+        return newProgress / playerRef.current?.getDuration();
+    }
+    // END COMMENT MARKING
+
+
+    // VIDEO CONTROLS
     const handlePlayPause = () => {
         setPlaying((prev) => !prev);
     };
@@ -199,17 +240,8 @@ const Video = () => {
         setProgress(newProgress);
         playerRef.current.seekTo(newProgress);
     };
+    // END VIDEO CONTROLS
 
-    const jumpToComment = (time) => {
-        const newProgress = time;
-        setProgress(newProgress / playerRef.current?.getDuration());
-        playerRef.current.seekTo(newProgress);
-    };
-
-    const commentRatio = (time) => {
-        const newProgress = time;
-        return newProgress / playerRef.current?.getDuration();
-    }
 
     // format time
     const formatTime = (seconds) => {
@@ -323,45 +355,49 @@ const Video = () => {
                                     </div>
                                 </div>
                             ))}
+
+                            <div ref={bottomRef}></div>
+
                         </div>
 
                         <div className="comment-input-bar">
 
-                            {/* User types comment here */}
+                            {/* COMMENT, NOT REPLY
                             {!replyingComment && <div className="post-section">
-                                <div className="input-container">
-                                    <textarea
-                                        className='comment-input'
-                                        id='input-container'
-                                        placeholder="Add Comment.."
-                                        ref={commentRef}
-                                        maxLength={200}
-                                    />
-                                </div>
-                                <button className="comment-button" onClick={() => postComment()}>Post</button>
-                            </div>}
+                                <textarea
+                                    className='comment-input'
+                                    id='input-container'
+                                    placeholder="Add Comment.."
+                                    ref={commentRef}
+                                    maxLength={200}
+                                />
+                                <button className="post-comment-button" onClick={() => postComment()}>Post</button>
+                            </div>} */}
 
-                            {replyingComment && <div className="reply-section">
+
+                            {/* REPLY! */}
+                            <div className="reply-section">
 
                                 <div className="reply-input-section">
-                                    <div className="close-button-column">
-                                        <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => setReplyingComment(null)}></img>
-                                        <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-icon"></img>
-                                    </div>
+                                    {replyingComment && <div className="close-button-column">
+                                        <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => closeReply()}></img>
+                                        <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator"></img>
+                                    </div>}
                                     <div className="reply-input-container">
                                         <textarea
                                             className='comment-input'
-                                            placeholder="Reply.."
+                                            placeholder="Message.."
                                             ref={commentRef}
                                             maxLength={200}
                                         />
                                     </div>
                                 </div>
 
-                                <button className="post-reply-button" onClick={() => replyToComment()}>Post</button>
+                                <button className="post-reply-button" onClick={() => postComment()}>Post</button>
                             </div>
-                            }
+                            
                         </div>
+
 
                     </div>
                 </div>
