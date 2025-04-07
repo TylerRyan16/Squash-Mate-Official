@@ -39,46 +39,45 @@
   width: 90%;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: clamp(10px, 1vw, 25px);
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 15px;
 }
+
+// VIDEO CARD AREA
 
 .my-videos-video-card{
-  text-align: left;
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 8px;
-  padding-top: 5px;
-  justify-content: center;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: center;
+  //width: clamp(390px, 1vw, 630px);
+  width: 100%;
+  height: 100%;
   border-radius: 8px;
   padding: 5px;
-  transition: background-color 0.1s ease-in-out;
+  cursor: pointer;
+
+  transition: background-color 0.15s ease-in-out;
 }
 
-
 .my-videos-video-card:hover{
-  background-color: lightgrey;
+  background-color: #A9A9A9;
 }
 
 .my-videos-thumbnail{
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   width: 100%;
-  border-radius: 5px;
-  margin-bottom: 5px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  padding-top: 5px;
+
+  transition: transform 0.15s ease-in-out;
 }
 
-@media screen and (max-width: 768px){
-  .rows{
-    grid-template-columns: repeat(2,1fr);
-  }
-}
 
-@media screen and (min-width: 767px) and (max-width: 1025px){
-  .rows{
-    grid-template-columns: repeat(3,1fr);
-  }
-}
 
+
+// DROPDOWN AREA
 .dropdown-menu {
   position: absolute;
   right: 3%;
@@ -218,4 +217,17 @@
 .player-level-button.selected {
   background-color: #007bff;
   color: white;
+}
+
+// SMARTPHONE
+@media screen and (max-width: 768px){
+  .rows{
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+
+// TABLETS
+@media screen and (min-width: 767px) and (max-width: 1025px){
+  
 }

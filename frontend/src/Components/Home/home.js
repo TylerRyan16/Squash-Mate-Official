@@ -45,8 +45,8 @@ const Home = () => {
 
     return (
         <div className="page-container">
-            <h1 className='top-header'>Squash Mate</h1>
-            <h2 className='top-header'>Elevate Your Game</h2>
+            <h1 id='app-title'>Squash Mate</h1>
+            <h3 id='slogan'>Elevate Your Game</h3>
 
             {/* MY VIDEOS */}
             <div className="category-name-button-area">
@@ -96,11 +96,17 @@ const Home = () => {
 
                 <div id="public-games-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                        <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
-                            <h4 className="video-title">{currentVideo.title}</h4>
-                            <small className='video-title'>{currentVideo.date_posted}</small>
-                        </div>
+                       <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                       <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
+                       <div className="title-area">
+                           <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                           <h4 className="video-title">{currentVideo.title}</h4>
+                       </div>
+                       <div className="poster-date-area">
+                           <p className="video-uploader">{currentVideo.poster}</p>
+                           <small className='video-date'>{currentVideo.date_posted}</small>
+                       </div>
+                   </div>
                     ))}
                 </div>
                 {/* right arrow */}
@@ -123,10 +129,16 @@ const Home = () => {
                 <div id="shared-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
                         <div className='video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
+                        <img className="home-video-thumbnail" src={currentVideo.thumbnail} alt='' />
+                        <div className="title-area">
+                            <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
                             <h4 className="video-title">{currentVideo.title}</h4>
-                            <small className='video-title'>{currentVideo.date_posted}</small>
                         </div>
+                        <div className="poster-date-area">
+                            <p className="video-uploader">{currentVideo.poster}</p>
+                            <small className='video-date'>{currentVideo.date_posted}</small>
+                        </div>
+                    </div>
                     ))}
                 </div>
                 {/* right arrow */}

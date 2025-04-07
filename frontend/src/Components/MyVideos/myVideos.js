@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { getAllVideos, getMyUsername } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 import "./myVideos.scss";
 
 const MyVideos = () => {
@@ -18,10 +19,10 @@ const MyVideos = () => {
 
   useEffect(() => {
     const grabMyUsername = async () => {
-      try{
+      try {
         const username = await getMyUsername();
         console.log("your username: ", username);
-      } catch (error){
+      } catch (error) {
         console.log(error);
       }
     }
@@ -84,19 +85,22 @@ const MyVideos = () => {
     setIsPlayerLevelOpen(false);
   };
 
+
+  const navigate = useNavigate();
+
   return (
     <div className="page-container">
       <title>My Videos</title>
       <h1>My Videos Page</h1>
       <main>
         <div className="search-filter-container">
-        <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
-        <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
+          <input type="text" className="search-input" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <img src="/assets/icons/search.png" alt="search icon" className="search-icon" />
 
           <div className="relative" ref={filterRef}>
-            <img 
-              src="/assets/icons/filter-icon.png" 
-              alt="filter icon" 
+            <img
+              src="/assets/icons/filter-icon.png"
+              alt="filter icon"
               className="filter-icon cursor-pointer"
               onClick={handleFilterIconClick}
             />
@@ -120,20 +124,20 @@ const MyVideos = () => {
 
           {isMatchTypeOpen && (
             <div className="match-type-container" ref={matchTypeRef}>
-              <button 
-                className={`match-type-button ${selectedMatchType === 'Match' ? 'selected' : ''}`} 
+              <button
+                className={`match-type-button ${selectedMatchType === 'Match' ? 'selected' : ''}`}
                 onClick={() => handleMatchTypeClick('Match')}
               >
                 Match
               </button>
-              <button 
-                className={`match-type-button ${selectedMatchType === 'Game' ? 'selected' : ''}`} 
+              <button
+                className={`match-type-button ${selectedMatchType === 'Game' ? 'selected' : ''}`}
                 onClick={() => handleMatchTypeClick('Game')}
               >
                 Game
               </button>
-              <button 
-                className={`match-type-button ${selectedMatchType === 'Casual' ? 'selected' : ''}`} 
+              <button
+                className={`match-type-button ${selectedMatchType === 'Casual' ? 'selected' : ''}`}
                 onClick={() => handleMatchTypeClick('Casual')}
               >
                 Casual
@@ -143,20 +147,20 @@ const MyVideos = () => {
 
           {isPlayerLevelOpen && (
             <div className="player-level-container" ref={playerLevelRef}>
-              <button 
-                className={`player-level-button ${selectedPlayerLevel === 'Beginner' ? 'selected' : ''}`} 
+              <button
+                className={`player-level-button ${selectedPlayerLevel === 'Beginner' ? 'selected' : ''}`}
                 onClick={() => handlePlayerLevelClick('Beginner')}
               >
                 Beginner
               </button>
-              <button 
-                className={`player-level-button ${selectedPlayerLevel === 'Intermediate' ? 'selected' : ''}`} 
+              <button
+                className={`player-level-button ${selectedPlayerLevel === 'Intermediate' ? 'selected' : ''}`}
                 onClick={() => handlePlayerLevelClick('Intermediate')}
               >
                 Intermediate
               </button>
-              <button 
-                className={`player-level-button ${selectedPlayerLevel === 'Professional' ? 'selected' : ''}`} 
+              <button
+                className={`player-level-button ${selectedPlayerLevel === 'Professional' ? 'selected' : ''}`}
                 onClick={() => handlePlayerLevelClick('Professional')}
               >
                 Professional
@@ -164,22 +168,24 @@ const MyVideos = () => {
             </div>
           )}
         </div>
-        <div className="my-videos-display-area">
-          <div className="rows">
+        <div className="rows">
           {filteredVideos.length > 0 ? (
-              filteredVideos.map((video, index) => (
-                <div key={index} className="my-videos-video-card">
-                  <a href={video.url} target="_blank" rel="noopener noreferrer">
-                    <img className="my-videos-thumbnail" src={video.thumbnail} alt={`Explore Video ${index}`} />
-                  </a>
-                  <h5 className="video-title">{video.title}</h5>
-                  <small className="video-title">{video.date_posted}</small>
+            filteredVideos.map((video, index) => (
+              <div className='my-videos-video-card' onClick={() => navigate(`/video/${video.id}`)}>
+                <img className="my-videos-thumbnail" src={video.thumbnail} alt='' />
+                <div className="title-area">
+                  <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                  <h4 className="video-title">{video.title}</h4>
                 </div>
-              ))
-            ) : (
-              <p>No videos found</p>
-            )}
-          </div>
+                <div className="poster-date-area">
+                  <p className="video-uploader">{video.poster}</p>
+                  <small className='video-date'>{video.date_posted}</small>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No videos found</p>
+          )}
         </div>
       </main>
     </div>

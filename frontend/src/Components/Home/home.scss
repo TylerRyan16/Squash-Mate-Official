@@ -8,9 +8,16 @@ button{
 
 
 
-.top-header{
+#app-title, #slogan{
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
+
+#slogan{
+    font-size: clamp(12px, 1vw, 18px);
+}
+
 
 .category-name-button-area{
     display: flex;
@@ -67,7 +74,7 @@ button{
     overflow-y: hidden;
     white-space: nowrap;
     gap: clamp(50px, 1vw, 80px);
-    background-color: lightgray;
+    align-items: center;
 
 }
 
@@ -79,8 +86,8 @@ button{
     display: flex;
     flex-direction: column;
     scroll-snap-align: center;
-    width: clamp(450px, 1vw, 700px);
-    height: 100%;
+    width: clamp(460px, 1vw, 700px);
+    height: 95%;
     border-radius: 8px;
     padding: 5px;
     cursor: pointer;
@@ -89,7 +96,7 @@ button{
 }
 
 .video-card:hover{
-    background-color: lightgrey;
+    background-color: #A9A9A9;
 }
 
 .home-video-thumbnail{
@@ -110,16 +117,16 @@ button{
     flex-direction: row;
     align-items: center;
     gap: 5px;
-    background-color: green;
 }
 
 .uploader-cover-pic{
-    height: 35px;
+    height: clamp(20px, 1vw, 35px);
     width: auto;
     border-radius: 50%;
 }
 
 .video-title{
+    font-size: clamp(12px, 1vw, 18px);
     align-self: flex-start;
     text-wrap: wrap;
     padding: 0;
@@ -138,7 +145,6 @@ button{
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: orange;
 }
 
 .video-uploader, .video-date{
