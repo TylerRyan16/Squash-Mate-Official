@@ -3,7 +3,7 @@ import './home.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllVideos } from "../../services/api";
+import { getAllVideos, getMyVideos, getMyUsername } from "../../services/api";
 
 
 // MAIN EXPORT
@@ -24,8 +24,22 @@ function scrollRight(id) {
 const Home = () => {
     const navigate = useNavigate();
     const [allVideos, setAllVideos] = useState([]);
+    const [myVideos, setMyVideos] = useState([]);
+    const [sharedWithMe, setSharedWithMe] = useState([]);
+    const [exploreVideos, setExploredVideos] = useState([]);
+    const [username, setUsername] = useState("");
 
     useEffect(() => {
+        // get your username
+        const getUser = async () => {
+            try {
+                const { username } = await getMyUsername();
+                setUsername(username);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
         const fetchAllVideos = async () => {
             try {
                 const videos = await getAllVideos();
@@ -34,6 +48,19 @@ const Home = () => {
                 console.log(error);
             }
         }
+
+        const fetchMyVideos = async () => {
+            try {
+                const result = await getMyVideos(username);
+                console.log("my videos: ", result);
+                setMyVideos([result]);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getUser();
+        fetchMyVideos();
         fetchAllVideos();
     }, []);
 
@@ -61,7 +88,7 @@ const Home = () => {
                 </button>
 
                 <div id="my-videos-list" className="my-videos-list">
-                    {allVideos.map(currentVideo => (
+                    {myVideos.map(currentVideo => (
                         <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
                             <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                             <div className="title-area">
@@ -96,17 +123,17 @@ const Home = () => {
 
                 <div id="public-games-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
-                       <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                       <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                       <div className="title-area">
-                           <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                           <h4 className="video-title">{currentVideo.title}</h4>
-                       </div>
-                       <div className="poster-date-area">
-                           <p className="video-uploader">{currentVideo.poster}</p>
-                           <small className='video-date'>{currentVideo.date_posted}</small>
-                       </div>
-                   </div>
+                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
+                            <div className="title-area">
+                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                                <h4 className="video-title">{currentVideo.title}</h4>
+                            </div>
+                            <div className="poster-date-area">
+                                <p className="video-uploader">{currentVideo.poster}</p>
+                                <small className='video-date'>{currentVideo.date_posted}</small>
+                            </div>
+                        </div>
                     ))}
                 </div>
                 {/* right arrow */}
@@ -129,16 +156,16 @@ const Home = () => {
                 <div id="shared-list" className="my-videos-list">
                     {allVideos.map(currentVideo => (
                         <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                        <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                        <div className="title-area">
-                            <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                            <h4 className="video-title">{currentVideo.title}</h4>
+                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
+                            <div className="title-area">
+                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                                <h4 className="video-title">{currentVideo.title}</h4>
+                            </div>
+                            <div className="poster-date-area">
+                                <p className="video-uploader">{currentVideo.poster}</p>
+                                <small className='video-date'>{currentVideo.date_posted}</small>
+                            </div>
                         </div>
-                        <div className="poster-date-area">
-                            <p className="video-uploader">{currentVideo.poster}</p>
-                            <small className='video-date'>{currentVideo.date_posted}</small>
-                        </div>
-                    </div>
                     ))}
                 </div>
                 {/* right arrow */}
