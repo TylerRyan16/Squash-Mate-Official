@@ -19,6 +19,7 @@ router.get("/all-videos", async (req, res) => {
 router.get("/my-videos", async (req, res) => {
     console.log("trying to get my  videos in backend route");
     const {username} = req.body;
+    console.log("username in backend route: ", username);
     try {
         const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [username]);
 
