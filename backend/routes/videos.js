@@ -19,7 +19,6 @@ router.get("/all-videos", async (req, res) => {
 router.get("/my-videos", async (req, res) => {
     console.log("trying to get my  videos in backend route");
     const {username} = req.body;
-    console.log("username of poster to find: ", username);
     try {
         const authToken = req.cookies.authToken;
         console.log("authtoken: ", authToken);
