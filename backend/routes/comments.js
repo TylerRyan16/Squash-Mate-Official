@@ -22,7 +22,7 @@ router.get("/for-video/:id", async (req, res) => {
 
 // post a comment
 router.post("/", async (req, res) => {
-    const {video_id, commenterName, comment, date_posted, parent_comment_id} = req.body;
+    const {video_id, commenterName, comment, date_posted, parent_comment_id, timestamp} = req.body;
     console.log("in backend route: ", video_id, commenterName, comment, date_posted, parent_comment_id, timestamp);
     try {
         const result = await pool.query(
