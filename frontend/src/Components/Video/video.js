@@ -282,36 +282,6 @@ const Video = () => {
                 }
             }
         }
-        /*
-        for(const time in sortedTimes){
-            if(currTime >= time){
-                const evt = parsed_game_details[time].split(" ");
-                if(evt[1] === "Gain"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_score").textContent ++;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_score").textContent ++;
-                    }
-                }
-                if(evt[1] === "Lose"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_score").textContent --;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_score").textContent --;
-                    } 
-                }
-                if(evt[1] === "Win"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_wins").textContent ++;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_wins").textContent ++;
-                    } 
-                }
-            }
-        }*/
     }
 
     const handleSeekChange = (e) => {
@@ -455,8 +425,13 @@ const Video = () => {
                             <span>
                                 {formatTime(progress * (playerRef.current?.getDuration() || 0))} / {formatTime(playerRef.current?.getDuration() || 0)}
                             </span>
+                            
                         </div>
-
+                        <div className="flex-row">
+                            <h3>{video.title}</h3> <p>{video.tournament_date}</p>
+                        </div>
+                        <p>{video.match_length} {video.match_type}</p>
+                        <p>{video.description}</p>
 
                     </div>
 
