@@ -23,12 +23,12 @@ router.get("/for-video/:id", async (req, res) => {
 // post a comment
 router.post("/", async (req, res) => {
     const {video_id, commenterName, comment, date_posted, parent_comment_id} = req.body;
-    console.log("in backend route: ", video_id, commenterName, comment, date_posted, parent_comment_id);
+    console.log("in backend route: ", video_id, commenterName, comment, date_posted, parent_comment_id, timestamp);
     try {
         const result = await pool.query(
-            `INSERT INTO comments (video_id, commenter_name, comment, date_posted, parent_comment_id)
-            VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [video_id, commenterName, comment, date_posted, parent_comment_id || null]
+            `INSERT INTO comments (video_id, commenter_name, comment, date_posted, parent_comment_id, timestamp)
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+            [video_id, commenterName, comment, date_posted, parent_comment_id || null, timestamp]
         );
         
         res.status(201).json(result.rows[0]);

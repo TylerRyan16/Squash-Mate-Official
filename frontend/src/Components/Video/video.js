@@ -94,6 +94,7 @@ const Video = () => {
     // video player stuff
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [videoLength, setVideoLength] = useState(0);
     const playerRef = useRef(null);
 
     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD & USERNAME
@@ -153,6 +154,9 @@ const Video = () => {
         let commentText = commentRef.current.value;
         const currentDate = new Date().toLocaleDateString('en-CA');
 
+        // timestamp 
+        const currentTime = playerRef.current?.getCurrentTime();
+        
         // check if replying
         let parent_id;
         if (replyingComment) {
@@ -170,6 +174,7 @@ const Video = () => {
             comment: commentText,
             date_posted: currentDate,
             parent_comment_id: parent_id || null,
+            timestamp: currentTime,
         }
 
 
@@ -415,6 +420,7 @@ const Video = () => {
                                 height="100%"
                                 className="react-player"
                                 onProgress={handleProgress}
+                                onDuration={(duration) => setVideoLength(duration)}
                             />
                         
                         </div>
@@ -430,7 +436,7 @@ const Video = () => {
                         </div>
 
                         <div className="controls">
-                        <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
+                        <button onClick={handlePlayPause}><img className="play-pause" alt="play/pause video" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png' }></img></button>
                             <div className="range-slider">
                                 <input
                                     type="range"
