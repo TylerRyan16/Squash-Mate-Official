@@ -293,7 +293,7 @@ const Video = () => {
                                 <h4 className="commenter-name">{reply.commenter_name}</h4>
                                 <div className="delete-date-zone">
                                     <p className="date-posted">{reply.date_posted.slice(0, 10)}</p>
-                                    <img src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
+                                    <img onClick={() => deleteComment(reply)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
                                 </div>
                             </div>
                             <div className="comment">
