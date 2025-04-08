@@ -78,6 +78,7 @@ export const getAllVideos = async () => {
 
 // GET MY VIDEOS
 export const getMyVideos = async (username) => {
+    console.log("trying to get videos in API");
     try {
         const response = await api.get("/videos/my-videos", username);
         return response.data;
@@ -98,6 +99,8 @@ export const getSpecificVideo = async (videoID) => {
 
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
+    console.log("HEREE");
+    console.log(videoDetails);
     try {
         const response = await api.post("/videos", videoDetails);
 

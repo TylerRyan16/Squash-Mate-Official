@@ -20,7 +20,21 @@ router.get("/my-videos", async (req, res) => {
     console.log("trying to get my  videos in backend route");
     const {username} = req.body;
     try {
-        const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [username]);
+        const authToken = req.cookies.authToken;
+        console.log("authtoken: ", authToken);
+
+        if (!authToken) {
+            return res.status(401).json({ error: "Unauthorized. No token provided." });
+        }
+
+        // get user id
+        const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
+        console.log("decoded: ", decoded);
+    
+        const userId = decoded.userId;
+        console.log("userId: ", userId);
+
+        const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [decoded.username]);
 
         if (result.rows.length === 0) {
             return res.status(401).json({ error: "User not found" });
@@ -36,13 +50,13 @@ router.get("/my-videos", async (req, res) => {
 
 // add a new video to database
 router.post("/", async (req, res) => {
-    const {title, description, url, type, length, tournament_date, tournament_name, tournament_location, poster, thumbnail} = req.body;
-
+    console.log("posting");
+    const {title, description, url, type, length, tournament_date, tournament_name, tournament_location, player1_name, player2_name, player1_color, player2_color, poster, thumbnail, player1_score, player2_score, game_details} = req.body;
     try {
         const result = await pool.query(
-            `INSERT INTO videos (url, poster, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
-            [url, poster, title, description, type, length, tournament_name, tournament_date, tournament_location, thumbnail]
+            `INSERT INTO videos (url, poster, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail, player1_name, player2_name, player1_color, player2_color, player1_score, player2_score, game_details)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`,
+            [url, poster, title, description, type, length, tournament_name, tournament_date, tournament_location, thumbnail, player1_name, player2_name, player1_color, player2_color, player1_score, player2_score, game_details]
         );
 
 

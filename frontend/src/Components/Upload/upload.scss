@@ -180,7 +180,7 @@
 
 // UPLOAD
 .upload-button {
-    width: 50%;
+    width: 100%;
     background-color: #315fb9;
     color: white;
     padding: 5px;
@@ -188,6 +188,17 @@
     font-size: 32px;
     cursor: pointer;
     
+}
+
+.continue2-button {
+    width: 100%;
+    background-color: #315fb9;
+    color: white;
+    padding: 5px;
+    border-radius: 8px;
+    font-size: 32px;
+    cursor: pointer;
+    align-self: flex-start;
 }
 
 .right-area {
@@ -348,3 +359,209 @@
         width: 90%;
     }
 }
+
+.upload-video-centered{
+    width: 100%;
+    //height: 100%;
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    //gap: 1%;
+    flex-direction: column;
+}
+
+.upload-video-controls{
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+}
+
+.timeline-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    border-radius: 25px;
+    border-color: black;
+    border-style: solid;
+    /*margin-bottom: 5vh;*/
+  }
+  .range-slider{
+    position: relative;
+    width: 100%;
+  }
+
+  .slider-background{
+    position: absolute;
+    background: transparent;
+    width: 100%;
+    content: "";
+    height: 60%;
+    top: 20%;
+    pointer-events: none;
+  }
+
+.tick{
+  position: absolute;
+  background:#315fb9;
+  width: 0.5%;
+  height: 100%;
+  pointer-events:all;
+}
+
+.tick:hover{
+  transform: scale(1.5);
+}
+
+.tick .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    width: 120px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tick:hover .tooltiptext {
+    visibility: visible;
+  }
+
+.point-controls{
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    justify-content: center;
+}
+
+.point-button{
+    width: 5%;
+    background-color: #315fb9;
+    color: white;
+    padding: 5px;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-bottom: 0.5%;
+}
+.point-display{
+    background-color: rgb(208, 207, 207);
+    border-radius: 30px;
+    width: 20%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 0.2rem  rgb(61, 61, 61) solid;
+}
+.player1-color{
+    flex-grow:1;
+    min-height: 100%;
+    background-color: aquamarine;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+
+
+}
+.player2-color{
+    flex-grow:1;
+    min-height: 100%;
+    background-color: red;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+
+}
+.player-name{
+    width: 25%;
+    text-align: center;
+}
+
+.player1_wins{
+    min-height: 100%;
+    background-color: #315fb9;
+    align-content: center;
+    color: white;
+    width: 5%;
+    text-align: center;
+}
+.player2_wins{
+    min-height: 100%;
+    background-color: #315fb9;
+    align-content: center;
+    color: white;
+    width: 5%;
+    text-align: center;
+
+}
+.score-background{
+    background-color: rgb(61, 61, 61);
+    color:white;
+    min-height: 100%;
+    text-align: center;
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 7%;
+}
+
+.call-controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.player1-calls{
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    gap: 1%;
+    justify-content: center;
+    align-items: center;
+    border-right: 0.1rem solid black;
+
+}
+.player2-calls{
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    gap: 1%;
+    justify-content: center;
+    align-items: center;
+    border-left: 0.1rem solid black;
+}
+.call-button{
+    width: 30%;
+    background-color: #315fb9;
+    color: white;
+    padding: 5px;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 0.5%;
+}
+hr{
+    height: 35vh;
+    width:.5vw;
+    border-width:0;
+    background-color:black;
+  }
+
+  .play-pause{
+    width: 30%;
+    //align-self: right;
+  }
