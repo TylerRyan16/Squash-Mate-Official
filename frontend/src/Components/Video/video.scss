@@ -98,6 +98,8 @@
   align-items: center;
 }
 
+
+
 #coaching-header {
   margin: 0;
   padding: 5px;
@@ -117,15 +119,39 @@
   justify-self: center;
 }
 
+.comment-and-replies{
+  width: 100%;
+  height: fit-content;
+}
+
 .specific-comment {
   background-color: azure;
   border-radius: 16px;
   width: 100%;
-  height: 20%;
   display: flex;
-  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
   margin-bottom: 5px;
+  
+}
+
+.reply{
+  width: 90%;
+  justify-self: flex-end;
   position: relative;
+}
+
+.reply-indicator-display{
+  position: absolute;
+  height: 40px;
+  top: 25%;
+  left: -10%;
+}
+
+.mention-text {
+  font-weight: bold;
+  color: #2c6ed5;
+  margin-right: 4px;
 }
 
 .comment-profile-pic {
@@ -133,17 +159,16 @@
   height: 50%;
   background-color: lightgray;
   border-radius: 64px;
-  margin-top: 1%;
+  margin: 1%;
+  
 }
 
 .comment-div {
   width: 100%;
-  height: 100%;
   padding-left: 1%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+
 
   h4 {
     padding: 0;
@@ -163,9 +188,22 @@
   flex-direction: row;
   justify-content: space-between;
 
-  .date-posted {
-    margin-right: 3%;
-  }
+}
+
+.delete-date-zone{
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-right: 3%;
+
+}
+
+.delete-comment-button{
+  height: 15px;
+  cursor: pointer;
 }
 
 .comment {
@@ -186,15 +224,27 @@
 }
 
 .right-comment-button-area {
+  width: auto;
+  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: fit-content;
+  justify-content: center;
   margin-right: 10px;
 }
 
+.buttons-zone{
+  width: fit-content;
+  display: flex; 
+  flex-direction: row;
+}
+
+.reply-buttons{
+  justify-content: flex-end;
+}
+
+
 .like-button {
-  height: 100%;
+  height: 30px;
   cursor: pointer;
 }
 
