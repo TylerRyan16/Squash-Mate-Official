@@ -89,6 +89,7 @@ const Video = () => {
     const [replyingComment, setReplyingComment] = useState(null);
     const commentRef = useRef();
     const bottomRef = useRef(null);
+    const [amPoster, setAmPoster] = useState(false);
 
     // video player stuff
     const [playing, setPlaying] = useState(false);
@@ -143,16 +144,21 @@ const Video = () => {
 
     // COMMENT LOGIC
     const postComment = async () => {
-        const commentText = commentRef.current.value;
+        let commentText = commentRef.current.value;
         const currentDate = new Date().toLocaleDateString('en-CA');
 
         // check if replying
         let parent_id;
-        if (replyingComment){
+        if (replyingComment) {
             parent_id = replyingComment.id;
+
+            let lengthToTruncate = replyingComment.commenter_name.length + 2;
+            console.log("lengthToTruncate: ", lengthToTruncate);
+
+            commentText = commentText.slice(lengthToTruncate)
         } else parent_id = null;
 
-        
+
         let commentToSend = {
             video_id: videoID,
             commenterName: username,
@@ -165,14 +171,14 @@ const Video = () => {
 
         // clear comment textarea
         commentRef.current.value = "";
-    
+
         try {
             await commentOnVideo(commentToSend);
             await fetchComments(videoID);
         } catch (error) {
             console.error(error);
         }
-        
+
     }
 
     // SCROLL TO NEW COMMENT WHEN POSTED
@@ -236,6 +242,72 @@ const Video = () => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
         return `${mins}:${secs}`;
+    };
+
+    // create root comment and reply structure for display
+    const rootComments = videoComments.filter(comment => comment.parent_comment_id === null);
+    const replyMap = new Map();
+
+    videoComments.forEach(comment => {
+        // if comment is a reply
+        if (comment.parent_comment_id !== null) {
+            // if reply not already in map, set new key
+            if (!replyMap.has(comment.parent_comment_id)) {
+                replyMap.set(comment.parent_comment_id, []);
+            }
+            // push reply to map
+            replyMap.get(comment.parent_comment_id).push(comment);
+        }
+    });
+
+    const commentMap = new Map();
+    videoComments.forEach(comment => {
+        commentMap.set(comment.id, comment);
+    });
+
+    const renderReplies = (parentId) => {
+        const replies = replyMap.get(parentId);
+        if (!replies) return null;
+
+        return replies.map(reply => {
+            // find parent to show username
+            const parentComment = commentMap.get(reply.parent_comment_id);
+            const mention = parentComment ? `@${parentComment.commenter_name} ` : "";
+            return (
+                <>
+                    <div className="specific-comment reply" key={reply.id}>
+                        <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator-display"></img>
+                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+                        <div className="comment-div">
+                            <div className="comment-top-bar">
+                                <h4 className="commenter-name">{reply.commenter_name}</h4>
+                                <div className="delete-date-zone">
+                                    <p className="date-posted">{reply.date_posted.slice(0, 10)}</p>
+                                    <img src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
+                                </div>
+                            </div>
+                            <div className="comment">
+                                <p><span className="mention-text">{mention}</span>{reply.comment}</p>
+                            </div>
+                            <div className="comment-button-area reply-buttons">
+                                <div className="buttons-zone">
+                                    <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
+                                    <div className="right-comment-button-area" onClick={() => setReplyingTo(reply)}>
+                                        <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
+                                        <p className="reply-button">Reply</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    {/* render this comments replies if it has any (chained comments) */}
+                    {renderReplies(reply.id)}
+                </>
+            );
+        });
     };
 
     return (
@@ -315,33 +387,39 @@ const Video = () => {
                         <div className="comments-area">
                             {noComments && <h4 className='no-comments-text'>No Comments to Display</h4>}
 
-                            {videoComments.map(commentInfo => (
-                                <div className="specific-comment">
-                                    <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
-
-                                    <div className="comment-div">
-                                        <div className="comment-top-bar">
-                                            <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
-                                            <p className="date-posted">{commentInfo.date_posted.slice(0, 10)}</p>
-                                        </div>
-
-                                        <div className="comment">
-                                            <p>{commentInfo.comment}</p>
-                                        </div>
-
-                                        <div className="comment-button-area">
-                                            <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
-
-                                            <p className="view-more-button">View More</p>
-
-                                            <div className="right-comment-button-area" onClick={() => setReplyingTo(commentInfo)}>
-                                                <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
-                                                <p className="reply-button">Reply</p>
+                            {rootComments.map(commentInfo => (
+                                <div className="comment-and-replies">
+                                    <div className="specific-comment" key={commentInfo.id}>
+                                        {/* ROOT COMMENT */}
+                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+                                        <div className="comment-div">
+                                            <div className="comment-top-bar">
+                                                <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
+                                                <div className="delete-date-zone">
+                                                    <p className="date-posted">{commentInfo.date_posted.slice(0, 10)}</p>
+                                                    <img src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
+                                                </div>
+                                            </div>
+                                            <div className="comment">
+                                                <p>{commentInfo.comment}</p>
+                                            </div>
+                                            <div className="comment-button-area">
+                                                <p className="view-more-button">View More</p>
+                                                <div className="buttons-zone">
+                                                    <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
+                                                    <div className="right-comment-button-area" onClick={() => setReplyingTo(commentInfo)}>
+                                                        <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
+                                                        <p className="reply-button">Reply</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
+
+                                    {/* render replies recursively */}
+                                    {renderReplies(commentInfo.id)}
                                 </div>
+
                             ))}
 
                             <div ref={bottomRef}></div>
@@ -383,7 +461,7 @@ const Video = () => {
 
                                 <button className="post-reply-button" onClick={() => postComment()}>Post</button>
                             </div>
-                            
+
                         </div>
 
 
