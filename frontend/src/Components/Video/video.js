@@ -151,44 +151,32 @@ const Video = () => {
     const postComment = async () => {
         const commentText = commentRef.current.value;
         const currentDate = new Date().toLocaleDateString('en-CA');
-        const parent_id = replyingComment.id;
-        console.log("comment we are replying to: ", replyingComment);
-        console.log("VIDEO ID we are replying to: ", replyingComment.video_id);
-        console.log("COMMENT ID we are replying to: ", replyingComment.id);
 
-
-        // if reply
+        // check if replying
+        let parent_id;
         if (replyingComment){
-            const commentToSend = {
-                video_id: videoID,
-                commenterName: username,
-                comment: commentText,
-                date_posted: currentDate,
-                parent_comment_id: parent_id,
-            };
-        } 
+            parent_id = replyingComment.id;
+        } else parent_id = null;
 
-        // regular comment
-        else {
-            const commentToSend = {
-                video_id: videoID,
-                commenterName: username,
-                comment: commentText,
-                date_posted: currentDate,
-                parent_comment_id: null,
-            };
+        
+        let commentToSend = {
+            video_id: videoID,
+            commenterName: username,
+            comment: commentText,
+            date_posted: currentDate,
+            parent_comment_id: parent_id || null,
+        }
+
+        console.log("comment/reply we are sending: ", commentToSend);
+
+        // clear comment textarea
+        commentRef.current.value = "";
     
-            // clear comment textarea
-            commentRef.current.value = "";
-    
-            try {
-                await commentOnVideo(commentToSend);
-                await fetchComments(videoID);
-    
-            } catch (error) {
-                console.error(error);
-            }
-    
+        try {
+            await commentOnVideo(commentToSend);
+            await fetchComments(videoID);
+        } catch (error) {
+            console.error(error);
         }
         
     }
