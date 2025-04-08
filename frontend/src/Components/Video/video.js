@@ -2,7 +2,7 @@ import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
-import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername } from "../../services/api";
+import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest } from "../../services/api";
 
 
 function openCoach(evt, coachName) {
@@ -189,6 +189,15 @@ const Video = () => {
         }
     }, [videoComments]);
 
+    const deleteComment = async (comment) => {
+        try {
+            await deleteCommentRequest(comment);
+            await fetchComments(videoID);
+        } catch (error){
+            console.error(error);
+        }
+    }
+
 
     // SET REPLYING
     const setReplyingTo = (commentData) => {
@@ -205,6 +214,7 @@ const Video = () => {
     }
 
     // END REPLY
+
 
     // COMMENT MARKING
     const jumpToComment = (time) => {
@@ -397,7 +407,7 @@ const Video = () => {
                                                 <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
                                                 <div className="delete-date-zone">
                                                     <p className="date-posted">{commentInfo.date_posted.slice(0, 10)}</p>
-                                                    <img src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
+                                                    <img onClick={() => deleteComment(commentInfo)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
                                                 </div>
                                             </div>
                                             <div className="comment">
