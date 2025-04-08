@@ -53,7 +53,7 @@ const Home = () => {
             try {
                 const result = await getMyVideos(username);
                 console.log("my videos: ", result);
-                setMyVideos([result]);
+                setMyVideos(result);
             } catch (error) {
                 console.log(error);
             }
@@ -88,7 +88,9 @@ const Home = () => {
                 </button>
 
                 <div id="my-videos-list" className="my-videos-list">
-                    {myVideos.map(currentVideo => (
+
+
+                    {myVideos.length !== 0 && myVideos.map(currentVideo => (
                         <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
                             <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                             <div className="title-area">
@@ -101,6 +103,10 @@ const Home = () => {
                             </div>
                         </div>
                     ))}
+                    
+                    {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p> }
+
+
                 </div>
 
                 {/* right arrow */}

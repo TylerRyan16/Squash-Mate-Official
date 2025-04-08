@@ -90,4 +90,17 @@ router.get("/:id", async (req, res) => {
 
 });
 
+// DELETE VIDEO
+router.delete("/delete", async (req, res) => {
+    const video = req.body;
+    console.log("deleting video: ", video);
+    try {
+        const result = await pool.query(`DELETE FROM videos WHERE id = $1`, [video.id])
+
+        res.status(201).json(result.rows[0]);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Failed to delete video."});
+    }
+});
 module.exports = router;

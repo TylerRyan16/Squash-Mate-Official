@@ -164,3 +164,15 @@ export const deleteCommentRequest = async (comment) => {
         alert("An error occurred while deleting the comment. Please try again.");
     }
 }
+
+export const deleteVideoRequest = async (video) => {
+    try {
+        const response = await api.delete(`/videos/delete`, {
+            data: video,
+        });
+        return response.data;
+    } catch (error){
+        console.error("error deleting video: ", error);
+        alert("An error occurred while deleting the video. Please try again.");
+    }
+}

@@ -1,8 +1,8 @@
 import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import { useParams } from 'react-router-dom';
-import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest } from "../../services/api";
+import { useParams, useNavigate } from 'react-router-dom';
+import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest } from "../../services/api";
 
 
 function openCoach(evt, coachName) {
@@ -26,6 +26,7 @@ function openCoach(evt, coachName) {
 
 }
 
+// ----------- Utility Functions ----------------------------------------------------------------------------
 function changeHeart() {
     const heart = document.getElementById("heart-icon");
     if (heart.src.indexOf("/assets/icons/heart-empty.png") != -1) {
@@ -36,51 +37,12 @@ function changeHeart() {
     }
 }
 
-
-function showReply(commenter_name, comment) {
-    const reply_box = document.getElementById("reply-option")
-    const reply_name = document.getElementById("reply-name")
-    const reply_comment = document.getElementById("reply-comment")
-
-    reply_box.style.display = 'inline'
-    reply_name.innerText = commenter_name;
-    reply_comment.innerText = comment;
-}
-
-function closeReply() {
-    const reply_box = document.getElementById("reply-option")
-    reply_box.style.display = 'none'
-}
-
-var bob_comments = [{
-    video_id: "1",
-    commenter_name: "bob_coach",
-    comment: "good work",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 128
-}, {
-    video_id: "1",
-    commenter_name: "sarah_coach",
-    comment: "meh work",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 360
-},
-{
-    video_id: "1",
-    commenter_name: "steve_coach",
-    comment: "bad work",
-    date_posted: "1/1/2025",
-    parent_comment_id: null,
-    time_stamp: 422
-
-}]
-
 const Video = () => {
+    const navigate = useNavigate();
     // video stuff
     const { videoID } = useParams();
     const [video, setVideo] = useState({});
+    const [videoOptionsOpen, setVideoOptionsOpen] = useState(false);
 
     // comment stuff
     const [videoComments, setVideoComments] = useState([]);
@@ -97,11 +59,24 @@ const Video = () => {
     const [videoLength, setVideoLength] = useState(0);
     const playerRef = useRef(null);
 
+    const deleteVideo = async () => {
+        try {
+            await deleteVideoRequest(video);
+            navigate("/");
+        } catch (error){
+            console.error(error);
+        }
+    }
+
+    // ----------- UseEffects ----------------------------------------------------------------------------
+
     // GRAB SPECIFIC VIDEO FROM ID ON PAGE LOAD & USERNAME
     useEffect(() => {
+        // Fetch video with id
         const fetchSpecificVideo = async (id) => {
             try {
                 const currentVideo = await getSpecificVideo(id);
+                console.log("current video: ", currentVideo);
                 setVideo(currentVideo);
             } catch (error) {
                 console.log(error);
@@ -121,14 +96,37 @@ const Video = () => {
         getUser();
         fetchSpecificVideo(videoID);
     }, [])
+
+    // Grab comments for the video
+    useEffect(() => {
+        fetchComments(videoID);
+    }, [video])
+
+    // SCROLL TO NEW COMMENT WHEN POSTED
+    useEffect(() => {
+        if (videoComments.length > 0 && bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [videoComments]);
+
+    // Control video paused / playing
+    useEffect(() => {
+
+    })
+
+
+
+
     var parsed_game_details = {}
-    for(const evt in video.game_details){
+    for (const evt in video.game_details) {
         const spaceIndex = video.game_details[evt].indexOf(' ');
         const time = video.game_details[evt].substring(0, spaceIndex);
         const secondPart = video.game_details[evt].substring(spaceIndex + 1);
         parsed_game_details[time] = secondPart;
 
     }
+
+    // ----------- Comment Logic ----------------------------------------------------------------------------
     const fetchComments = async (id) => {
         try {
             const comments = await getCommentsForVideo(id);
@@ -143,20 +141,13 @@ const Video = () => {
         }
     }
 
-    // Grab comments for the video
-    useEffect(() => {
-        fetchComments(videoID);
-    }, [video])
-
-
-    // COMMENT LOGIC
     const postComment = async () => {
         let commentText = commentRef.current.value;
         const currentDate = new Date().toLocaleDateString('en-CA');
 
         // timestamp 
         const currentTime = playerRef.current?.getCurrentTime();
-        
+
         // check if replying
         let parent_id;
         if (replyingComment) {
@@ -192,13 +183,6 @@ const Video = () => {
 
     }
 
-    // SCROLL TO NEW COMMENT WHEN POSTED
-    useEffect(() => {
-        if (videoComments.length > 0 && bottomRef.current) {
-            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [videoComments]);
-
     const deleteComment = async (comment) => {
         try {
             await deleteCommentRequest(comment);
@@ -208,129 +192,6 @@ const Video = () => {
         }
     }
 
-
-    // SET REPLYING
-    const setReplyingTo = (commentData) => {
-        setReplyingComment(commentData);
-        commentRef.current.value = `@${commentData.commenter_name} `
-        commentRef.current.focus();
-    };
-
-
-    const closeReply = () => {
-        setReplyingComment(null);
-        commentRef.current.value = "";
-    }
-
-    // END REPLY
-
-
-    // COMMENT MARKING
-    const jumpToComment = (time) => {
-        const newProgress = time;
-        setProgress(newProgress / playerRef.current?.getDuration());
-        playerRef.current.seekTo(newProgress);
-    };
-
-    const commentRatio = (time) => {
-        const newProgress = time;
-        return newProgress / playerRef.current?.getDuration();
-    }
-    // END COMMENT MARKING
-
-
-    // VIDEO CONTROLS
-    const handlePlayPause = () => {
-        setPlaying((prev) => !prev);
-    };
-
-    const handleProgress = (state) => {
-        setProgress(state.progress);
-        setScoreBoard();
-    };
-
-    function setScoreBoard() {
-        const currTime = playerRef.current?.getCurrentTime();
-        const sortedTimes = Object.keys(parsed_game_details).sort();
-        document.getElementById("player1_score").textContent = 0;
-        document.getElementById("player2_score").textContent = 0;
-        document.getElementById("player1_wins").textContent = 0;
-        document.getElementById("player2_wins").textContent = 0;
-        for(const time in sortedTimes){
-            if(currTime >= sortedTimes[time]){
-                const evt = parsed_game_details[sortedTimes[time]].split(" ");
-                if(evt[1] === "Gain"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_score").textContent ++;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_score").textContent ++;
-                    }
-                }
-                if(evt[1] === "Lose"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_score").textContent --;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_score").textContent --;
-                    } 
-                }
-                if(evt[1] === "Win"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_wins").textContent ++;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_wins").textContent ++;
-                    } 
-                }
-            }
-        }
-        /*
-        for(const time in sortedTimes){
-            if(currTime >= time){
-                const evt = parsed_game_details[time].split(" ");
-                if(evt[1] === "Gain"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_score").textContent ++;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_score").textContent ++;
-                    }
-                }
-                if(evt[1] === "Lose"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_score").textContent --;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_score").textContent --;
-                    } 
-                }
-                if(evt[1] === "Win"){
-                    if(evt[0]===video.player1_name){
-                        document.getElementById("player1_wins").textContent ++;
-                    }
-                    if(evt[0]===video.player2_name){
-                        document.getElementById("player2_wins").textContent ++;
-                    } 
-                }
-            }
-        }*/
-    }
-
-    const handleSeekChange = (e) => {
-        const newProgress = parseFloat(e.target.value);
-        setProgress(newProgress);
-        playerRef.current.seekTo(newProgress);
-    };
-    // END VIDEO CONTROLS
-
-
-    // format time
-    const formatTime = (seconds) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return `${mins}:${secs}`;
-    };
 
     // create root comment and reply structure for display
     const rootComments = videoComments.filter(comment => comment.parent_comment_id === null);
@@ -352,6 +213,31 @@ const Video = () => {
     videoComments.forEach(comment => {
         commentMap.set(comment.id, comment);
     });
+
+
+
+    const setReplyingTo = (commentData) => {
+        setReplyingComment(commentData);
+        commentRef.current.value = `@${commentData.commenter_name} `
+        commentRef.current.focus();
+    };
+
+
+    const closeReply = () => {
+        setReplyingComment(null);
+        commentRef.current.value = "";
+    }
+
+    const jumpToTimestamp = (time) => {
+        const newProgress = time;
+        setProgress(newProgress / playerRef.current?.getDuration());
+        playerRef.current.seekTo(newProgress);
+    };
+
+    const commentRatio = (time) => {
+        const newProgress = time;
+        return newProgress / playerRef.current?.getDuration();
+    }
 
     const renderReplies = (parentId) => {
         const replies = replyMap.get(parentId);
@@ -377,8 +263,11 @@ const Video = () => {
                             <div className="comment">
                                 <p><span className="mention-text">{mention}</span>{reply.comment}</p>
                             </div>
-                            <div className="comment-button-area reply-buttons">
+                            <div className="comment-button-area">
+                                <p onClick={() => jumpToTimestamp(reply.timestamp)} className="timestamp-jump">Jump</p>
+                                <img className="view-more-button" alt="view more" src="/assets/icons/view more.png"></img>
                                 <div className="buttons-zone">
+
                                     <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
                                     <div className="right-comment-button-area" onClick={() => setReplyingTo(reply)}>
                                         <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
@@ -398,19 +287,96 @@ const Video = () => {
         });
     };
 
+
+
+    // ----------- Video Controls ----------------------------------------------------------------------------
+    const handlePlayPause = () => {
+        setPlaying((prev) => !prev);
+    };
+
+    const handleProgress = (state) => {
+        setProgress(state.progress);
+        setScoreBoard();
+    };
+
+    function setScoreBoard() {
+        const currTime = playerRef.current?.getCurrentTime();
+        const sortedTimes = Object.keys(parsed_game_details).sort();
+        document.getElementById("player1_score").textContent = 0;
+        document.getElementById("player2_score").textContent = 0;
+        document.getElementById("player1_wins").textContent = 0;
+        document.getElementById("player2_wins").textContent = 0;
+        for (const time in sortedTimes) {
+            if (currTime >= sortedTimes[time]) {
+                const evt = parsed_game_details[sortedTimes[time]].split(" ");
+                if (evt[1] === "Gain") {
+                    if (evt[0] === video.player1_name) {
+                        document.getElementById("player1_score").textContent++;
+                    }
+                    if (evt[0] === video.player2_name) {
+                        document.getElementById("player2_score").textContent++;
+                    }
+                }
+                if (evt[1] === "Lose") {
+                    if (evt[0] === video.player1_name) {
+                        document.getElementById("player1_score").textContent--;
+                    }
+                    if (evt[0] === video.player2_name) {
+                        document.getElementById("player2_score").textContent--;
+                    }
+                }
+                if (evt[1] === "Win") {
+                    if (evt[0] === video.player1_name) {
+                        document.getElementById("player1_wins").textContent++;
+                    }
+                    if (evt[0] === video.player2_name) {
+                        document.getElementById("player2_wins").textContent++;
+                    }
+                }
+            }
+        }
+    }
+
+    const handleSeekChange = (e) => {
+        const newProgress = parseFloat(e.target.value);
+        setProgress(newProgress);
+        playerRef.current.seekTo(newProgress);
+    };
+
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${mins}:${secs}`;
+    };
+
+    // ----------- Rendered Content ----------------------------------------------------------------------------
     return (
-        <div className="page-container">
+        <div className="watch-video-page">
             <h1 id="page-title">Watch Video</h1>
+            <div className="poster-row">
+                <div className="poster-info">
+                    <img src='/assets/squash-guy.jpg' alt='profile cover' className="poster-profile-pic"></img>
+                    <h3 id="video-poster">{video.poster}</h3>
+                </div>
+                <div
+                    onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
+                    className="video-creator-controls"
+                >
+                    <img src="/assets/icons/3 dots.png" alt="more video info" className="three-dots"></img>
+                    {videoOptionsOpen && <div className="video-options-panel">
+                        <div className="option-row">
+                            <img src="/assets/icons/delete.png" alt="delete video" className="option-icon"></img>
+                            <p onClick={() => deleteVideo()}className="option-text">Delete Video</p>
+                        </div>
+                    </div>}
+                </div>
+
+            </div>
             <div className="watch-video-page-column">
                 <div className="video-comments-section-row">
-
-
-
                     <div className="video-area">
-
-
+                        {/* YouTube Video Player */}
                         <div className="react-player-wrapper">
-                            {/* YouTube Video Player */}
                             <ReactPlayer
                                 ref={playerRef}
                                 url={video.url}
@@ -421,22 +387,25 @@ const Video = () => {
                                 className="react-player"
                                 onProgress={handleProgress}
                                 onDuration={(duration) => setVideoLength(duration)}
+                                onPlay={() => setPlaying(true)}
+                                onPause={() => setPlaying(false)}
                             />
-                        
                         </div>
 
-                       <div className="video-point-display">
-                            <div className="video-player1-color" id='player1-color'style={{backgroundColor:video.player1_color}}></div>
+                        {/* Scoreboard */}
+                        <div className="video-point-display">
+                            <div className="video-player1-color" id='player1-color' style={{ backgroundColor: video.player1_color }}></div>
                             <p className='video-player-name'>{video.player1_name}</p>
                             <div className="video-player1_wins" id="player1_wins">0</div>
                             <div className='video-score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
                             <div className="video-player2_wins" id="player2_wins">0</div>
                             <p className='video-player-name'>{video.player2_name}</p>
-                            <div className="video-player2-color" style={{backgroundColor:video.player2_color}}></div>
+                            <div className="video-player2-color" style={{ backgroundColor: video.player2_color }}></div>
                         </div>
 
+                        {/* Video Controls */}
                         <div className="controls">
-                        <button onClick={handlePlayPause}><img className="play-pause" alt="play/pause video" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png' }></img></button>
+                            <button onClick={handlePlayPause}><img className="play-pause" alt="play/pause video" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
                             <div className="range-slider">
                                 <input
                                     type="range"
@@ -447,10 +416,10 @@ const Video = () => {
                                     onChange={handleSeekChange}
                                     className="timeline-slider"
                                 ></input>
-                                <div className = "slider-background">
+                                <div className="slider-background">
                                     <div id="timestamps">
-                                        {Object.keys(parsed_game_details).map(time => (<div className='tick' style={{left:(commentRatio(time) * 100 + 0.5) +'%'}}><span class='tooltiptext'>{parsed_game_details[time]}</span></div>)
-                                    )}
+                                        {Object.keys(parsed_game_details).map(time => (<div className='tick' style={{ left: (commentRatio(time) * 100 + 0.5) + '%' }}><span class='tooltiptext'>{parsed_game_details[time]}</span></div>)
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -465,23 +434,17 @@ const Video = () => {
                     </div>
 
 
-                    {/* COMMENT SECTION */}
+                    {/* Comment Section */}
                     <div className="comment-section">
                         <div className="comment-section-top-bar">
                             <h2 id="coaching-header">Coaching Feed</h2>
                             <div class="coach-tabs">
                                 <button className="tablinks"></button>
-
-                                {/* {users_commented.map((user, index) => (
-                                    <button className="tablinks" onClick={(event) => openCoach(event, index)}>{user}</button>
-
-                                ))} */}
                             </div>
-
                         </div>
 
 
-
+                        {/* Comments List */}
                         <div className="comments-area">
                             {noComments && <h4 className='no-comments-text'>No Comments to Display</h4>}
 
@@ -502,7 +465,8 @@ const Video = () => {
                                                 <p>{commentInfo.comment}</p>
                                             </div>
                                             <div className="comment-button-area">
-                                                <p className="view-more-button">View More</p>
+                                                <p onClick={() => jumpToTimestamp(commentInfo.timestamp)} className="timestamp-jump">Jump</p>
+                                                <img className="view-more-button" alt="view more" src="/assets/icons/view more.png"></img>
                                                 <div className="buttons-zone">
                                                     <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
                                                     <div className="right-comment-button-area" onClick={() => setReplyingTo(commentInfo)}>
@@ -524,10 +488,9 @@ const Video = () => {
 
                         </div>
 
+                        {/* Comment Input */}
                         <div className="comment-input-bar">
-                            {/* REPLY! */}
                             <div className="reply-section">
-
                                 <div className="reply-input-section">
                                     {replyingComment && <div className="close-button-column">
                                         <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => closeReply()}></img>
@@ -540,15 +503,16 @@ const Video = () => {
                                             ref={commentRef}
                                             maxLength={200}
                                             onKeyDown={(e) => {
-                                                if (e.key === "Enter" && !e.shiftKey){
+                                                if (e.key === "Enter" && !e.shiftKey) {
                                                     e.preventDefault();
                                                     postComment(e);
                                                 }
-                                            }}  
+                                            }}
                                         />
                                     </div>
                                 </div>
 
+                                {/* Post Comment */}
                                 <button className="post-reply-button" onClick={() => postComment()}>Post</button>
                             </div>
 
@@ -557,6 +521,15 @@ const Video = () => {
 
                     </div>
                 </div>
+            </div>
+
+            <div className="video-description">
+                <div className="top-description-row">
+                    <h2>{video.title}</h2>
+                    <p>Posted on {video.date_posted}</p>
+                </div>
+                <h4>Description</h4>
+                <p>{video.description || "No description provided."}</p>
             </div>
         </div>
 
