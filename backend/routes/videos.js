@@ -33,7 +33,11 @@ router.get("/my-videos", async (req, res) => {
         const userId = decoded.userId;
         console.log("userId: ", userId);
 
+<<<<<<< Updated upstream
         const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE id = $1", [userId]);
+=======
+        const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [decoded.username]);
+>>>>>>> Stashed changes
 
         if (result.rows.length === 0) {
             return res.status(401).json({ error: "User not found" });

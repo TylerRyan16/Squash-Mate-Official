@@ -77,8 +77,12 @@ export const getAllVideos = async () => {
 }
 
 // GET MY VIDEOS
+<<<<<<< Updated upstream
 export const getMyVideos = async () => {
     console.log("trying to get videos in API");
+=======
+export const getMyVideos = async (username) => {
+>>>>>>> Stashed changes
     try {
         const response = await api.get("/videos/my-videos");
         return response.data;
