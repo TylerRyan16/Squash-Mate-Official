@@ -3,7 +3,7 @@ import './home.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllVideos } from "../../services/api";
+import { getAllVideos, getMyVideos } from "../../services/api";
 
 
 // MAIN EXPORT
@@ -24,6 +24,9 @@ function scrollRight(id) {
 const Home = () => {
     const navigate = useNavigate();
     const [allVideos, setAllVideos] = useState([]);
+    const [myVideos, setMyVideos] = useState([]);
+    const [sharedWithMe, setSharedWithMe] = useState([]);
+    const [exploreVideos, setExploredVideos] = useState([]);
 
     useEffect(() => {
         const fetchAllVideos = async () => {
@@ -34,6 +37,18 @@ const Home = () => {
                 console.log(error);
             }
         }
+
+        const fetchMyVideos = async () => {
+            try {
+                const myVideos = await getMyVideos();
+                console.log("my videos: ", myVideos);
+                setMyVideos(myVideos);
+            } catch (error){
+                console.log(error);
+            }
+        }
+
+        fetchMyVideos();
         fetchAllVideos();
     }, []);
 
