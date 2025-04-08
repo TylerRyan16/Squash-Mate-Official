@@ -150,3 +150,16 @@ export const getCommentsForVideo = async (videoID) => {
         }
     }
 }
+
+// DELETE COMMENT
+export const deleteCommentRequest = async (comment) => {
+    try {
+        const response = await api.delete(`/comments/delete`, {
+            data: comment,
+        });
+        return response.data;
+    } catch (error){
+        console.error("error deleting comment: ", error);
+        alert("An error occurred while deleting the comment. Please try again.");
+    }
+}

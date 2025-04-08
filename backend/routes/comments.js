@@ -38,5 +38,19 @@ router.post("/", async (req, res) => {
     }
 });
 
+// delete a comment
+router.delete("/delete", async (req, res) => {
+    const comment = req.body;
+    console.log("deleting comment: ", comment);
+    try {
+        const result = await pool.query(`DELETE FROM comments WHERE id = $1`, [comment.id])
+
+        res.status(201).json(result.rows[0]);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Failed to delete comment."});
+    }
+});
+
 
 module.exports = router;
