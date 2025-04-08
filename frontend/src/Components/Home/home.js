@@ -40,9 +40,9 @@ const Home = () => {
 
         const fetchMyVideos = async () => {
             try {
-                const myVideos = await getMyVideos();
-                console.log("my videos: ", myVideos);
-                setMyVideos(myVideos);
+                const result = await getMyVideos();
+                console.log("my videos: ", result);
+                setMyVideos([result]);
             } catch (error){
                 console.log(error);
             }
@@ -76,7 +76,7 @@ const Home = () => {
                 </button>
 
                 <div id="my-videos-list" className="my-videos-list">
-                    {allVideos.map(currentVideo => (
+                    {myVideos.map(currentVideo => (
                         <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
                             <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                             <div className="title-area">
