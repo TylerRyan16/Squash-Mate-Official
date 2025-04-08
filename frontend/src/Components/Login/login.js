@@ -17,7 +17,7 @@ const Landing = () => {
     const [password, setPassword] = useState(initialPassword);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
-    
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -41,6 +41,7 @@ const Landing = () => {
             }
 
         } catch (error) {
+            setShowErrorMessage(true);
             console.error("login failed: ", error);
         }
     };
@@ -81,19 +82,21 @@ const Landing = () => {
                             autoComplete="current-password"
                         />
                     </div>
-                    <button className="forgot-password">Forgot Password?</button>
-                    <p
-                        className={`invalid-info-text ${showErrorMessage ? "visible" : ""}`}
-                    >
-                        The username or password you entered is incorrect.
-                    </p>
+                    <div className="login-bottom-row">
+                        <button className="forgot-password">Forgot Password?</button>
+                        <p
+                            className={`invalid-info-text ${showErrorMessage ? "visible" : ""}`}
+                        >
+                            The username or password you entered is incorrect.
+                        </p>
+                    </div>
                     <button className="login-button" type="submit">Login</button>
 
                     <p className="or">Or</p>
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="create-profile-button"
-                        onClick={() => navigate("/create-profile", {state: {email, password}})}
+                        onClick={() => navigate("/create-profile", { state: { email, password } })}
                         onMouseDown={(e) => e.preventDefault()}
                     >Sign Up</button>
 

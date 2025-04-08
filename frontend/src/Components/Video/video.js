@@ -153,7 +153,6 @@ const Video = () => {
             parent_id = replyingComment.id;
 
             let lengthToTruncate = replyingComment.commenter_name.length + 2;
-            console.log("lengthToTruncate: ", lengthToTruncate);
 
             commentText = commentText.slice(lengthToTruncate)
         } else parent_id = null;
@@ -167,7 +166,6 @@ const Video = () => {
             parent_comment_id: parent_id || null,
         }
 
-        console.log("comment/reply we are sending: ", commentToSend);
 
         // clear comment textarea
         commentRef.current.value = "";
@@ -175,6 +173,8 @@ const Video = () => {
         try {
             await commentOnVideo(commentToSend);
             await fetchComments(videoID);
+            setReplyingComment(null);
+
         } catch (error) {
             console.error(error);
         }
@@ -183,7 +183,6 @@ const Video = () => {
 
     // SCROLL TO NEW COMMENT WHEN POSTED
     useEffect(() => {
-        console.log("should be scrolling");
         if (videoComments.length > 0 && bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
@@ -193,7 +192,7 @@ const Video = () => {
         try {
             await deleteCommentRequest(comment);
             await fetchComments(videoID);
-        } catch (error){
+        } catch (error) {
             console.error(error);
         }
     }
@@ -204,7 +203,6 @@ const Video = () => {
         setReplyingComment(commentData);
         commentRef.current.value = `@${commentData.commenter_name} `
         commentRef.current.focus();
-        console.log("comment data: ", commentData);
     };
 
 
@@ -437,20 +435,6 @@ const Video = () => {
                         </div>
 
                         <div className="comment-input-bar">
-
-                            {/* COMMENT, NOT REPLY
-                            {!replyingComment && <div className="post-section">
-                                <textarea
-                                    className='comment-input'
-                                    id='input-container'
-                                    placeholder="Add Comment.."
-                                    ref={commentRef}
-                                    maxLength={200}
-                                />
-                                <button className="post-comment-button" onClick={() => postComment()}>Post</button>
-                            </div>} */}
-
-
                             {/* REPLY! */}
                             <div className="reply-section">
 
@@ -465,6 +449,12 @@ const Video = () => {
                                             placeholder="Message.."
                                             ref={commentRef}
                                             maxLength={200}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter" && !e.shiftKey){
+                                                    e.preventDefault();
+                                                    postComment(e);
+                                                }
+                                            }}  
                                         />
                                     </div>
                                 </div>

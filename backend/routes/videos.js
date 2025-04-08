@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const pool = require("../config/db.js");
 
 // get all videos
@@ -15,8 +17,10 @@ router.get("/all-videos", async (req, res) => {
 
 // GET MY VIDEOS (WIP)
 router.get("/my-videos", async (req, res) => {
+    console.log("trying to get my  videos in backend route");
     try {
         const authToken = req.cookies.authToken;
+        console.log("authtoken: ", authToken);
 
         if (!authToken) {
             return res.status(401).json({ error: "Unauthorized. No token provided." });
