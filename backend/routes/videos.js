@@ -18,8 +18,6 @@ router.get("/all-videos", async (req, res) => {
 // GET MY VIDEOS (WIP)
 router.get("/my-videos", async (req, res) => {
     console.log("trying to get my  videos in backend route");
-    const {username} = req.body;
-    console.log("username in backend route: ", username);
     try {
         const authToken = req.cookies.authToken;
         console.log("authtoken: ", authToken);
@@ -31,10 +29,7 @@ router.get("/my-videos", async (req, res) => {
         // get user id
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
         console.log("decoded: ", decoded);
-    
-        const userId = decoded.userId;
-        console.log("userId: ", userId);
-
+        
         const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [decoded.username]);
 
         if (result.rows.length === 0) {
