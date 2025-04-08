@@ -77,10 +77,10 @@ export const getAllVideos = async () => {
 }
 
 // GET MY VIDEOS
-export const getMyVideos = async (username) => {
+export const getMyVideos = async () => {
     console.log("trying to get videos in API");
     try {
-        const response = await api.get("/videos/my-videos", username);
+        const response = await api.get("/videos/my-videos");
         return response.data;
     } catch (error){
         throw error.response?.data || "Failed to fetch video data";
