@@ -43,6 +43,9 @@ const Video = () => {
     const { videoID } = useParams();
     const [video, setVideo] = useState({});
     const [videoOptionsOpen, setVideoOptionsOpen] = useState(false);
+    const [shareOpen, setShareOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const allUsers = [{username:"Boba"}, {username:"julia"}, {username:"sam I am testing something"}, {username:"coach"}, {username:"Paul"}, {username:"Dan"}, {username:"leah"}]
 
     // comment stuff
     const [videoComments, setVideoComments] = useState([]);
@@ -349,6 +352,20 @@ const Video = () => {
         return `${mins}:${secs}`;
     };
 
+    const disableShare=()=>{
+        const shareButton = document.getElementById("share-button");
+        const users = document.getElementsByClassName("user-checkbox");
+        for(const user in users){
+            if(users[user].checked == true){
+                return shareButton.disabled = false;
+            }
+        }
+        return shareButton.disabled = true;
+    }
+    const filteredUsers = allUsers.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
     // ----------- Rendered Content ----------------------------------------------------------------------------
     return (
         <div className="watch-video-page">
@@ -357,6 +374,29 @@ const Video = () => {
                 <div className="poster-info">
                     <img src='/assets/squash-guy.jpg' alt='profile cover' className="poster-profile-pic"></img>
                     <h3 id="video-poster">{video.poster}</h3>
+                </div>
+                <div className="share-section">
+                <img src='/assets/icons/share icon.png' className="share-icon" onClick={()=>setShareOpen(!shareOpen)}></img>
+                {shareOpen && <div className="share-panel">
+                    <h4 className='share-text'>Share with User</h4>
+                    <input type="text" className="user-search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
+                    <div className='user-list'>
+                    {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                        <label className="share-user-container">
+                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="user-profile-pic"></img>
+                        <label>{user.username}</label>
+                        <input type="checkbox" className="user-checkbox" onClick={disableShare}/>
+                        <span class="checkmark"></span>
+                        </label>
+              ))
+            ) : (
+              <p>No videos found</p>
+            )}
+                    </div>
+
+                    <button className="share-button" id="share-button" disabled="true">Share</button>
+                    </div>}
                 </div>
                 <div
                     onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
@@ -536,4 +576,4 @@ const Video = () => {
     );
 }
 
-export default Video;
+export default Video; 

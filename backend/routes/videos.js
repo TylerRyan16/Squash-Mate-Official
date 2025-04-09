@@ -46,7 +46,6 @@ router.get("/my-videos", async (req, res) => {
 
 // add a new video to database
 router.post("/", async (req, res) => {
-    console.log("posting");
     const {title, description, url, type, length, tournament_date, tournament_name, tournament_location, player1_name, player2_name, player1_color, player2_color, poster, thumbnail, player1_score, player2_score, game_details} = req.body;
     try {
         const result = await pool.query(
