@@ -2,7 +2,7 @@ import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest } from "../../services/api";
+import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers } from "../../services/api";
 
 
 function openCoach(evt, coachName) {
@@ -45,7 +45,8 @@ const Video = () => {
     const [videoOptionsOpen, setVideoOptionsOpen] = useState(false);
     const [shareOpen, setShareOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const allUsers = [{username:"Boba"}, {username:"julia"}, {username:"sam I am testing something"}, {username:"coach"}, {username:"Paul"}, {username:"Dan"}, {username:"leah"}]
+    const [allUsers, setAllUsers] = useState([]);
+    //const allUsers = [{username:"Boba"}, {username:"julia"}, {username:"sam I am testing something"}, {username:"coach"}, {username:"Paul"}, {username:"Dan"}, {username:"leah"}]
 
     // comment stuff
     const [videoComments, setVideoComments] = useState([]);
@@ -88,6 +89,7 @@ const Video = () => {
 
         // get your username
         const getUser = async () => {
+            console.log("get it0");
             try {
                 const { username } = await getMyUsername();
                 setUsername(username);
@@ -96,6 +98,17 @@ const Video = () => {
             }
         }
 
+        const fetchAllUsers = async () => {
+              try {
+                const users = await getAllUsers();
+                setAllUsers(users);
+                console.log(users);
+              } catch (error) {
+                console.log(error);
+              }
+            }
+            
+        //fetchAllUsers();
         getUser();
         fetchSpecificVideo(videoID);
     }, [])
@@ -362,9 +375,10 @@ const Video = () => {
         }
         return shareButton.disabled = true;
     }
-    const filteredUsers = allUsers.filter((user) =>
+    const filteredUsers = allUsers;
+    /*const filteredUsers = allUsers.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      );*/
 
     // ----------- Rendered Content ----------------------------------------------------------------------------
     return (

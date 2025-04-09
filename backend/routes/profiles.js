@@ -145,6 +145,17 @@ router.get("/me", async (req, res) => {
     }
 });
 
+// GET ALL USERNAMES
+router.get("/all-users", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT username FROM profiles");
+        res.json(result.rows);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch users."});
+    }
+});
+
 // GET MY PROFILE
 router.get("/my-username", async (req, res) => {
     try {

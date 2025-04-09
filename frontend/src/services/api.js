@@ -63,6 +63,15 @@ export const getMyUsername = async () => {
     }
 };
 
+export const getAllUsers = async () => {
+    try {
+        const response = await api.get("/profiles/all-users");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch user data";
+    }
+}
+
 
 // VIDEOS
 
