@@ -77,10 +77,10 @@ export const getAllVideos = async () => {
 }
 
 // GET MY VIDEOS
-export const getMyVideos = async (username) => {
+export const getMyVideos = async () => {
     console.log("trying to get videos in API");
     try {
-        const response = await api.get("/videos/my-videos", username);
+        const response = await api.get("/videos/my-videos");
         return response.data;
     } catch (error){
         throw error.response?.data || "Failed to fetch video data";
@@ -162,5 +162,17 @@ export const deleteCommentRequest = async (comment) => {
     } catch (error){
         console.error("error deleting comment: ", error);
         alert("An error occurred while deleting the comment. Please try again.");
+    }
+}
+
+export const deleteVideoRequest = async (video) => {
+    try {
+        const response = await api.delete(`/videos/delete`, {
+            data: video,
+        });
+        return response.data;
+    } catch (error){
+        console.error("error deleting video: ", error);
+        alert("An error occurred while deleting the video. Please try again.");
     }
 }

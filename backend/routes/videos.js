@@ -18,7 +18,6 @@ router.get("/all-videos", async (req, res) => {
 // GET MY VIDEOS (WIP)
 router.get("/my-videos", async (req, res) => {
     console.log("trying to get my  videos in backend route");
-    const {username} = req.body;
     try {
         const authToken = req.cookies.authToken;
         console.log("authtoken: ", authToken);
@@ -30,9 +29,6 @@ router.get("/my-videos", async (req, res) => {
         // get user id
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
         console.log("decoded: ", decoded);
-    
-        const userId = decoded.userId;
-        console.log("userId: ", userId);
 
         const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [decoded.username]);
 
@@ -40,8 +36,8 @@ router.get("/my-videos", async (req, res) => {
             return res.status(401).json({ error: "User not found" });
         }
 
-        res.json(result.rows[0]);
-        console.log(result.rows[0]);
+        res.json(result.rows);
+        console.log(result.rows);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch user data." });
@@ -93,4 +89,17 @@ router.get("/:id", async (req, res) => {
 
 });
 
+// DELETE VIDEO
+router.delete("/delete", async (req, res) => {
+    const video = req.body;
+    console.log("deleting video: ", video);
+    try {
+        const result = await pool.query(`DELETE FROM videos WHERE id = $1`, [video.id])
+
+        res.status(201).json(result.rows[0]);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Failed to delete video."});
+    }
+});
 module.exports = router;

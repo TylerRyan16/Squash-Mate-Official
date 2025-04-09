@@ -1,20 +1,237 @@
+.watch-video-page{
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  max-width: 100%;
+  height: 150vh;
+  overflow-y: scroll;
+
+}
 .watch-video-page-column {
   width: 95%;
-  height: 100%;
+  height: 75%;
   display: flex;
   flex-direction: column;
   margin: auto;
   overflow: hide;
 }
 
+.poster-row{
+  margin: auto;
+  display: flex; 
+  margin-left: 4%;
+  width: 93%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.poster-info{
+  display: flex; 
+}
+
+.poster-profile-pic{
+  height: 45px;
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+}
+
+.share-icon{
+  height: 35px;
+}
+
 #page-title {
-  text-align: start;
+  text-align:left;
+  margin: 0;
+  margin-left: 4%;
+  padding: 5px;
+}
+
+#video-poster{
+  text-align: left;
+  align-self: flex-end;
   margin: 0;
   padding: 5px;
-  width: 92%;
-  margin: auto;
+}
+
+.video-creator-controls{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #bababa;
+  }
+}
+.share-section{
+  position: relative;
+  left: 35%;
+}
+
+.share-panel{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 100%;
+  width: 250px;
+  height: 400px;
+  border-radius: 8px;
+  z-index: 2500;
+  background-color: azure;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #bababa;
+  text-align: center;
+  align-items: center;
+}
+
+.user-search-input{
+  width: 100%;
+  height: 8%;
+  border-radius: 8px;
+}
+
+.share-button{
+  //padding-top: 5px;
+  background-color: #315fb9;
+  height: 10%;
+  width: 30%;
+  font-size: 20px;
+  border-radius: 16px;
+}
+
+.share-button:disabled{
+  background-color: #8994aa;
+}
+
+/* Customize the label (the container) */
+.share-user-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: #bababa solid 1px;
+  justify-content: space-between;
 
 }
+.user-list{
+  overflow-y: scroll;
+}
+/* Hide the browser's default checkbox */
+.share-user-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.user-profile-pic{
+  width:25px;
+  border-radius: 50%;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  //padding-left: 2px;
+  //padding-top: 2px;
+}
+
+/* On mouse-over, add a grey background color */
+.share-user-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.share-user-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.share-user-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.share-user-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.three-dots{
+  height: 20px;
+  justify-self: flex-end;
+}
+
+.video-options-panel{
+  position: absolute;
+  top: 70%;
+  right: 70%;
+  width: 250px;
+  height: 400px;
+  border-radius: 8px;
+  z-index: 2500;
+  background-color: azure;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #bababa;
+
+}
+
+.option-row{
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.option-icon{
+  height: 75%;
+  width: auto;
+}
+
+.option-text{
+  color: red;
+  text-align: end;
+}
+
 
 .video-comments-section-row {
   width: 100%;
@@ -35,13 +252,11 @@
 }
 
 .react-player-wrapper {
-  //position: relative;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  //padding: 0;
-  //padding-top: 56.25%;
   height:100%;
 
 }
@@ -78,7 +293,7 @@
 
 //COMMENTING
 .comment-section {
-  background-color: #9b9b9b;
+  background-color: #cccccc;
   border-radius: 12px;
   width: 30%;
   height: 100%;
@@ -110,7 +325,7 @@
   height: 80%;
   overflow-y: auto;
   scrollbar-width: thin;
-  background-color: #888888;
+  background-color: #bababa;
   border-radius: 16px;
   padding: 5px;
 }
@@ -238,9 +453,6 @@
   flex-direction: row;
 }
 
-.reply-buttons{
-  justify-content: flex-end;
-}
 
 
 .like-button {
@@ -248,13 +460,22 @@
   cursor: pointer;
 }
 
-.view-more-button {
-  font-size: clamp(8px, 1vw, 12px);
+.timestamp-jump{
+  font-size: clamp(6px, 1vw, 12px);
+  padding: 0;
+  margin: 0;
   cursor: pointer;
+}
 
-  &:hover {
-    text-decoration: underline;
-  }
+
+.view-more-button {
+  align-self: flex-end;
+  height: 5px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  opacity: 0.8;
+  margin-bottom: 5px;
 }
 
 .reply-icon {
@@ -387,7 +608,7 @@
 
 
 .video-point-display{
-  background-color: rgb(208, 207, 207);
+  background-color: rgb(75, 60, 60);
   border-radius: 30px;
   //bottom: 7%;
   width: 20%;
@@ -450,4 +671,47 @@
   flex-direction: row;
   justify-content: center;
   gap: 7%;
+}
+
+.video-description{
+  margin: auto;
+  width: 90%;
+  height: 50vh;
+  margin-top: 3vh;
+  margin-bottom: 20vh;
+  background-color: #cccccc;
+  border-radius: 8px;
+
+  h2{
+
+    margin: 0;
+    padding: 5px;
+    text-align: start;
+  }
+
+  h4{
+    font-size: clamp(12px, 1vw, 16px);
+    margin: 0;
+    padding: 5px;
+    text-align: start;
+  }
+
+  p{
+    font-size: clamp(8px, 1vw, 14px);
+    margin: 0;
+    padding: 5px;
+  }
+}
+
+.top-description-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  width: auto;
+  height: auto;
+
+  p{
+    margin-right: 5px;
+  }
 }
