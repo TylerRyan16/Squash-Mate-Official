@@ -2,7 +2,7 @@ import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers } from "../../services/api";
+import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers, shareVideo } from "../../services/api";
 
 
 function openCoach(evt, coachName) {
@@ -46,7 +46,7 @@ const Video = () => {
     const [shareOpen, setShareOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [allUsers, setAllUsers] = useState([]);
-    //const allUsers = [{username:"Boba"}, {username:"julia"}, {username:"sam I am testing something"}, {username:"coach"}, {username:"Paul"}, {username:"Dan"}, {username:"leah"}]
+    const [sharedUsers, setSharedUsers] = useState([]);
 
     // comment stuff
     const [videoComments, setVideoComments] = useState([]);
@@ -108,7 +108,7 @@ const Video = () => {
               }
             }
             
-        //fetchAllUsers();
+        fetchAllUsers();
         getUser();
         fetchSpecificVideo(videoID);
     }, [])
@@ -375,10 +375,19 @@ const Video = () => {
         }
         return shareButton.disabled = true;
     }
-    const filteredUsers = allUsers;
-    /*const filteredUsers = allUsers.filter((user) =>
+    const filteredUsers = allUsers.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
-      );*/
+      );
+
+    const handleShareVideo=async ()=>{
+        const currentDate = new Date().toLocaleDateString('en-CA');
+        const shareDetails = {video_id:video.id,shared_at:currentDate, shared_by:0}
+        for(const index in sharedUsers){
+            shareDetails.shared_by = sharedUsers[index].id;
+            const response = await shareVideo(shareDetails);
+            console.log("reponse: ", response);
+        }
+    };
 
     // ----------- Rendered Content ----------------------------------------------------------------------------
     return (
@@ -409,7 +418,7 @@ const Video = () => {
             )}
                     </div>
 
-                    <button className="share-button" id="share-button" disabled="true">Share</button>
+                    <button className="share-button" id="share-button" disabled="true" onClick={()=> shareVideo}>Share</button>
                     </div>}
                 </div>
                 <div

@@ -108,8 +108,6 @@ export const getSpecificVideo = async (videoID) => {
 
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
-    console.log("HEREE");
-    console.log(videoDetails);
     try {
         const response = await api.post("/videos", videoDetails);
 
@@ -183,5 +181,32 @@ export const deleteVideoRequest = async (video) => {
     } catch (error){
         console.error("error deleting video: ", error);
         alert("An error occurred while deleting the video. Please try again.");
+    }
+}
+
+export const shareVideo = async (shareDetails) => {
+    try {
+        const response = await api.post("/shared", shareDetails);
+
+        //console.log("Video uploaded: ", response.data);
+        
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data.error) {
+            alert(error.response.data.error);
+        } else {
+            console.error("error sharing video: ", error);
+            alert("An error occurred while sharing the video. Please try again.");
+        }
+
+    }
+}
+
+export const getSharedVideos = async () => {
+    try {
+        const response = await api.get("/shared/shared-videos");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to fetch user data";
     }
 }
