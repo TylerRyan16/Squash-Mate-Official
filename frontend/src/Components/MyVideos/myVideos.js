@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { getAllVideos, getMyUsername } from "../../services/api";
+import { getMyVideos, getMyUsername } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import "./myVideos.scss";
 
 const MyVideos = () => {
-  const [allVideos, setAllVideos] = useState([]);
+  const [myVideos, setMyVideos] = useState([]);
+  const [username, setUsername] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -20,26 +21,27 @@ const MyVideos = () => {
   useEffect(() => {
     const grabMyUsername = async () => {
       try {
-        const username = await getMyUsername();
-        console.log("your username: ", username);
+        const result = await getMyUsername();
+        setUsername(result);
       } catch (error) {
         console.log(error);
       }
     }
 
-    const fetchAllVideos = async () => {
+    const fetchMyVideos = async () => {
       try {
-        const videos = await getAllVideos();
-        setAllVideos(videos);
+        const result = await getMyVideos(username);
+        setMyVideos(result);
       } catch (error) {
         console.log(error);
       }
-    };
-    fetchAllVideos();
+    }
+
+    fetchMyVideos();
     grabMyUsername();
   }, []);
 
-  const filteredVideos = allVideos.filter((video) =>
+  const filteredVideos = myVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

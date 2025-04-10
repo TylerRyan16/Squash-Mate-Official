@@ -1,54 +1,62 @@
 .profile-page{
     width: 100%;
-    height: 92vh;
+    height: 93vh;
     display: flex;
-    overflow: hidden;
+    flex-direction: row;
 }
 
 .left-area{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 5%;
-    width: 50%;
+    width: 10vw;
+    flex-grow: 0.1;
     min-height: 100%;
-    border-right: solid 3px black;
+    border-right: 3px solid black;
     
     .my-profile{
-        align-self: flex-start;
+        font-size: clamp(24px, 1vw, 36px);
     }
 
+    .profile-username{
+        font-size: clamp(24px, 1vw, 36px);
+        margin: 0;
+        padding: 0;
+    }
+    
+
     .profile-pic{
-        align-self: flex-start;
-        width: 25%;
+        width: 50%;
         height: auto;
         background-color: lightgray;
         border-radius: 64px;
     }
 
-    .profile-username{
-        align-self: flex-start;
-        font-size: clamp(32px, 1.5vw, 42px);
-    }
 
     .club-locker-area{
-        align-self: flex-start;
+        height: fit-content;
         display: flex;
-        flex-direction: column;
-        padding-left: 2%;
-        width: 90%;
-        max-height: 35vh;
-        background-color: rgb(70, 147, 225, 0.5);
-        border-radius: 12px;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
 
-        .club-locker-link{
-            cursor: pointer;
+        h3{
+            margin: 0;
+            padding: 0;
+            margin-top: 5px;
         }
 
-        .club-locker-link:hover{
-            text-decoration: underline;
+        img{
+            height: 20px;
         }
-    
+
+        p{
+            margin: 0;
+            padding: 0;
+            font-size: clamp(6px, 1vw, 14px);
+            align-self: flex-end;
+            margin-left: 10px;
+        }
     }
     
 }
@@ -56,19 +64,21 @@
 .right-area{
     display: flex;
     flex-direction: column;
-    gap: clamp(25px, 1.5vw, 35px);
-    width: 50%;
-    min-height: 100%;
-    padding-top: 1%;
-    padding-left: 1%;
-    padding-right: 3%;
+    flex-grow: 1;
+    gap: clamp(10px, 1vw, 25px);
+    padding: 0px 2vw;
+    padding-top: 5vh;
 
-    .name-area{
-        display: flex;
+
+    .profile-fields-div{
         width: 100%;
-        height: auto;
-        gap: 5%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 10px;
+        align-self: flex-start;
     }
+
 
     .security-button-area{
         width: 100%;
@@ -100,12 +110,6 @@
         width: 100%;
     }
 
-    .email-area{
-        display: flex;
-        width: 100%;
-        height: auto;
-        align-items: center;
-    }
 
   
     // SECURITY
@@ -176,42 +180,6 @@
     }
 }
 
-
-
-// FLEXBOXES
-.horizontal-flexbox{
-    display: flex;
-    width: 100%;
-    height: auto;
-    gap: 5%;
-    align-items: center;
-}
-
-.vertical-flexbox{
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-}
-
-
-// ELEMENT SELECTORS
-h1{
-    font-size: clamp(24px, 2vw, 38px);
-}
-
-h3{
-    font-size: clamp(16px, 2vw, 24px);
-    margin: 0 0;
-    padding: 0 0;
-}
-
-// WHOLE PAGE MEDIA QUERY
-@media screen and (max-width: 768px){
-    .left-area{
-        width: 50%;
-    }
-    
-}
 
 
 

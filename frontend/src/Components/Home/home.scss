@@ -1,3 +1,11 @@
+.home-container{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    max-width: 100%;
+    height: 195vh;
+}
+
 button{
     border: none;
     cursor: pointer;
@@ -55,38 +63,42 @@ button{
 
 .carousel {
     width: 95%;
-    height: 55vh;
+    height: 35vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: auto;
+    margin:auto;
     transition: all 0.25s ease-in;
     border-radius: 8px;
     margin-bottom: 2%;
 }
 
-.my-videos-list{
+.all-videos-list{
     width: 95%;
-    height: 100%;
-    display: flex;
-    scroll-behavior: smooth;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    gap: clamp(50px, 1vw, 80px);
-    align-items: center;
-
+    height: 80vh;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 15px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    background-color: #50999917;
+    margin-bottom: 5vh;
 }
 
-.my-videos-list::-webkit-scrollbar{
-    display:none;
+.my-videos-list{
+    display: flex;
+    gap: 35px;
+    width: fit-content;
+    height: fit-content;
 }
 
 .home-video-card{
     display: flex;
     flex-direction: column;
     scroll-snap-align: center;
-    width: clamp(460px, 1vw, 700px);
+    width: 100%;
     height: 100%;
     border-radius: 8px;
     padding: 5px;
@@ -156,8 +168,30 @@ button{
 }
 
 
-@media screen and (max-width: 768px){
-    .video-card{
-        width: clamp(200px, 1vw, 275px);
-    }
+.empty-banner{
+    width: 100%;
+    height: 20vh;
 }
+
+// SMARTPHONE
+@media screen and (max-width: 768px){
+    .all-videos-list{
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    }
+  }
+  
+  // WEIRD BREAKPOINT
+  @media screen and (min-width: 769px) and (max-width: 850px) {
+    .all-videos-list {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+  
+  
+  // TABLETS
+  @media screen and (min-width: 767px) and (max-width: 1025px){
+    .all-videos-list {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+  }
+  

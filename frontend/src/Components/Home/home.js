@@ -64,11 +64,12 @@ const Home = () => {
                 const result = await getSharedVideos();
                 console.log("shared videos", result);
                 setSharedWithMe(result);
-            } catch (error){
+            } catch (error) {
                 console.error(error);
             }
         }
 
+        fetchSharedVideos();
         getUser();
         fetchMyVideos();
         fetchAllVideos();
@@ -81,7 +82,7 @@ const Home = () => {
     };
 
     return (
-        <div className="page-container">
+        <div className="home-container">
             <h1 id='app-title'>Squash Mate</h1>
             <h3 id='slogan'>Elevate Your Game</h3>
 
@@ -92,32 +93,22 @@ const Home = () => {
                 <Link to="/explore" className="view-more">View More</Link>
             </div>
 
-            <div className="carousel">
-                {/* left arrow */}
-                <button id="left-scroll-public" className="left-scroll" onClick={() => scrollLeft('public-games-list')}>
-                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-
-                <div id="public-games-list" className="my-videos-list">
-                    {allVideos.map(currentVideo => (
-                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                            <div className="title-area">
-                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                                <h4 className="video-title">{currentVideo.title}</h4>
-                            </div>
-                            <div className="poster-date-area">
-                                <p className="video-uploader">{currentVideo.poster}</p>
-                                <small className='video-date'>{currentVideo.date_posted}</small>
-                            </div>
+            <div className="all-videos-list">
+                {allVideos.map(currentVideo => (
+                    <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                        <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
+                        <div className="title-area">
+                            <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                            <h4 className="video-title">{currentVideo.title}</h4>
                         </div>
-                    ))}
-                </div>
-                {/* right arrow */}
-                <button id="right-scroll-public" className="right-scroll" onClick={() => scrollRight("public-games-list")}>
-                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
+                        <div className="poster-date-area">
+                            <p className="video-uploader">{currentVideo.poster}</p>
+                            <small className='video-date'>{currentVideo.date_posted}</small>
+                        </div>
+                    </div>
+                ))}
             </div>
+
 
             {/* MY VIDEOS */}
             <div className="category-name-button-area">
@@ -132,8 +123,6 @@ const Home = () => {
                 </button>
 
                 <div id="my-videos-list" className="my-videos-list">
-
-
                     {myVideos.length !== 0 && myVideos.map(currentVideo => (
                         <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
                             <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
@@ -171,7 +160,7 @@ const Home = () => {
                     <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
                 </button>
                 <div id="shared-list" className="my-videos-list">
-                    {allVideos.map(currentVideo => (
+                    {sharedWithMe.length !== 0 && sharedWithMe.map(currentVideo => (
                         <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
                             <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                             <div className="title-area">
@@ -184,12 +173,17 @@ const Home = () => {
                             </div>
                         </div>
                     ))}
+
+                    {sharedWithMe.length === 0 && <p>Nobody has shared any videos with you :(</p>}
+
                 </div>
                 {/* right arrow */}
                 <button id="right-scroll-shared" className="right-scroll" onClick={() => scrollRight("shared-list")}>
                     <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
                 </button>
             </div>
+
+            <div className="empty-banner"></div>
         </div>
     );
 }
