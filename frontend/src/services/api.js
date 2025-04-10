@@ -190,8 +190,12 @@ export const shareVideo = async (shareDetails) => {
         const response = await api.post("/shared", shareDetails);
         return response.data;
     } catch (error) {
-        if (error.response && error.response.data.error) {
-            alert(error.response.data.error);
+        if (error.response) {
+            if (error.response.status === 409) {
+                alert("This video has already been shared with that user.");
+            } else if (error.response.data.error) {
+                alert(error.response.data.error);
+            }
         } else {
             console.error("error sharing video: ", error);
             alert("An error occurred while sharing the video. Please try again.");

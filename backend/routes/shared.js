@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
     // get user id
     const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
     const shared_by = decoded.userId;
-    
+
     try {
         const result = await pool.query(
             `INSERT INTO shared_videos (video_id, user_id, shared_at, shared_by)
@@ -56,13 +56,17 @@ router.post("/", async (req, res) => {
 
 
         if (result.rows.length === 0) {
-            return res.status(500).json({ error: "Failed to add video" });
+            return res.status(500).json({ error: "Failed to share video" });
         }
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to add video" });
+
+        if (error.code === "23505"){
+            return res.status(409).json({ error: "You've already shared this video with this user." });
+        }
+        res.status(500).json({ error: "Failed to share video." });
     }
 });
 
