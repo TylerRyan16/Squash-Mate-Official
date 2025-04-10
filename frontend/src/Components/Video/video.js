@@ -397,12 +397,19 @@ const Video = () => {
     const handleShareVideo= async ()=>{
         console.log("hereeee");
         const currentDate = new Date().toLocaleDateString('en-CA');
-        const shareDetails = {video_id:video.id,shared_at:currentDate, shared_by:0};
-        console.log("shared users:");
-        console.log(sharedUsers);
+        const shareDetails = {
+            video_id: video.id,
+            user_id: null,
+            shared_at: currentDate, 
+            shared_by: null
+        };
+
+        console.log("shared users", sharedUsers);
+        console.log("shared details: ", shareDetails);
+
         for(const index in sharedUsers){
             console.log(shareDetails);
-            shareDetails.shared_by = sharedUsers[index].id;
+            shareDetails.user_id = sharedUsers[index].id;
             const response = await shareVideo(shareDetails);
             console.log("reponse: ", response);
         }

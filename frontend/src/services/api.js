@@ -186,10 +186,8 @@ export const deleteVideoRequest = async (video) => {
 
 export const shareVideo = async (shareDetails) => {
     try {
-        const response = await api.post("/shared/", shareDetails);
-
-        //console.log("Video uploaded: ", response.data);
-        
+        console.log('shareDetails in api: ', shareDetails);
+        const response = await api.post("/shared", shareDetails);
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
