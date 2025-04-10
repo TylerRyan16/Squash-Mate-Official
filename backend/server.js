@@ -5,6 +5,7 @@ const cors = require("cors");
 const profilesRoute = require("./routes/profiles");
 const videosRoute = require("./routes/videos");
 const commentsRoute = require("./routes/comments");
+const sharedRoute = require("./routes/shared");
 
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
@@ -23,6 +24,8 @@ app.use(bodyParser.json());
 app.use("/api/profiles", profilesRoute);
 app.use("/api/videos", videosRoute);
 app.use("/api/comments", commentsRoute);
+app.use("/api/shared", sharedRoute);
+
 
 // start server
 const PORT = process.env.PORT || 5000;

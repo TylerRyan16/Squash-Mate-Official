@@ -75,45 +75,6 @@ const Home = () => {
             <h1 id='app-title'>Squash Mate</h1>
             <h3 id='slogan'>Elevate Your Game</h3>
 
-            {/* MY VIDEOS */}
-            <div className="category-name-button-area">
-                <h1 className='category-name'>My Videos</h1>
-                <Link to="/my-videos" className="view-more">View More</Link>
-            </div>
-
-            <div className="carousel">
-                {/* left arrow */}
-                <button id="left-scroll-my-videos" className="left-scroll" onClick={() => scrollLeft('my-videos-list')}>
-                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-
-                <div id="my-videos-list" className="my-videos-list">
-
-
-                    {myVideos.length !== 0 && myVideos.map(currentVideo => (
-                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                            <div className="title-area">
-                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                                <h4 className="video-title">{currentVideo.title}</h4>
-                            </div>
-                            <div className="poster-date-area">
-                                <p className="video-uploader">{currentVideo.poster}</p>
-                                <small className='video-date'>{currentVideo.date_posted}</small>
-                            </div>
-                        </div>
-                    ))}
-                    
-                    {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p> }
-
-
-                </div>
-
-                {/* right arrow */}
-                <button id="right-scroll-my-videos" className="right-scroll" onClick={() => scrollRight("my-videos-list")}>
-                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-            </div>
 
             {/* EXPLORE PAGE */}
             <div className="category-name-button-area">
@@ -144,6 +105,46 @@ const Home = () => {
                 </div>
                 {/* right arrow */}
                 <button id="right-scroll-public" className="right-scroll" onClick={() => scrollRight("public-games-list")}>
+                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                </button>
+            </div>
+
+            {/* MY VIDEOS */}
+            <div className="category-name-button-area">
+                <h1 className='category-name'>My Videos</h1>
+                <Link to="/my-videos" className="view-more">View More</Link>
+            </div>
+
+            <div className="carousel">
+                {/* left arrow */}
+                <button id="left-scroll-my-videos" className="left-scroll" onClick={() => scrollLeft('my-videos-list')}>
+                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                </button>
+
+                <div id="my-videos-list" className="my-videos-list">
+
+
+                    {myVideos.length !== 0 && myVideos.map(currentVideo => (
+                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
+                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
+                            <div className="title-area">
+                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+                                <h4 className="video-title">{currentVideo.title}</h4>
+                            </div>
+                            <div className="poster-date-area">
+                                <p className="video-uploader">{currentVideo.poster}</p>
+                                <small className='video-date'>{currentVideo.date_posted}</small>
+                            </div>
+                        </div>
+                    ))}
+
+                    {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p>}
+
+
+                </div>
+
+                {/* right arrow */}
+                <button id="right-scroll-my-videos" className="right-scroll" onClick={() => scrollRight("my-videos-list")}>
                     <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
                 </button>
             </div>
