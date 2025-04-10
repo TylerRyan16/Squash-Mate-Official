@@ -6,14 +6,60 @@
 }
 
 .left-area{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 10vw;
+    width: 20vw;
     flex-grow: 0.1;
     min-height: 100%;
     border-right: 3px solid black;
+
+    .tooltip-wrapper {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        display: inline-block;
+      
+        .tooltip-text {
+          visibility: hidden;
+          width: max-content;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          border-radius: 6px;
+          padding: 5px 8px;
+          font-size: 12px;
+      
+          position: absolute;
+          top: 80%;
+          right: 10%;
+          transform: translateX(-50%);
+          white-space: nowrap;
+      
+          opacity: 0;
+          transition: opacity 0.3s;
+          z-index: 1;
+        }
+      
+        &:hover .tooltip-text {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
     
+    .edit-profile-button{
+        width: 50px;
+        height: auto;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 15%;
+    }
+
+    .enabled{
+        background-color: #bababa;
+    }
+
     .my-profile{
         font-size: clamp(24px, 1vw, 36px);
     }
@@ -24,13 +70,35 @@
         padding: 0;
     }
     
+    .profile-picture-zone{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        margin: 0 auto;
+        gap: 15px;
+    }
+
+    .pic-switch-left{
+        width: 50px;
+        height: 50px;
+        transform: scaleX(-1);
+        cursor: pointer;
+    }
 
     .profile-pic{
         width: 50%;
         height: auto;
-        background-color: lightgray;
-        border-radius: 64px;
     }
+
+
+    .pic-switch-right{
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+    }
+
 
 
     .club-locker-area{
@@ -178,6 +246,26 @@
         transform: scale(0);
         opacity: 0;        
     }
+
+    .save-changes-button {
+        position: absolute;
+        bottom: 25%;
+        right: 1.5%;
+        width: (25%, .25vw, 30%);
+        padding: 10px 10px;
+        font-size: clamp(16px, 1vw, 24px);
+        color: green;
+        border: 1px solid green;
+        background-color: transparent;
+        cursor: pointer;
+        align-self: flex-start;
+    }
+
+    .save-changes-button:hover{
+        background-color: green;
+        color: white;
+    }
+
 }
 
 
