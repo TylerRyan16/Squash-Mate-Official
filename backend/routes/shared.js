@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
     // get user id
     const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
     const shared_by = decoded.userId;
-    console.log("decoded user id: ", userId);
+    
     try {
         const result = await pool.query(
             `INSERT INTO shared_videos (video_id, user_id, shared_at, shared_by)
