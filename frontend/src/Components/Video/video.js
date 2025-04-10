@@ -365,24 +365,43 @@ const Video = () => {
         return `${mins}:${secs}`;
     };
 
+    const updateChecks=(user)=>{
+        console.log("UPDATING");
+        const index = sharedUsers.indexOf(user);
+        if (index > -1) {
+            sharedUsers.splice(index, 1);
+            }
+        else{
+            console.log("appending");
+            sharedUsers.push(user);
+            console.log(sharedUsers)
+        }
+        disableShare();
+    }
     const disableShare=()=>{
+        console.log("disabling");
         const shareButton = document.getElementById("share-button");
         const users = document.getElementsByClassName("user-checkbox");
         for(const user in users){
             if(users[user].checked == true){
+                console.log(user);
                 return shareButton.disabled = false;
             }
         }
-        return shareButton.disabled = true;
+        shareButton.disabled = true;
     }
     const filteredUsers = allUsers.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
-    const handleShareVideo=async ()=>{
+    const handleShareVideo= async ()=>{
+        console.log("hereeee");
         const currentDate = new Date().toLocaleDateString('en-CA');
-        const shareDetails = {video_id:video.id,shared_at:currentDate, shared_by:0}
+        const shareDetails = {video_id:video.id,shared_at:currentDate, shared_by:0};
+        console.log("shared users:");
+        console.log(sharedUsers);
         for(const index in sharedUsers){
+            console.log(shareDetails);
             shareDetails.shared_by = sharedUsers[index].id;
             const response = await shareVideo(shareDetails);
             console.log("reponse: ", response);
@@ -409,7 +428,7 @@ const Video = () => {
                         <label className="share-user-container">
                         <img src='/assets/squash-guy.jpg' alt='profile cover' className="user-profile-pic"></img>
                         <label>{user.username}</label>
-                        <input type="checkbox" className="user-checkbox" onClick={disableShare}/>
+                        <input type="checkbox" className="user-checkbox" onClick={()=>updateChecks(user)}/>
                         <span class="checkmark"></span>
                         </label>
               ))
@@ -418,8 +437,9 @@ const Video = () => {
             )}
                     </div>
 
-                    <button className="share-button" id="share-button" disabled="true" onClick={()=> shareVideo}>Share</button>
+                    <button className="share-button" id="share-button" onClick={handleShareVideo}>Share</button>
                     </div>}
+                    
                 </div>
                 <div
                     onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}

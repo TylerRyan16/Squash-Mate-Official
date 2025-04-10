@@ -36,6 +36,7 @@ router.get("/shared-videos", async (req, res) => {
 // add a new share to database
 router.post("/", async (req, res) => {
     const {video_id, shared_at, shared_by} = req.body;
+    console.log("in backend: ", req.body);
     const authToken = req.cookies.authToken;
     
             if (!authToken){
