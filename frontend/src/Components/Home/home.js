@@ -3,7 +3,7 @@ import './home.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllVideos, getMyVideos, getMyUsername } from "../../services/api";
+import { getAllVideos, getMyVideos, getSharedVideos, getMyUsername } from "../../services/api";
 
 
 // MAIN EXPORT
@@ -56,6 +56,16 @@ const Home = () => {
                 setMyVideos(result);
             } catch (error) {
                 console.log(error);
+            }
+        }
+
+        const fetchSharedVideos = async () => {
+            try {
+                const result = await getSharedVideos();
+                console.log("shared videos", result);
+                setSharedWithMe(result);
+            } catch (error){
+                console.error(error);
             }
         }
 
