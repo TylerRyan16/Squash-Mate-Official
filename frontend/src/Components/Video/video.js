@@ -401,7 +401,6 @@ const Video = () => {
             video_id: video.id,
             user_id: null,
             shared_at: currentDate, 
-            shared_by: null
         };
 
         console.log("shared users", sharedUsers);
