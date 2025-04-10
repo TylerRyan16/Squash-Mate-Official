@@ -35,26 +35,7 @@ const Upload = () => {
         thumbnail: "",
         player1_score: 0,
         player2_score: 0,
-        game_details:[]/*{
-            player1:{
-            "Yes Let":[],
-            "No Let":[],
-            "Stroke":[],
-            "Fault":[],
-            "Gain Point":[],
-            "Lose Point":[],
-            "Win":[]},
-
-            player2:{
-                "Yes Let":[],
-                "No Let":[],
-                "Stroke":[],
-                "Fault":[],
-                "Gain Point":[],
-                "Lose Point":[],
-                "Win":[]
-            }
-        }*/
+        game_details:[]
     });
 
     useEffect(() => {

@@ -148,7 +148,7 @@ router.get("/me", async (req, res) => {
 // GET ALL USERNAMES
 router.get("/all-users", async (req, res) => {
     try {
-        const result = await pool.query("SELECT username FROM profiles");
+        const result = await pool.query("SELECT id, username FROM profiles");
         res.json(result.rows);
     } catch (error){
         console.error(error);
