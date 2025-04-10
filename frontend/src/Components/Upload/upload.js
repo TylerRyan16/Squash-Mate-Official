@@ -35,7 +35,7 @@ const Upload = () => {
         thumbnail: "",
         player1_score: 0,
         player2_score: 0,
-        game_details:[]
+        game_details: []
     });
 
     useEffect(() => {
@@ -57,10 +57,10 @@ const Upload = () => {
         playerRef.current.seekTo(newProgress);
     };
 
-    const commentRatio = (time) =>{
+    const commentRatio = (time) => {
         const newProgress = time;
         //return newProgress/playerRef.current?.getDuration();
-        return (newProgress/playerRef.current?.getDuration()).toFixed(2);
+        return (newProgress / playerRef.current?.getDuration()).toFixed(2);
     }
 
     // HANDLE VIDEO INPUT
@@ -110,20 +110,20 @@ const Upload = () => {
     };
 
     const increaseScore = (player_score) => {
-        document.getElementById(player_score).textContent ++;
-        if(player_score.includes('1')){
-            videoDetails.player1_score ++;
+        document.getElementById(player_score).textContent++;
+        if (player_score.includes('1')) {
+            videoDetails.player1_score++;
             displayCall("Gain Point", 1);
         }
-        if(player_score.includes('2')){
-            videoDetails.player2_score ++;
+        if (player_score.includes('2')) {
+            videoDetails.player2_score++;
             displayCall("Gain Point", 2);
         }
-        
+
         const winner = checkGameWin();
-        console.log(winner+"_wins");
-        if(winner){
-            document.getElementById(winner+"_wins").textContent ++;
+        console.log(winner + "_wins");
+        if (winner) {
+            document.getElementById(winner + "_wins").textContent++;
             document.getElementById("player1_score").textContent = 0;
             document.getElementById("player2_score").textContent = 0;
             videoDetails.player1_score = 0;
@@ -131,65 +131,65 @@ const Upload = () => {
         }
     }
     const decreaseScore = (player_score) => {
-        if(document.getElementById(player_score).textContent > 0){
-            document.getElementById(player_score).textContent --;
-            if(player_score.includes('1')){
-                videoDetails.player1_score --;
+        if (document.getElementById(player_score).textContent > 0) {
+            document.getElementById(player_score).textContent--;
+            if (player_score.includes('1')) {
+                videoDetails.player1_score--;
                 displayCall("Lose Point", 1);
             }
-            if(player_score.includes('2')){
-                videoDetails.player2_score --;
+            if (player_score.includes('2')) {
+                videoDetails.player2_score--;
                 displayCall("Lose Point", 2);
             }
         }
         const winner = checkGameWin();
-        if(winner){
-            if(winner.includes('1')){
+        if (winner) {
+            if (winner.includes('1')) {
                 displayCall("Win", 1);
             }
-            if(winner.includes('2')){
+            if (winner.includes('2')) {
                 displayCall("Win", 2);
             }
-            document.getElementById(winner+"_wins").textContent ++;
+            document.getElementById(winner + "_wins").textContent++;
             document.getElementById("player1_score").textContent = 0;
             document.getElementById("player2_score").textContent = 0;
             videoDetails.player1_score = 0;
             videoDetails.player2_score = 0;
         }
-        
+
     }
 
-    const checkGameWin = ()=>{
+    const checkGameWin = () => {
         // check player1 win
         console.log(videoDetails.player1_score);
-        if(videoDetails.player1_score >= 11 && videoDetails.player1_score-videoDetails.player2_score >= 2){
+        if (videoDetails.player1_score >= 11 && videoDetails.player1_score - videoDetails.player2_score >= 2) {
             console.log("WIN");
             return "player1";
         }
         //check player2 win
-        if(videoDetails.player2_score >= 11 && videoDetails.player2_score-videoDetails.player1_score >= 2){
+        if (videoDetails.player2_score >= 11 && videoDetails.player2_score - videoDetails.player1_score >= 2) {
             return "player2";
         }
         return null;
     }
 
-    const displayCall = (callName, playerNum)=>{
+    const displayCall = (callName, playerNum) => {
         console.log(callName);
-        if(playerNum == 1){
+        if (playerNum == 1) {
             videoDetails.game_details.push(playerRef.current?.getCurrentTime() + " " + videoDetails.player1_name + " " + callName)
             const length = videoDetails.game_details.length;
             const timestamps = document.getElementById("timestamps")
-            timestamps.innerHTML+= "<div class='tick' id='tick"+ playerNum +callName.toString()+length+"'><span class='tooltiptext'>"+videoDetails.player1_name+" " +callName.toString()+"</span></div>";
-            const tick = document.getElementById("tick" + playerNum +callName.toString()+length);
-        tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) +'%'
+            timestamps.innerHTML += "<div class='tick' id='tick" + playerNum + callName.toString() + length + "'><span class='tooltiptext'>" + videoDetails.player1_name + " " + callName.toString() + "</span></div>";
+            const tick = document.getElementById("tick" + playerNum + callName.toString() + length);
+            tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) + '%'
         }
-        if(playerNum == 2){
+        if (playerNum == 2) {
             videoDetails.game_details.push(playerRef.current?.getCurrentTime() + " " + videoDetails.player2_name + " " + callName)
             const length = videoDetails.game_details.length;
             const timestamps = document.getElementById("timestamps")
-            timestamps.innerHTML+= "<div class='tick' id='tick"+ playerNum +callName.toString()+length+"'><span class='tooltiptext'>"+videoDetails.player2_name+" "+callName.toString()+"</span></div>";
-            const tick = document.getElementById("tick" + playerNum +callName.toString()+length);
-        tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) +'%'
+            timestamps.innerHTML += "<div class='tick' id='tick" + playerNum + callName.toString() + length + "'><span class='tooltiptext'>" + videoDetails.player2_name + " " + callName.toString() + "</span></div>";
+            const tick = document.getElementById("tick" + playerNum + callName.toString() + length);
+            tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) + '%'
         }
     }
 
@@ -291,7 +291,7 @@ const Upload = () => {
                     onClick={() => setContinuePressed(prevState => !prevState)}
                 >Back</button> */}
 
-<div className="left-vertical-upload">
+                <div className="left-vertical-upload">
                     <div className="upload-input-2">
                         <div className="left-upload-input-section">
                             {/* MORE DETAILS */}
@@ -458,7 +458,7 @@ const Upload = () => {
                     </div>
 
                     <button className="continue2-button" onClick={handleContinue2Pressed}>Continue</button>
-                    
+
                 </div>
 
 
@@ -477,23 +477,23 @@ const Upload = () => {
             {/*PAGE THREE*/}
             {continuePressed && continue2Pressed && <div className="page-three">
                 <button className="back-button"
-                        onClick={() => setContinue2Pressed(prevState => !prevState)}
-                    >Back</button>
-                     {/* YouTube Video Player */}
-                     <h3>Add Marks to Video</h3>
-                     <div className="upload-video-centered" >
-                        <ReactPlayer
-                            ref={playerRef}
-                            url={videoDetails.url}
-                            playing={playing}
-                            controls={false}
-                            width="720px"
-                            height="405px"
-                            onProgress={handleProgress}
-                                                />
-                        <div className="upload-video-controls">
-                            <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-                            <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
+                    onClick={() => setContinue2Pressed(prevState => !prevState)}
+                >Back</button>
+                {/* YouTube Video Player */}
+                <h3>Add Marks to Video</h3>
+                <div className="upload-video-centered" >
+                    <ReactPlayer
+                        ref={playerRef}
+                        url={videoDetails.url}
+                        playing={playing}
+                        controls={false}
+                        width="720px"
+                        height="405px"
+                        onProgress={handleProgress}
+                    />
+                    <div className="upload-video-controls">
+                        <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                        <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
                         {/* Timeline */}
 
                         <div className="range-slider">
@@ -506,47 +506,47 @@ const Upload = () => {
                                 onChange={handleSeekChange}
                                 className="timeline-slider"
                             ></input>
-                            <div className = "slider-background">
+                            <div className="slider-background">
                                 <div id="timestamps">
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        </div>
-                    <div className = "point-controls">
-                        <button className="point-button" onClick={() => increaseScore("player1_score", videoDetails.player1_score)}>+</button>
-                        <button className="point-button" onClick={() => decreaseScore("player1_score")}>-</button>
-                        <div className="point-display">
-                            <div className="player1-color" id='player1-color'style={{backgroundColor:videoDetails.player1_color}}></div>
-                            <p className='player-name'>{videoDetails.player1_name}</p>
-                            <div className="player1_wins" id="player1_wins">0</div>
-                            <div className='score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
-                            <div className="player2_wins" id="player2_wins">0</div>
-                            <p className='player-name'>{videoDetails.player2_name}</p>
-                            <div className="player2-color" style={{backgroundColor:videoDetails.player2_color}}></div>
+                    </div>
+                </div>
+                <div className="point-controls">
+                    <button className="point-button" onClick={() => increaseScore("player1_score", videoDetails.player1_score)}>+</button>
+                    <button className="point-button" onClick={() => decreaseScore("player1_score")}>-</button>
+                    <div className="point-display">
+                        <div className="player1-color" id='player1-color' style={{ backgroundColor: videoDetails.player1_color }}></div>
+                        <p className='player-name'>{videoDetails.player1_name}</p>
+                        <div className="player1_wins" id="player1_wins">0</div>
+                        <div className='score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
+                        <div className="player2_wins" id="player2_wins">0</div>
+                        <p className='player-name'>{videoDetails.player2_name}</p>
+                        <div className="player2-color" style={{ backgroundColor: videoDetails.player2_color }}></div>
 
-                        </div>
-                        <button className="point-button" onClick={() => increaseScore("player2_score", videoDetails.player2_score)}>+</button>
-                        <button className="point-button"onClick={() => decreaseScore("player2_score")}>-</button>
                     </div>
-                    <div className="call-controls">
-                        <div className="player1-calls">
-                            <button className="call-button" onClick={()=>displayCall("Yes Let", 1)}>Yes Let</button>
-                            <button className="call-button" onClick = {()=>displayCall("No Let", 1)}>No Let</button>
-                            <button className="call-button" onClick = {()=>displayCall("Stroke", 1)}>Stroke</button>
-                            <button className="call-button" onClick = {()=>displayCall("Fault", 1)}>Fault</button>
-                        </div>
-                        {/*<hr></hr>*/}
-                        <div className="player2-calls">
-                            <button className="call-button" onClick={()=>displayCall("Yes Let", 2)}>Yes Let</button>
-                            <button className="call-button" onClick = {()=>displayCall("No Let", 2)}>No Let</button>
-                            <button className="call-button" onClick = {()=>displayCall("Stroke", 2)}>Stroke</button>
-                            <button className="call-button" onClick = {()=>displayCall("Fault", 2)}>Fault</button>
-                        </div>
-                            
+                    <button className="point-button" onClick={() => increaseScore("player2_score", videoDetails.player2_score)}>+</button>
+                    <button className="point-button" onClick={() => decreaseScore("player2_score")}>-</button>
+                </div>
+                <div className="call-controls">
+                    <div className="player1-calls">
+                        <button className="call-button" onClick={() => displayCall("Yes Let", 1)}>Yes Let</button>
+                        <button className="call-button" onClick={() => displayCall("No Let", 1)}>No Let</button>
+                        <button className="call-button" onClick={() => displayCall("Stroke", 1)}>Stroke</button>
+                        <button className="call-button" onClick={() => displayCall("Fault", 1)}>Fault</button>
                     </div>
+                    {/*<hr></hr>*/}
+                    <div className="player2-calls">
+                        <button className="call-button" onClick={() => displayCall("Yes Let", 2)}>Yes Let</button>
+                        <button className="call-button" onClick={() => displayCall("No Let", 2)}>No Let</button>
+                        <button className="call-button" onClick={() => displayCall("Stroke", 2)}>Stroke</button>
+                        <button className="call-button" onClick={() => displayCall("Fault", 2)}>Fault</button>
+                    </div>
+
+                </div>
                 <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
-                </div>}
+            </div>}
         </div>
     );
 }
