@@ -15,8 +15,31 @@ const Profile = () => {
         country: '',
         dateOfBirth: '',
     });
-
+    const [selectedColor, setSelectedColor] = useState("purple");
+    const colors = ["purple", "red", "yellow", "pink", "blue", "green"]
     const [editProfileEnabled, setEditProfileEnabled] = useState(false);
+
+    const switchProfileColor = (direction) => {
+        const currentColorIndex = colors.indexOf(selectedColor);
+
+        if (direction === "left") {
+            let nextColorIndex = currentColorIndex - 1;
+            if (nextColorIndex < 0) {
+                nextColorIndex = 5;
+            }
+
+            setSelectedColor(colors[nextColorIndex]);
+        }
+
+        if (direction === "right") {
+            let nextColorIndex = currentColorIndex + 1;
+            if (nextColorIndex > 5) {
+                nextColorIndex = 0;
+            }
+
+            setSelectedColor(colors[nextColorIndex]);
+        }
+    }
 
     // ON PAGE LOAD
     useEffect(() => {
@@ -54,13 +77,35 @@ const Profile = () => {
         }
     };
 
+    const updateProfile = async () => {
+        setEditProfileEnabled(false);
+    }
+
     return (
         <div className="profile-page">
             <div className="left-area">
-                <h1 className="my-profile">My Profile</h1>
-                <img src='/assets/squash-guy.jpg' alt='profile cover' className="profile-pic"></img>
+                <div className="tooltip-wrapper">
+                    <img
+                        onClick={() => setEditProfileEnabled(!editProfileEnabled)}
+                        src="/assets/icons/edit profile.png"
+                        alt="edit-profile"
+                        className={`edit-profile-button ${editProfileEnabled ? "enabled" : ""}`}
+                    />
+                    <span className="tooltip-text">Edit Profile</span>
 
-                    <h1 className="profile-username">{userData.username}</h1>
+                </div>
+
+                <h1 className="my-profile">My Profile</h1>
+
+
+
+                <div className="profile-picture-zone">
+                    {editProfileEnabled && <img className='pic-switch-left' src='assets\icons\right-arrow.png' alt='change pic left' onClick={() => switchProfileColor("left")} />}
+                    <img src={`/assets/characters/${selectedColor}.png`} alt='profile cover' className="profile-pic"></img>
+                    {editProfileEnabled && <img className='pic-switch-right' src='assets\icons\right-arrow.png' alt='change pic right' onClick={() => switchProfileColor("right")} />}
+                </div>
+
+                <h1 className="profile-username">{userData.username}</h1>
 
 
                 <div className="club-locker-area" onClick={() => window.open(userData.clubLockerUrl, '_blank')}>
@@ -175,6 +220,8 @@ const Profile = () => {
                 {/* CHECKBOXES */}
                 <input type="checkbox" id="show-age"></input>
                 <label htmlFor="show-age" className="show-age-label">Publicly display my age on my profile</label>
+
+                {editProfileEnabled && <button className="save-changes-button" onClick={() => updateProfile()}>Save Changes</button>}
 
             </div>
         </div>
