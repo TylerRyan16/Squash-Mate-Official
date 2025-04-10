@@ -35,17 +35,18 @@ router.get("/shared-videos", async (req, res) => {
 
 // add a new share to database
 router.post("/", async (req, res) => {
-    const {video_id, user_id, shared_at, shared_by} = req.body;
-    console.log("in backend: ", req.body);
+    const { video_id, user_id, shared_at, shared_by } = req.body;
+    console.log("shared video post in backend: ", req.body);
     const authToken = req.cookies.authToken;
-    
-            if (!authToken){
-                return res.status(401).json({ error: "Unauthorized. No token provided."});
-            }
-    
-            // get user id
-            const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
-            const userId = decoded.userId;
+
+    if (!authToken) {
+        return res.status(401).json({ error: "Unauthorized. No token provided." });
+    }
+
+    // get user id
+    const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
+    const userId = decoded.userId;
+    console.log("decoded user id: ", userId);
     try {
         const result = await pool.query(
             `INSERT INTO shared_videos (video_id, user_id, shared_at, shared_by)
@@ -54,14 +55,14 @@ router.post("/", async (req, res) => {
         );
 
 
-        if (result.rows.length === 0){
-            return res.status(500).json({error: "Failed to add video"});
+        if (result.rows.length === 0) {
+            return res.status(500).json({ error: "Failed to add video" });
         }
 
         res.status(201).json(result.rows[0]);
-    } catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Failed to add video"});
+        res.status(500).json({ error: "Failed to add video" });
     }
 });
 
