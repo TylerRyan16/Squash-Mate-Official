@@ -22,7 +22,7 @@ router.get("/shared-videos", async (req, res) => {
         const result = await pool.query("SELECT id, video_id, shared_at, shared_by FROM shared_videos WHERE user_id = $1", [decoded.userId]);
 
         if (result.rows.length === 0) {
-            return res.status(401).json({ error: "User not found" });
+            return res.status(401).json({ error: "No videos shared with current user." });
         }
 
         res.json(result.rows);
