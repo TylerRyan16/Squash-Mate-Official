@@ -27,6 +27,7 @@ const Video = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [allUsers, setAllUsers] = useState([]);
     const [sharedUsers, setSharedUsers] = useState([]);
+    const [posterPic, setPosterPic] = useState("");
 
     // comment stuff
     const [videoComments, setVideoComments] = useState([]);
@@ -61,11 +62,13 @@ const Video = () => {
         const fetchSpecificVideo = async (id) => {
             try {
                 const currentVideo = await getSpecificVideo(id);
-                console.log("current video: ", currentVideo);
                 setVideo(currentVideo);
 
+                console.log("current poster: ", currentVideo.poster);
                 // use video poster to query DB for their pfp
                const profilePic = await getProfilePicForPoster(currentVideo.poster);
+               console.log("profile pic found: ", profilePic);
+               setPosterPic(profilePic);
             } catch (error) {
                 console.log(error);
             }
@@ -73,7 +76,6 @@ const Video = () => {
 
         // get your username
         const getUser = async () => {
-            console.log("get it0");
             try {
                 const { username } = await getMyUsername();
                 setUsername(username);
@@ -86,7 +88,6 @@ const Video = () => {
             try {
                 const users = await getAllUsers();
                 setAllUsers(users);
-                console.log(users);
             } catch (error) {
                 console.log(error);
             }
@@ -348,7 +349,6 @@ const Video = () => {
         }
         else {
             sharedUsers.push(user);
-            console.log(sharedUsers)
         }
         disableShare();
     }
@@ -357,7 +357,6 @@ const Video = () => {
         const users = document.getElementsByClassName("user-checkbox");
         for (const user in users) {
             if (users[user].checked === true) {
-                console.log(user);
                 return shareButton.disabled = false;
             }
         }
@@ -376,10 +375,9 @@ const Video = () => {
         };
 
         for (const index in sharedUsers) {
-            console.log(shareDetails);
             shareDetails.user_id = sharedUsers[index].id;
             const response = await shareVideo(shareDetails);
-            console.log("reponse: ", response);
+
         }
     };
 
@@ -391,7 +389,7 @@ const Video = () => {
             {/* TOP ROW (POSTER, OPTIONS) */}
             <div className="poster-row">
                 <div className="poster-info">
-                    <img src='/assets/squash-guy.jpg' alt='profile cover' className="poster-profile-pic"></img>
+                    <img src={`/assets/characters/${posterPic}.png`} alt='profile cover' className="poster-profile-pic"></img>
                     <h3 id="video-poster">{video.poster}</h3>
                 </div>
 
