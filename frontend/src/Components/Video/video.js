@@ -66,9 +66,9 @@ const Video = () => {
 
                 console.log("current poster: ", currentVideo.poster);
                 // use video poster to query DB for their pfp
-               const profilePic = await getProfilePicForPoster(currentVideo.poster);
-               console.log("profile pic found: ", profilePic);
-               setPosterPic(profilePic);
+                const profilePic = await getProfilePicForPoster(currentVideo.poster);
+                console.log("profile pic found: ", profilePic);
+                setPosterPic(profilePic);
             } catch (error) {
                 console.log(error);
             }
@@ -389,7 +389,7 @@ const Video = () => {
             {/* TOP ROW (POSTER, OPTIONS) */}
             <div className="poster-row">
                 <div className="poster-info">
-                    <img src={`/assets/characters/${posterPic}.png`} alt='profile cover' className="poster-profile-pic"></img>
+                    <img src={`/assets/characters/${posterPic}.png`} alt="profile cover"></img>
                     <h3 id="video-poster">{video.poster}</h3>
                 </div>
 
