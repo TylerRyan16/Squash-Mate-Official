@@ -15,7 +15,7 @@ const Profile = () => {
         country: '',
         dateOfBirth: '',
     });
-    const [selectedColor, setSelectedColor] = useState("purple");
+    const [selectedColor, setSelectedColor] = useState("");
     const colors = ["purple", "red", "yellow", "pink", "blue", "green"]
     const [editProfileEnabled, setEditProfileEnabled] = useState(false);
 
@@ -59,7 +59,11 @@ const Profile = () => {
                     clubLockerUrl: data.club_locker_url || '',
                     country: data.country || '',
                     dateOfBirth: data.date_of_birth || '',
-                })
+                    profilePic: data.profile_pic,
+                });
+
+                console.log("setting selectedColor to: ", data.profile_pic);
+                setSelectedColor(data.profile_pic);
             } catch (error) {
                 console.log(error);
             }
@@ -101,7 +105,9 @@ const Profile = () => {
 
                 <div className="profile-picture-zone">
                     {editProfileEnabled && <img className='pic-switch-left' src='assets\icons\right-arrow.png' alt='change pic left' onClick={() => switchProfileColor("left")} />}
-                    <img src={`/assets/characters/${selectedColor}.png`} alt='profile cover' className="profile-pic"></img>
+                    {!editProfileEnabled && <img src={`/assets/characters/${userData.profilePic}.png`} alt='profile cover' className="profile-pic"></img>}
+                    {editProfileEnabled && <img src={`/assets/characters/${selectedColor}.png`} alt='profile cover' className="profile-pic"></img>}
+
                     {editProfileEnabled && <img className='pic-switch-right' src='assets\icons\right-arrow.png' alt='change pic right' onClick={() => switchProfileColor("right")} />}
                 </div>
 

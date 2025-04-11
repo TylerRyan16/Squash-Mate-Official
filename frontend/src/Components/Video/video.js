@@ -41,13 +41,14 @@ const Video = () => {
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [videoLength, setVideoLength] = useState(0);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const playerRef = useRef(null);
 
     const deleteVideo = async () => {
         try {
             await deleteVideoRequest(video);
             navigate("/");
-        } catch (error){
+        } catch (error) {
             console.error(error);
         }
     }
@@ -79,15 +80,15 @@ const Video = () => {
         }
 
         const fetchAllUsers = async () => {
-              try {
+            try {
                 const users = await getAllUsers();
                 setAllUsers(users);
                 console.log(users);
-              } catch (error) {
+            } catch (error) {
                 console.log(error);
-              }
             }
-            
+        }
+
         fetchAllUsers();
         getUser();
         fetchSpecificVideo(videoID);
@@ -104,14 +105,6 @@ const Video = () => {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [videoComments]);
-
-    // Control video paused / playing
-    useEffect(() => {
-
-    })
-
-
-
 
     var parsed_game_details = {}
     for (const evt in video.game_details) {
@@ -345,25 +338,22 @@ const Video = () => {
         return `${mins}:${secs}`;
     };
 
-    const updateChecks=(user)=>{
-        console.log("UPDATING");
+    const updateChecks = (user) => {
         const index = sharedUsers.indexOf(user);
         if (index > -1) {
             sharedUsers.splice(index, 1);
-            }
-        else{
-            console.log("appending");
+        }
+        else {
             sharedUsers.push(user);
             console.log(sharedUsers)
         }
         disableShare();
     }
-    const disableShare=()=>{
-        console.log("disabling");
+    const disableShare = () => {
         const shareButton = document.getElementById("share-button");
         const users = document.getElementsByClassName("user-checkbox");
-        for(const user in users){
-            if(users[user].checked === true){
+        for (const user in users) {
+            if (users[user].checked === true) {
                 console.log(user);
                 return shareButton.disabled = false;
             }
@@ -372,21 +362,17 @@ const Video = () => {
     }
     const filteredUsers = allUsers.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    );
 
-    const handleShareVideo= async ()=>{
-        console.log("hereeee");
+    const handleShareVideo = async () => {
         const currentDate = new Date().toLocaleDateString('en-CA');
         const shareDetails = {
             video_id: video.id,
             user_id: null,
-            shared_at: currentDate, 
+            shared_at: currentDate,
         };
 
-        console.log("shared users", sharedUsers);
-        console.log("shared details: ", shareDetails);
-
-        for(const index in sharedUsers){
+        for (const index in sharedUsers) {
             console.log(shareDetails);
             shareDetails.user_id = sharedUsers[index].id;
             const response = await shareVideo(shareDetails);
@@ -398,49 +384,92 @@ const Video = () => {
     return (
         <div className="watch-video-page">
             <h1 id="page-title">Watch Video</h1>
+
+            {/* TOP ROW (POSTER, OPTIONS) */}
             <div className="poster-row">
                 <div className="poster-info">
                     <img src='/assets/squash-guy.jpg' alt='profile cover' className="poster-profile-pic"></img>
                     <h3 id="video-poster">{video.poster}</h3>
                 </div>
-                <div className="share-section">
-                <img src='/assets/icons/share icon.png' className="share-icon" onClick={()=>setShareOpen(!shareOpen)}></img>
-                {shareOpen && <div className="share-panel">
-                    <h4 className='share-text'>Share with User</h4>
-                    <input type="text" className="user-search-input" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
-                    <div className='user-list'>
-                    {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
-                        <label className="share-user-container">
-                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="user-profile-pic"></img>
-                        <label>{user.username}</label>
-                        <input type="checkbox" className="user-checkbox" onClick={()=>updateChecks(user)}/>
-                        <span class="checkmark"></span>
-                        </label>
-              ))
-            ) : (
-              <p>No videos found</p>
-            )}
-                    </div>
 
-                    <button className="share-button" id="share-button" onClick={handleShareVideo}>Share</button>
-                    </div>}
-                    
-                </div>
+                {/* VIDEO OPTIONS */}
                 <div
                     onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
                     className="video-creator-controls"
                 >
-                    <img src="/assets/icons/3 dots.png" alt="more video info" className="three-dots"></img>
+                    <div className="open-options-button">
+                        <img src="/assets/icons/3 dots.png" alt="more video info" className="three-dots"></img>
+
+                    </div>
+                    {/* OPTIONS PANEL */}
                     {videoOptionsOpen && <div className="video-options-panel">
-                        <div className="option-row">
+                        <img src="/assets/icons/x-icon.png" alt="close options panel" className="close-popup" onClick={() => setVideoOptionsOpen(false)}></img>
+                        <p className="options-title">Video Options</p>
+                        <div className="option-row" onClick={() => setShareOpen(!shareOpen)}>
+                            <img src='/assets/icons/share icon.png' alt="share video" className="share-icon"></img>
+                            <p>Share Video</p>
+                        </div>
+                        <div className="option-row" onClick={() => setConfirmDeleteOpen(true)} >
                             <img src="/assets/icons/delete.png" alt="delete video" className="option-icon"></img>
-                            <p onClick={() => deleteVideo()}className="option-text">Delete Video</p>
+                            <p className="option-text">Delete Video</p>
                         </div>
                     </div>}
                 </div>
 
+                {/* SHARE POPUP */}
+                {shareOpen && (
+                    <div className="popup-overlay" onClick={() => setShareOpen(false)}>
+                        <div className="share-panel" onClick={(e) => e.stopPropagation()}>
+                            <h4 className='share-text'>Share with User</h4>
+                            <img src="/assets/icons/x-icon.png" alt="close share page" className="close-popup" onClick={() => setShareOpen(false)}></img>
+                            <input
+                                type="text"
+                                className="user-search-input"
+                                placeholder="Search..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <div className='user-list'>
+                                {filteredUsers.length > 0 ? (
+                                    filteredUsers.map((user) => (
+                                        <label className="share-user-container" key={user.id}>
+                                            <img src='/assets/squash-guy.jpg' alt='profile cover' className="user-profile-pic" />
+                                            <label>{user.username}</label>
+                                            <input
+                                                type="checkbox"
+                                                className="user-checkbox"
+                                                onClick={() => updateChecks(user)}
+                                            />
+                                            <span className="checkmark"></span>
+                                        </label>
+                                    ))
+                                ) : (
+                                    <p>No users found</p>
+                                )}
+                            </div>
+                            <button className="share-button" id="share-button" onClick={handleShareVideo}>Share</button>
+                        </div>
+                    </div>
+                )}
+
+                {/* DELETE POPUP */}
+                {confirmDeleteOpen && (
+                    <div className="popup-overlay" onClick={() => setConfirmDeleteOpen(false)}>
+                        <div className="delete-panel" onClick={(e) => e.stopPropagation()}>
+                            <h4 className='share-text'>Are you sure you want to delete this video?</h4>
+                            <img src="/assets/icons/x-icon.png" alt="close delete page" className="close-popup" onClick={() => setConfirmDeleteOpen(false)}></img>
+                            <div className="delete-buttons-row">
+                                <button className="go-back-button" onClick={() => setConfirmDeleteOpen(false)}>Go Back</button>
+                                <button className="confirm-delete-button" onClick={() => deleteVideo()}>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
             </div>
+
+
+            {/* WATCH VIDEO & COMMENTS AREA */}
             <div className="watch-video-page-column">
                 <div className="video-comments-section-row">
                     <div className="video-area">
