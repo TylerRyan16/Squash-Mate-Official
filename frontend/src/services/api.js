@@ -64,12 +64,23 @@ export const getMyUsername = async () => {
     }
 };
 
+// get all users
 export const getAllUsers = async () => {
     try {
         const response = await api.get("/profiles/all-users");
         return response.data;
     } catch (error){
         throw error.response?.data || "Failed to fetch user data";
+    }
+}
+
+// get profile pic for user
+export const getProfilePicForPoster = async (poster) => {
+    try {
+        const response = await api.get("/profiles/pic", poster);
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to get poster profile picture.";
     }
 }
 

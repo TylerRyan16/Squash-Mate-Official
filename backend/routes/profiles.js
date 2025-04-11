@@ -183,4 +183,23 @@ router.get("/my-username", async (req, res) => {
     }
 });
 
+
+// GET PROFILE PIC FOR POSTER
+router.get("/pic", async (req, res) => {
+    try {
+        const poster = req.body;
+        const result = await pool.query("SELECT profile_pic FROM profiles WHERE username = $1", [poster]);
+
+        if (result.rows.length === 0){
+            return res.status(401).json({error: "User not found"});
+        }
+
+        res.json(result.rows[0]);
+        console.log(result.rows[0]);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Failed to fetch user profile picture."});
+    }
+});
+
 module.exports = router;
