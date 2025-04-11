@@ -90,7 +90,7 @@ const Camps = () => {
             <h1>Summer 2025 Squash Camps</h1>
 
             <div className="paragraph">
-                <p>Summer adult and junior squash camps offer many varied and exciting opportunities for players of all levels to have fun and improve their game. Please see below for offerings from facilities, schools and colleges, and clubs around the country to find the best fit! If you are a coach or program director interested in showcasing your camp to the squash community, please email <b>development@ussquash.org</b> for current opportunities. For all summer camp advertising options please click <a href="https://ussquash.org/wp-content/uploads/2024/12/US-Squash-2025-Summer-Camp-Advertising-3.pdf" target="_blank"><b>US Squash 2025 Summer Camp Advertising</b></a>.</p>
+                <p>Summer adult and junior squash camps offer many varied and exciting opportunities for players of all levels to have fun and improve their game. Please see below for offerings from facilities, schools and colleges, and clubs around the country to find the best fit! If you are a coach or program director interested in showcasing your camp to the squash community, please email <b>development@ussquash.org</b> for current opportunities. For all summer camp advertising options please click <a href="https://ussquash.org/wp-content/uploads/2024/12/US-Squash-2025-Summer-Camp-Advertising-3.pdf" target="_blank" rel="noreferrer"><b>US Squash 2025 Summer Camp Advertising</b></a>.</p>
             </div>
 
             <div className="camp-gallery">

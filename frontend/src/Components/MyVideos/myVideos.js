@@ -39,7 +39,7 @@ const MyVideos = () => {
 
     fetchMyVideos();
     grabMyUsername();
-  }, []);
+  }, [username]);
 
   const filteredVideos = myVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())

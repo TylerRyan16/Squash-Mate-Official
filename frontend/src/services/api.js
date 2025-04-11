@@ -15,6 +15,7 @@ const api = axios.create({
 
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
+    console.log("adding user: ", userData);
     try {
         const response = await api.post("/profiles/", userData);
         return response.data;

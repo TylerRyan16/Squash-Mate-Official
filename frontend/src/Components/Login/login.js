@@ -1,5 +1,5 @@
 import "./login.scss";
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useState } from "react";
 import { login } from "../../services/api";
 

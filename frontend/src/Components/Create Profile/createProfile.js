@@ -11,6 +11,10 @@ const CreateProfile = () => {
     const initialEmail = location.state?.email || "";
     const initialPassword = location.state?.password || "";
 
+    // PROFILE PIC
+    const [selectedColor, setSelectedColor] = useState("purple");
+    const colors = ["purple", "red", "yellow", "pink", "blue", "green"]
+
     // State to store form values
     const [profileDetails, setProfileDetails] = useState({
         username: "",
@@ -22,7 +26,32 @@ const CreateProfile = () => {
         country: "",
         email: initialEmail,
         dateOfBirth: "",
+        profile_color: selectedColor,
     });
+
+
+    const switchProfileColor = (direction) => {
+        const currentColorIndex = colors.indexOf(selectedColor);
+
+        if (direction === "left") {
+            let nextColorIndex = currentColorIndex - 1;
+            if (nextColorIndex < 0) {
+                nextColorIndex = 5;
+            }
+
+            setSelectedColor(colors[nextColorIndex]);
+        }
+
+        if (direction === "right") {
+            let nextColorIndex = currentColorIndex + 1;
+            if (nextColorIndex > 5) {
+                nextColorIndex = 0;
+            }
+
+            setSelectedColor(colors[nextColorIndex]);
+        }
+    }
+
 
     // state for checking if the password user types is a valid password
     const [passwordValid, setPasswordValid] = useState({
@@ -62,7 +91,7 @@ const CreateProfile = () => {
         const missingFields = highlightInvalidFields();
 
         // check all required fields are input
-        if (missingFields.length > 0){
+        if (missingFields.length > 0) {
             return;
         }
 
@@ -76,7 +105,7 @@ const CreateProfile = () => {
             console.error("Error creating your profile!");
         }
     };
-  
+
     // highlight invalid fields of input
     const highlightInvalidFields = () => {
         const missingFields = [];
@@ -88,14 +117,14 @@ const CreateProfile = () => {
         if (!profileDetails.email) missingFields.push("email");
         if (!profileDetails.password) missingFields.push("password");
         if (!profileDetails.dateOfBirth) missingFields.push("dateOfBirth");
-    
+
         // flash effect: add class and remove it after .2 seconds
         console.log("missing fields in flash loop: ", missingFields);
         missingFields.forEach((field) => {
             const element = document.querySelector(`[name="${field}"]`);
-            if (element){
+            if (element) {
                 element.classList.remove("flash");
-                void element.offsetWidth; 
+                void element.offsetWidth;
                 element.classList.add("flash");
             }
         });
@@ -106,8 +135,10 @@ const CreateProfile = () => {
         return missingFields;
     };
 
+
     // Validate initialize password if coming from landing page
     useEffect(() => {
+
         if (initialPassword) {
             setPasswordValid({
                 length: initialPassword.length >= 8,
@@ -121,12 +152,20 @@ const CreateProfile = () => {
     return (
         <div className="create-display-area">
             <div className="create-account-left-area">
-                <img 
-                    src="/assets/back-arrow.png" 
-                    alt="back arrow" 
+
+                <h1>Select Profile Color</h1>
+                <div className="pic-select-area">
+                    <img className='pic-switch-left' src='assets\icons\right-arrow.png' alt='change pic left' onClick={() => switchProfileColor("left")} />
+                    <img src={`/assets/characters/${selectedColor}.png`} alt='profile cover' className="profile-pic"></img>
+                    <img className='pic-switch-right' src='assets\icons\right-arrow.png' alt='change pic right' onClick={() => switchProfileColor("right")} />
+                </div>
+                <h1>{selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1)}</h1>
+                <img
+                    src="/assets/back-arrow.png"
+                    alt="back arrow"
                     className="back-arrow"
-                    onClick={() => navigate("/login", {state: {email: profileDetails.email, password: profileDetails.password}})}
-                    ></img>
+                    onClick={() => navigate("/login", { state: { email: profileDetails.email, password: profileDetails.password } })}
+                ></img>
 
             </div>
             <div className="create-account-form-area">
