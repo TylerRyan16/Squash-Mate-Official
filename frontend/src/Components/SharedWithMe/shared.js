@@ -1,12 +1,13 @@
 import "./shared.scss";
-import { getAllVideos } from "../../services/api";
+import { getAllVideos, getSharedVideos } from "../../services/api";
 import { useEffect, useState } from 'react';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const SharedWithMe = () => {
   const navigate = useNavigate();
   const [allVideos, setAllVideos] = useState([]);
+  const [sharedVideos, setSharedVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -18,7 +19,20 @@ const SharedWithMe = () => {
         console.log(error);
       }
     }
+
+    const fetchSharedVideos = async () => {
+      try {
+        const result = await getSharedVideos();
+        console.log("shared videos", result);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     fetchAllVideos();
+    fetchSharedVideos();
+
   }, []);
 
   const filteredVideos = allVideos.filter((video) =>

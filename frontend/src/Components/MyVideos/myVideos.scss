@@ -55,12 +55,13 @@
   padding: 5px;
   cursor: pointer;
 
-  transition: background-color 0.15s ease-in-out;
+  transition: transform 0.15s ease-in-out;
+
+    &:hover{
+        transform: scale(1.05);
+    }
 }
 
-.my-videos-video-card:hover{
-  background-color: #A9A9A9;
-}
 
 .my-videos-thumbnail{
   aspect-ratio: 16 / 9;
