@@ -1,96 +1,86 @@
-.sidebar-area{
-    opacity: 1;
-    width: 5%;
-    height: 100%;
-    min-height: 100vh;
-    flex-shrink: 0;
-    transition: transform 0.2s ease-in-out, opacity 0.35s ease-in-out, width 0.3s ease-in-out;
-}
-
-.sidebar-area.hidden{
-    width: 0;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(-50%);
-}
-
 .sidebar {
     height: 100%;
-    width: 100%;
+    width: 5vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: clamp(2%, 1.2vw, 5%);
+    gap: clamp(3%, 1vw, 6%);
     background-color: #4693e1;
 
-    overflow: hidden;
     z-index: 1000;
     transition: width 0.3s ease-in-out;
-
 }
 
+
 .nav-button{
-    width: 80%;
+    position: relative;
+    width: 65%;
+    aspect-ratio: 1/1;
     text-align: center;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     cursor: pointer;
-    padding: 5px 0px; 
     color: white;
-    font-size: clamp(10px, 1.2vw, 22px);
+    background-color: transparent;
+    padding: 0;
+
+    &:hover .tooltip{
+        opacity: 1;
+    }
+}
+
+.tooltip{
+    position: absolute;
+    left: 110%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100000;
+    transition: opacity 0.2s ease;
 }
 
 .nav-button:hover{
-    background-color: rgb(245,255,255, 0.8);
+    background-color: #1c64ad;
 
-    img, span{
-        filter: brightness(0) invert(0); /* Change color on hover */
-    }
+
 }
 
 .selected {
-    background-color: rgb(245,255,255, 0.8);
+    background-color: #1c64ad;
 }
 
 .nav-icon{
-    width: clamp(13px, 3vw, 30px);
-    height: auto;
-    margin-bottom: 8px;
-    padding-top: 5px;
-}
-
-.my-videos{
-    width: clamp(20px, 2vw, 40px);
-}
-
-.shared-with-me{
-    width: clamp(20px, 4vw, 50px);
-}
-
-.explore{
-    width: clamp(20px, 4vw, 50px);
-}
-
-.camps{
-    width: clamp(20px, 4vw, 50px);
-}
-
-
-a{
-    text-decoration: none;
-}
-
-@media screen and (max-width: 768px){
-    .sidebar-area{
-        width: 15%;
-    }
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px){
-    .sidebar-area{
+    .sidebar{
+        background-color: orange;
+        width: 15%;
+    }
+
+    .nav-icon{
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .sidebar{
+        background-color: green;
         width: 10%;
+    }
+
+    .nav-icon{
+        width: 55%;
     }
 }

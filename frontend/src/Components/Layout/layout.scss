@@ -2,7 +2,7 @@
     display: flex;
     height: 100vh;
     width: 100%;
-    overflow: hidden;    
+    overflow: hidden;   
 }
 
 .content-area-with-top-navbar {
@@ -102,8 +102,8 @@
 }
 
 .menu-button {
-    width: clamp(55px, 2vw, 100px);
-    height: clamp(55px, 2vw, 100px);
+    width: clamp(45px, 1vw, 75px);
+    height: clamp(45px, 1vw, 75px);
     color: black;
     font-size: 24px;
     cursor: pointer;
@@ -116,6 +116,21 @@
     background-color: grey;
 }
 
+// TABLET
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    .menu-button{
+
+    }
+}
+
+// PHONE
+@media screen and (max-width: 768px){
+    .sidebar{
+        background-color: green;
+    }
+}
+
+
 @media screen and (max-width: 768px) {
     .content-area-with-top-navbar {
         width: calc(100% - 15%);
@@ -127,12 +142,5 @@
         &.sidebar-closed {
             width: 100%;
         }
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1024px){
-    .menu-button {
-        width: 80px;
-        height: 80px;
     }
 }
