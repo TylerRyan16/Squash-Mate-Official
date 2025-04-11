@@ -2,7 +2,7 @@ import './video.scss';
 import { useRef, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers, shareVideo } from "../../services/api";
+import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers, shareVideo, getProfilePicForPoster } from "../../services/api";
 
 
 
@@ -63,6 +63,9 @@ const Video = () => {
                 const currentVideo = await getSpecificVideo(id);
                 console.log("current video: ", currentVideo);
                 setVideo(currentVideo);
+
+                // use video poster to query DB for their pfp
+               const profilePic = await getProfilePicForPoster(currentVideo.poster);
             } catch (error) {
                 console.log(error);
             }
