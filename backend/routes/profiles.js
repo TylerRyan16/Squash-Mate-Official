@@ -197,8 +197,8 @@ router.get("/pic", async (req, res) => {
         }
 
         console.log("pic result: ", result);
-        res.json(result);
-        console.log(result);
+        res.json(result.rows[0]);
+        console.log(result.rows[0]);
     } catch (error){
         console.error(error);
         res.status(500).json({error: "Failed to fetch user profile picture."});
