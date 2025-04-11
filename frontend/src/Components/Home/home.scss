@@ -80,11 +80,12 @@ button{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
     gap: 15px;
-    overflow-x: hidden;
+    overflow-x: visible;
     overflow-y: scroll;
     scrollbar-width: thin;
     background-color: #50999917;
     margin-bottom: 5vh;
+    padding: 0px 15px;
 }
 
 .my-videos-list{
@@ -104,12 +105,14 @@ button{
     padding: 5px;
     cursor: pointer;
 
-    transition: background-color 0.15s ease-in-out;
+    transition: transform 0.15s ease-in-out;
+
+    &:hover{
+        transform: scale(1.05);
+    }
 }
 
-.home-video-card:hover{
-    background-color: #A9A9A9;
-}
+
 
 .home-thumbnail{
     aspect-ratio: 16 / 9;
@@ -119,8 +122,9 @@ button{
     margin-bottom: 8px;
     padding-top: 5px;
 
-    transition: transform 0.15s ease-in-out;
+    
 }
+
 
 .title-area{
     width: 100%;
