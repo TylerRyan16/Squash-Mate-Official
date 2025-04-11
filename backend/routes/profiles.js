@@ -131,7 +131,7 @@ router.get("/me", async (req, res) => {
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
         const userId = decoded.userId;
 
-        const result = await pool.query("SELECT username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth FROM profiles WHERE id = $1", [userId]);
+        const result = await pool.query("SELECT username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth, profile_pic FROM profiles WHERE id = $1", [userId]);
 
         if (result.rows.length === 0){
             return res.status(401).json({error: "User not found"});
