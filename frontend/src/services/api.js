@@ -15,7 +15,6 @@ const api = axios.create({
 
 // CREATE ACCOUNT
 export const createAccount = async (userData) => {
-    console.log("adding user: ", userData);
     try {
         const response = await api.post("/profiles/", userData);
         return response.data;
@@ -78,7 +77,7 @@ export const getAllUsers = async () => {
 export const getProfilePicForPoster = async (poster) => {
     console.log("backend check for poster: ", poster);
     try {
-        const response = await api.get("/profiles/pic", poster);
+        const response = await api.get(`/profiles/pic?username=${encodeURIComponent(poster)}`);
         return response.data;
     } catch (error){
         throw error.response?.data || "Failed to get poster profile picture.";
@@ -100,7 +99,6 @@ export const getAllVideos = async () => {
 
 // GET MY VIDEOS
 export const getMyVideos = async () => {
-    console.log("trying to get videos in API");
     try {
         const response = await api.get("/videos/my-videos");
         return response.data;
@@ -122,10 +120,7 @@ export const getSpecificVideo = async (videoID) => {
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
     try {
-        const response = await api.post("/videos", videoDetails);
-
-        console.log("Video uploaded: ", response.data);
-        
+        const response = await api.post("/videos", videoDetails);        
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
@@ -143,7 +138,6 @@ export const uploadVideo = async (videoDetails) => {
 // COMMENT ON VIDEO
 export const commentOnVideo = async (data) => {
     try {
-        console.log("commenting on video with data: ", data);
         const response = await api.post("/comments", data);        
         return response.data;
     } catch (error) {
@@ -199,7 +193,6 @@ export const deleteVideoRequest = async (video) => {
 
 export const shareVideo = async (shareDetails) => {
     try {
-        console.log('shareDetails in api: ', shareDetails);
         const response = await api.post("/shared", shareDetails);
         return response.data;
     } catch (error) {
