@@ -1,41 +1,37 @@
 import "./shared.scss";
-import { getAllVideos, getSharedVideos } from "../../services/api";
+import { getAllVideos, getSharedVideos, getSpecificVideo } from "../../services/api";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 
 const SharedWithMe = () => {
   const navigate = useNavigate();
-  const [allVideos, setAllVideos] = useState([]);
   const [sharedVideos, setSharedVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchAllVideos = async () => {
-      try {
-        const videos = await getAllVideos();
-        setAllVideos(videos);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
     const fetchSharedVideos = async () => {
       try {
         const result = await getSharedVideos();
         console.log("shared videos", result);
 
+        const videoList = [];
+
+        for (const sharedVideo of result){
+          const video = await getSpecificVideo(sharedVideo.video_id);
+          videoList.push(video);
+        }
+
+        setSharedVideos(videoList);
       } catch (error) {
         console.error(error);
       }
     }
 
-    fetchAllVideos();
     fetchSharedVideos();
-
   }, []);
 
-  const filteredVideos = allVideos.filter((video) =>
+  const filteredVideos = sharedVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
