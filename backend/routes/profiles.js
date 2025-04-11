@@ -6,7 +6,7 @@ const pool = require("../config/db.js");
 
 // add a new profile
 router.post("/", async (req, res) => {
-    const {username, password, playerLevel, clubLockerURL, firstName, lastName, country, email, dateOfBirth} = req.body;
+    const {username, password, playerLevel, clubLockerURL, firstName, lastName, country, email, dateOfBirth, profile_color} = req.body;
     console.log("CREATING PROFILE IN BACKEND ROUTE.");
 
     const SECRET_KEY = process.env.SECRET_KEY;
@@ -16,9 +16,9 @@ router.post("/", async (req, res) => {
 
         console.log("ATTEMPTING TO PUT INTO DATABASE.");
         const result = await pool.query(
-            `INSERT INTO profiles (username, password, player_level, club_locker_url, first_name, last_name, country, email, date_of_birth)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth`,
-            [username, hashedPassword, playerLevel, clubLockerURL || null, firstName, lastName, country ||  null, email, dateOfBirth]
+            `INSERT INTO profiles (username, password, player_level, club_locker_url, first_name, last_name, country, email, date_of_birth, profile_pic)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id, username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth`,
+            [username, hashedPassword, playerLevel, clubLockerURL || null, firstName, lastName, country ||  null, email, dateOfBirth, profile_color]
         );
 
         console.log("PUT INTO DATABASE SUCCESSFULLY");

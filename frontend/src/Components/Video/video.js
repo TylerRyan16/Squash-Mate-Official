@@ -5,31 +5,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers, shareVideo } from "../../services/api";
 
 
-function openCoach(evt, coachName) {
-    // var i, tabcontent, tablinks;
-
-    // // Get all elements with class="tabcontent" and hide them
-    // tabcontent = document.getElementsByClassName("tabcontent");
-    // for (i = 0; i < tabcontent.length; i++) {
-    //     tabcontent[i].style.display = "none";
-    // }
-
-    // // Get all elements with class="tablinks" and remove the class "active"
-    // tablinks = document.getElementsByClassName("tablinks");
-    // for (i = 0; i < tablinks.length; i++) {
-    //     tablinks[i].className = tablinks[i].className.replace(" active", "");
-    // }
-
-    // // Show the current tab, and add an "active" class to the button that opened the tab
-    // document.getElementById(coachName).style.display = "inline";
-    // evt.currentTarget.className += " active";
-
-}
 
 // ----------- Utility Functions ----------------------------------------------------------------------------
 function changeHeart() {
     const heart = document.getElementById("heart-icon");
-    if (heart.src.indexOf("/assets/icons/heart-empty.png") != -1) {
+    if (heart.src.indexOf("/assets/icons/heart-empty.png") !== -1) {
         heart.src = "/assets/icons/heart-full.png";
     }
     else {
@@ -383,7 +363,7 @@ const Video = () => {
         const shareButton = document.getElementById("share-button");
         const users = document.getElementsByClassName("user-checkbox");
         for(const user in users){
-            if(users[user].checked == true){
+            if(users[user].checked === true){
                 console.log(user);
                 return shareButton.disabled = false;
             }
