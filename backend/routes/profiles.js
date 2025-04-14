@@ -7,24 +7,20 @@ const pool = require("../config/db.js");
 // add a new profile
 router.post("/", async (req, res) => {
     const {username, password, playerLevel, clubLockerURL, firstName, lastName, country, email, dateOfBirth, profile_color} = req.body;
-    console.log("CREATING PROFILE IN BACKEND ROUTE.");
 
     const SECRET_KEY = process.env.SECRET_KEY;
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        console.log("ATTEMPTING TO PUT INTO DATABASE.");
         const result = await pool.query(
             `INSERT INTO profiles (username, password, player_level, club_locker_url, first_name, last_name, country, email, date_of_birth, profile_pic)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id, username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth`,
             [username, hashedPassword, playerLevel, clubLockerURL || null, firstName, lastName, country ||  null, email, dateOfBirth, profile_color]
         );
 
-        console.log("PUT INTO DATABASE SUCCESSFULLY");
         // create secure token
         const token = jwt.sign({ userId: result.rows[0].id, username: username}, SECRET_KEY, {expiresIn: "7d"});
-        console.log("TOKEN TOKEN TOKEN: ", token);
 
         // Save a cookie that keeps logged in for 7 days
         res.cookie("authToken", token, {
@@ -33,12 +29,9 @@ router.post("/", async (req, res) => {
             sameSite: "none",  // Allows cross-origin requests
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
-        console.log("COOKIE SAVED");
 
 
-        console.log("Set-Cookie Header:", res.getHeaders()["set-cookie"]); 
 
-        console.log("adding new profile in backend: ", username, password, playerLevel, clubLockerURL, firstName, lastName, country, dateOfBirth);
         res.status(201).json( {message: "User created successfully", user: result.rows[0]});
     } catch (error) {
         if (error.code === "23505"){
@@ -99,7 +92,6 @@ router.post("/login", async (req, res) => {
             },
         });
 
-        console.log("signed user in: ", user);
         
     } catch (error){
         console.error(error);
@@ -138,7 +130,6 @@ router.get("/me", async (req, res) => {
         }
 
         res.json(result.rows[0]);
-        console.log(result.rows[0]);
     } catch (error){
         console.error(error);
         res.status(500).json({error: "Failed to fetch user data."});
@@ -176,7 +167,6 @@ router.get("/my-username", async (req, res) => {
         }
 
         res.json(result.rows[0]);
-        console.log(result.rows[0]);
     } catch (error){
         console.error(error);
         res.status(500).json({error: "Failed to fetch user data."});
@@ -187,7 +177,6 @@ router.get("/my-username", async (req, res) => {
 // GET PROFILE PIC FOR POSTER
 router.get("/pic", async (req, res) => {
     const poster = req.query.username;
-    console.log("querying DB for poster: ", poster);
 
     try {
         const result = await pool.query("SELECT profile_pic FROM profiles WHERE username = $1", [poster]);
@@ -203,6 +192,11 @@ router.get("/pic", async (req, res) => {
         console.error(error);
         res.status(500).json({error: "Failed to fetch user profile picture."});
     }
+});
+
+// UPDATE PROFILE
+router.patch("/update", async (req, res) => {
+    console.log("UPDATE REQUEST BODY: ", req.body);
 });
 
 module.exports = router;
