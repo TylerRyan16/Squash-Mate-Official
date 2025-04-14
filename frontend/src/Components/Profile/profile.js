@@ -1,10 +1,11 @@
 import './profile.scss';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserData, logout } from "../../services/api";
+import { getUserData, logout, updateProfileRequest } from "../../services/api";
 
 const Profile = () => {
     const navigate = useNavigate();
+    const [originalData, setOriginalData] = useState([]);
     const [userData, setUserData] = useState({
         username: '',
         email: '',
@@ -62,7 +63,18 @@ const Profile = () => {
                     profilePic: data.profile_pic,
                 });
 
-                console.log("setting selectedColor to: ", data.profile_pic);
+                setOriginalData({
+                    username: data.username || '',
+                    email: data.email || '',
+                    firstName: formattedFirst || '',
+                    lastName: formattedLast || '',
+                    level: data.player_level || '',
+                    clubLockerUrl: data.club_locker_url || '',
+                    country: data.country || '',
+                    dateOfBirth: data.date_of_birth || '',
+                    profilePic: data.profile_pic,
+                })
+
                 setSelectedColor(data.profile_pic);
             } catch (error) {
                 console.log(error);
@@ -82,7 +94,32 @@ const Profile = () => {
     };
 
     const updateProfile = async () => {
-        setEditProfileEnabled(false);
+        const changes = {};
+        for (const key in userData) {
+            if (userData[key] !== originalData[key]) {
+                changes[key] = userData[key];
+            }
+        }
+
+        if (selectedColor !== originalData.profile_pic) {
+            changes.profilePic = selectedColor;
+        }
+
+        if (Object.keys(changes).length === 0) {
+            setEditProfileEnabled(false);
+            return;
+        }
+
+
+        try {
+            await updateProfileRequest(changes);
+            setEditProfileEnabled(false);
+
+        } catch (error){
+            console.log(error);
+            alert("Failed to update profile.");
+            setEditProfileEnabled(false);
+        }
     }
 
     return (

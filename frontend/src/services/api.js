@@ -84,6 +84,15 @@ export const getProfilePicForPoster = async (poster) => {
     }
 }
 
+export const updateProfileRequest = async (changes) => {
+    try {
+        const response = await api.patch("/profiles/update", changes, {withCredentials: true});
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to update profile.";
+    }
+}
+
 
 // VIDEOS
 
