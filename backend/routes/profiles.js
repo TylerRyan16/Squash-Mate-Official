@@ -6,7 +6,7 @@ const pool = require("../config/db.js");
 
 // add a new profile
 router.post("/", async (req, res) => {
-    const {username, password, playerLevel, clubLockerURL, firstName, lastName, country, email, dateOfBirth, profile_color} = req.body;
+    const { username, password, playerLevel, clubLockerURL, firstName, lastName, country, email, dateOfBirth, profile_color } = req.body;
 
     const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -16,11 +16,11 @@ router.post("/", async (req, res) => {
         const result = await pool.query(
             `INSERT INTO profiles (username, password, player_level, club_locker_url, first_name, last_name, country, email, date_of_birth, profile_pic)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id, username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth`,
-            [username, hashedPassword, playerLevel, clubLockerURL || null, firstName, lastName, country ||  null, email, dateOfBirth, profile_color]
+            [username, hashedPassword, playerLevel, clubLockerURL || null, firstName, lastName, country || null, email, dateOfBirth, profile_color]
         );
 
         // create secure token
-        const token = jwt.sign({ userId: result.rows[0].id, username: username}, SECRET_KEY, {expiresIn: "7d"});
+        const token = jwt.sign({ userId: result.rows[0].id, username: username }, SECRET_KEY, { expiresIn: "7d" });
 
         // Save a cookie that keeps logged in for 7 days
         res.cookie("authToken", token, {
@@ -32,41 +32,41 @@ router.post("/", async (req, res) => {
 
 
 
-        res.status(201).json( {message: "User created successfully", user: result.rows[0]});
+        res.status(201).json({ message: "User created successfully", user: result.rows[0] });
     } catch (error) {
-        if (error.code === "23505"){
-            res.status(400).json({error: "Username already exists. Please choose a different one."});
+        if (error.code === "23505") {
+            res.status(400).json({ error: "Username already exists. Please choose a different one." });
         } else {
             console.error(error);
-            res.status(500).json({error: "failed to add profile"});
+            res.status(500).json({ error: "failed to add profile" });
         }
-        
+
     }
 });
 
 // LOGIN ROUTE
 router.post("/login", async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const SECRET_KEY = process.env.SECRET_KEY;
 
     try {
         const result = await pool.query("SELECT * FROM profiles WHERE email = $1", [email]);
 
         // if no result, invalid
-        if (result.rows.length === 0){
-            return res.status(400).json({error: "Invalid email or password"});
+        if (result.rows.length === 0) {
+            return res.status(400).json({ error: "Invalid email or password" });
         }
         // get user from result
         const user = result.rows[0];
 
         // check if password is correct
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid){
-            return res.status(400).json({ error: "Invalid email or password"});
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: "Invalid email or password" });
         }
 
         // generate JWT Token
-        const token = jwt.sign({userId: user.id, username: user.username}, SECRET_KEY, {expiresIn: "7d"});
+        const token = jwt.sign({ userId: user.id, username: user.username }, SECRET_KEY, { expiresIn: "7d" });
 
         // set token in http-only cookie
         res.cookie("authToken", token, {
@@ -92,10 +92,10 @@ router.post("/login", async (req, res) => {
             },
         });
 
-        
-    } catch (error){
+
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch videos."});
+        res.status(500).json({ error: "Failed to fetch videos." });
     }
 });
 
@@ -107,7 +107,7 @@ router.post("/logout", (req, res) => {
         sameSite: "none",  // Allows cross-origin requests
     });
 
-    res.json({message: "Logged out successfully!"});
+    res.json({ message: "Logged out successfully!" });
 });
 
 // GET MY PROFILE
@@ -115,8 +115,8 @@ router.get("/me", async (req, res) => {
     try {
         const authToken = req.cookies.authToken;
 
-        if (!authToken){
-            return res.status(401).json({ error: "Unauthorized. No token provided."});
+        if (!authToken) {
+            return res.status(401).json({ error: "Unauthorized. No token provided." });
         }
 
         // get user id
@@ -125,14 +125,14 @@ router.get("/me", async (req, res) => {
 
         const result = await pool.query("SELECT username, email, first_name, last_name, player_level, club_locker_url, country, date_of_birth, profile_pic FROM profiles WHERE id = $1", [userId]);
 
-        if (result.rows.length === 0){
-            return res.status(401).json({error: "User not found"});
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: "User not found" });
         }
 
         res.json(result.rows[0]);
-    } catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Failed to fetch user data."});
+        res.status(500).json({ error: "Failed to fetch user data." });
     }
 });
 
@@ -141,9 +141,9 @@ router.get("/all-users", async (req, res) => {
     try {
         const result = await pool.query("SELECT id, username FROM profiles");
         res.json(result.rows);
-    } catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch users."});
+        res.status(500).json({ error: "Failed to fetch users." });
     }
 });
 
@@ -152,8 +152,8 @@ router.get("/my-username", async (req, res) => {
     try {
         const authToken = req.cookies.authToken;
 
-        if (!authToken){
-            return res.status(401).json({ error: "Unauthorized. No token provided."});
+        if (!authToken) {
+            return res.status(401).json({ error: "Unauthorized. No token provided." });
         }
 
         // get user id
@@ -162,14 +162,14 @@ router.get("/my-username", async (req, res) => {
 
         const result = await pool.query("SELECT username FROM profiles WHERE id = $1", [userId]);
 
-        if (result.rows.length === 0){
-            return res.status(401).json({error: "User not found"});
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: "User not found" });
         }
 
         res.json(result.rows[0]);
-    } catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Failed to fetch user data."});
+        res.status(500).json({ error: "Failed to fetch user data." });
     }
 });
 
@@ -181,22 +181,66 @@ router.get("/pic", async (req, res) => {
     try {
         const result = await pool.query("SELECT profile_pic FROM profiles WHERE username = $1", [poster]);
 
-        if (result.rows.length === 0){
-            return res.status(401).json({error: "User not found"});
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: "User not found" });
         }
 
         console.log("pic result: ", result);
         res.json(result.rows[0]);
         console.log(result.rows[0]);
-    } catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Failed to fetch user profile picture."});
+        res.status(500).json({ error: "Failed to fetch user profile picture." });
     }
 });
 
 // UPDATE PROFILE
 router.patch("/update", async (req, res) => {
     console.log("UPDATE REQUEST BODY: ", req.body);
+
+    const authToken = req.cookies.authToken;
+
+    if (!authToken) {
+        return res.status(401).json({ error: "Unauthorized. No token provided." });
+    }
+
+    try {
+        // get user id
+        const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+
+        const fields = req.body;
+
+        if (Object.keys(fields).length === 0){
+            return res.status(400).json({error: "No fields provided for update."});
+        }
+
+        const setClauses = [];
+        const values = [];
+        let i = 1;
+
+        Object.entries(fields).forEach(([key, value], index) => {
+            setClauses.push(`${key} = $${index + 1}`);
+            values.push(value);
+        });
+
+        values.push(userId);
+        console.log("setClauses: ", setClauses);
+
+        const query = `
+            UPDATE profiles
+            SET ${setClauses.join(', ')}
+            WHERE id = $${values.length}
+        `;
+
+        await pool.query(query, values);
+        res.json({ message: "Profile updated successfully." });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to update user profile." });
+
+    }
 });
 
 module.exports = router;

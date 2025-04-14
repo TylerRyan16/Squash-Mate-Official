@@ -9,12 +9,13 @@ const Profile = () => {
     const [userData, setUserData] = useState({
         username: '',
         email: '',
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         level: '',
-        clubLockerUrl: '',
+        club_locker_url: '',
         country: '',
-        dateOfBirth: '',
+        date_of_birth: '',
+        profile_pic: '',
     });
     const [selectedColor, setSelectedColor] = useState("");
     const colors = ["purple", "red", "yellow", "pink", "blue", "green"]
@@ -54,25 +55,25 @@ const Profile = () => {
                 setUserData({
                     username: data.username || '',
                     email: data.email || '',
-                    firstName: formattedFirst || '',
-                    lastName: formattedLast || '',
+                    first_name: formattedFirst || '',
+                    last_name: formattedLast || '',
                     level: data.player_level || '',
-                    clubLockerUrl: data.club_locker_url || '',
+                    club_locker_url: data.club_locker_url || '',
                     country: data.country || '',
-                    dateOfBirth: data.date_of_birth || '',
-                    profilePic: data.profile_pic,
+                    date_of_birth: data.date_of_birth || '',
+                    profile_pic: data.profile_pic,
                 });
 
                 setOriginalData({
                     username: data.username || '',
                     email: data.email || '',
-                    firstName: formattedFirst || '',
-                    lastName: formattedLast || '',
+                    first_name: formattedFirst || '',
+                    last_name: formattedLast || '',
                     level: data.player_level || '',
-                    clubLockerUrl: data.club_locker_url || '',
+                    club_locker_url: data.club_locker_url || '',
                     country: data.country || '',
-                    dateOfBirth: data.date_of_birth || '',
-                    profilePic: data.profile_pic,
+                    date_of_birth: data.date_of_birth || '',
+                    profile_pic: data.profile_pic,
                 })
 
                 setSelectedColor(data.profile_pic);
@@ -102,7 +103,7 @@ const Profile = () => {
         }
 
         if (selectedColor !== originalData.profile_pic) {
-            changes.profilePic = selectedColor;
+            changes.profile_pic = selectedColor;
         }
 
         if (Object.keys(changes).length === 0) {
@@ -112,6 +113,7 @@ const Profile = () => {
 
 
         try {
+            console.log("updating profile with changes: ", changes);
             await updateProfileRequest(changes);
             setEditProfileEnabled(false);
 
@@ -127,7 +129,13 @@ const Profile = () => {
             <div className="left-area">
                 <div className="tooltip-wrapper">
                     <img
-                        onClick={() => setEditProfileEnabled(!editProfileEnabled)}
+                        onClick={() => {
+                            if (editProfileEnabled){
+                                setUserData(originalData);
+                                setSelectedColor(originalData.profilePic);
+                            }
+                            setEditProfileEnabled(!editProfileEnabled);
+                        }}
                         src="/assets/icons/edit profile.png"
                         alt="edit-profile"
                         className={`edit-profile-button ${editProfileEnabled ? "enabled" : ""}`}
@@ -151,7 +159,7 @@ const Profile = () => {
                 <h1 className="profile-username">{userData.username}</h1>
 
 
-                <div className="club-locker-area" onClick={() => window.open(userData.clubLockerUrl, '_blank')}>
+                <div className="club-locker-area" onClick={() => window.open(userData.club_locker_url, '_blank')}>
                     <h3>Club Locker</h3>
                     <img src="/assets/icons/link.png" alt="club locker link"></img>
 
@@ -174,8 +182,10 @@ const Profile = () => {
                             className="input-zone"
                             type="text"
                             name="first-name"
-                            value={userData.firstName}
+                            value={userData.first_name}
                             readOnly={!editProfileEnabled}
+                            onChange={(e) => setUserData({ ...userData, first_name: e.target.value })}
+
 
                         />
                     </div>
@@ -188,8 +198,10 @@ const Profile = () => {
                             className="input-zone"
                             type="text"
                             name="last-name"
-                            value={userData.lastName}
+                            value={userData.last_name}
                             readOnly={!editProfileEnabled}
+                            onChange={(e) => setUserData({ ...userData, last_name: e.target.value })}
+
 
                         />
                     </div>
@@ -202,8 +214,10 @@ const Profile = () => {
                             className="input-zone"
                             type="text"
                             name="date-of-birth"
-                            value={userData.dateOfBirth || 'N/A'}
+                            value={userData.date_of_birth || 'N/A'}
                             readOnly={!editProfileEnabled}
+                            onChange={(e) => setUserData({ ...userData, date_of_birth: e.target.value })}
+
 
                         />
                     </div>
@@ -218,6 +232,8 @@ const Profile = () => {
                             name="country"
                             value={userData.country || 'N/A'}
                             readOnly={!editProfileEnabled}
+                            onChange={(e) => setUserData({ ...userData, country: e.target.value })}
+
 
                         />
                     </div>
@@ -232,7 +248,7 @@ const Profile = () => {
                         type="text"
                         name="email"
                         value={userData.email}
-                        readOnly={!editProfileEnabled}
+                        readOnly= {true}
                     />
                 </div>
 
