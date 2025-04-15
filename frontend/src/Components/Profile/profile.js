@@ -43,6 +43,11 @@ const Profile = () => {
         }
     }
 
+    useEffect(() => {
+        console.log("selected color: ", selectedColor);
+        console.log("original data: ", originalData);
+    }, [originalData, selectedColor])
+
     // ON PAGE LOAD
     useEffect(() => {
         const fetchUserData = async () => {
@@ -112,12 +117,21 @@ const Profile = () => {
         }
 
 
-        try {
-            console.log("updating profile with changes: ", changes);
-            await updateProfileRequest(changes);
-            setEditProfileEnabled(false);
 
-        } catch (error){
+        try {
+            await updateProfileRequest(changes);
+
+            // Update local state to reflect saved changes
+            const updated = {
+                ...userData,
+                profile_pic: selectedColor,
+            };
+
+
+            setUserData(updated);
+            setOriginalData(updated);
+            setEditProfileEnabled(false);
+        } catch (error) {
             console.log(error);
             alert("Failed to update profile.");
             setEditProfileEnabled(false);
@@ -130,9 +144,10 @@ const Profile = () => {
                 <div className="tooltip-wrapper">
                     <img
                         onClick={() => {
-                            if (editProfileEnabled){
+                            // set data back to original if not pressed save changes
+                            if (editProfileEnabled) {
                                 setUserData(originalData);
-                                setSelectedColor(originalData.profilePic);
+                                setSelectedColor(originalData.profile_pic);
                             }
                             setEditProfileEnabled(!editProfileEnabled);
                         }}
@@ -150,7 +165,8 @@ const Profile = () => {
 
                 <div className="profile-picture-zone">
                     {editProfileEnabled && <img className='pic-switch-left' src='assets\icons\right-arrow.png' alt='change pic left' onClick={() => switchProfileColor("left")} />}
-                    {!editProfileEnabled && <img src={`/assets/characters/${userData.profilePic}.png`} alt='profile cover' className="profile-pic"></img>}
+                    {!editProfileEnabled && <img src={`/assets/characters/${userData.profile_pic}.png`} alt='profile cover' className="profile-pic"></img>}
+
                     {editProfileEnabled && <img src={`/assets/characters/${selectedColor}.png`} alt='profile cover' className="profile-pic"></img>}
 
                     {editProfileEnabled && <img className='pic-switch-right' src='assets\icons\right-arrow.png' alt='change pic right' onClick={() => switchProfileColor("right")} />}
@@ -248,7 +264,7 @@ const Profile = () => {
                         type="text"
                         name="email"
                         value={userData.email}
-                        readOnly= {true}
+                        readOnly={true}
                     />
                 </div>
 
