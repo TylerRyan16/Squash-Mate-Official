@@ -2,8 +2,8 @@
 import './home.scss';
 import VideoCard from "../Video/videoCard";
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getAllVideos, getMyVideos, getSharedVideos, getProfilePicForPoster } from "../../services/api";
+import { Link, useNavigate } from 'react-router-dom';
+import { getAllVideos, getMyVideos, getSharedVideos, getProfilePicForPoster, checkLoggedIn } from "../../services/api";
 
 
 // MAIN EXPORT
@@ -26,6 +26,7 @@ const Home = () => {
     const [allVideos, setAllVideos] = useState([]);
     const [myVideos, setMyVideos] = useState([]);
     const [sharedWithMe, setSharedWithMe] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchAllData = async () => {
@@ -51,14 +52,19 @@ const Home = () => {
                 setLoading(false);
             }
         };
-
+        redirectIfNotLoggedIn();
         fetchAllData();
     });
 
-    const isLoggedIn = () => {
-        const loggedIn = localStorage.getItem('authToken');
-        console.log("logged in: ", loggedIn);
-        return !!loggedIn;
+    const redirectIfNotLoggedIn = async () => {
+        try{
+            const loggedIn = await checkLoggedIn();
+            if (!loggedIn){
+                navigate("/login");
+            }
+        } catch (error){
+            console.error(error);
+        }
     };
 
     const enrichVideosWithPFP = async (videos) => {

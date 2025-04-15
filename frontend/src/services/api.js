@@ -92,6 +92,15 @@ export const updateProfileRequest = async (changes) => {
     }
 }
 
+export const checkLoggedIn = async () => {
+    try {
+        const response = await api.get("/profiles/logged-in");
+        return response.data;
+    } catch (error){
+        throw error.response?.data || "Failed to check if user was logged in.";
+    }
+}
+
 
 // VIDEOS
 
