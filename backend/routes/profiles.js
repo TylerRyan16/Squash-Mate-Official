@@ -136,6 +136,23 @@ router.get("/me", async (req, res) => {
     }
 });
 
+router.get("/logged-in", async (req, res) => {
+    try{
+        const authToken = req.cookies.authToken;
+
+        if (!authToken) {
+            return res.status(401).json(false);
+        }
+
+        else {
+            return res.status(200).json(true);
+        }
+    } catch (error){
+        console.error(error);
+        res.status(500).json({ error: "Failed to check if currently logged in." });
+    }
+});
+
 // GET ALL USERNAMES
 router.get("/all-users", async (req, res) => {
     try {
