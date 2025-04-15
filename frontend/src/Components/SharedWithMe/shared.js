@@ -1,28 +1,46 @@
 import "./shared.scss";
-import { getAllVideos, getSharedVideos, getSpecificVideo } from "../../services/api";
+import { getSharedVideos, getMyUsername, getProfilePicForPoster } from "../../services/api";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import VideoCard from "../Video/videoCard";
 
 
 const SharedWithMe = () => {
-  const navigate = useNavigate();
   const [sharedVideos, setSharedVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchSharedVideos = async () => {
-      try {
-        const result = await getSharedVideos();
-
-        setSharedVideos(result);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchSharedVideos();
-  }, []);
+      const fetchSharedVideos = async () => {
+        try {
+          const name = await getMyUsername();
+          console.log("name in frontend: ", name);
+  
+          const rawVideos = await getSharedVideos(name);        
+          const enrichedVideos = await enrichVideosWithPFP(rawVideos);
+  
+          setSharedVideos(enrichedVideos);
+          console.log("enriched: ", enrichedVideos);
+        } catch (error) {
+          console.error(`Error fetching videos or usernames: ${error}`);
+        } 
+      };
+  
+      fetchSharedVideos();
+    }, []);
+  
+    const enrichVideosWithPFP = async (videos) => {
+      const enriched = await Promise.all(
+        videos.map(async (video) => {
+          try {
+            const pfp = await getProfilePicForPoster(video.poster);
+            return { ...video, poster_pfp: pfp };
+          } catch {
+            return { ...video, poster_pfp: "default" };
+          }
+        })
+      );
+      return enriched;
+    };
 
   const filteredVideos = sharedVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())

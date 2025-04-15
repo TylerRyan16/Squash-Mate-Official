@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { getMyVideos, getMyUsername } from "../../services/api";
+import { getMyVideos, getMyUsername, getProfilePicForPoster } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import VideoCard from "../Video/videoCard";
 import "./myVideos.scss";
 
 const MyVideos = () => {
   const [myVideos, setMyVideos] = useState([]);
-  const [username, setUsername] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -20,27 +19,36 @@ const MyVideos = () => {
   const playerLevelRef = useRef(null);
 
   useEffect(() => {
-    const grabMyUsername = async () => {
-      try {
-        const result = await getMyUsername();
-        setUsername(result);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
     const fetchMyVideos = async () => {
       try {
-        const result = await getMyVideos(username);
-        setMyVideos(result);
+        const name = await getMyUsername();
+
+        const rawVideos = await getMyVideos(name);        
+        const enrichedVideos = await enrichVideosWithPFP(rawVideos);
+
+        setMyVideos(enrichedVideos);
       } catch (error) {
-        console.log(error);
-      }
-    }
+        console.error(`Error fetching videos or usernames: ${error}`);
+      } 
+    };
 
     fetchMyVideos();
-    grabMyUsername();
-  }, [username]);
+  }, []);
+
+  const enrichVideosWithPFP = async (videos) => {
+    const enriched = await Promise.all(
+      videos.map(async (video) => {
+        try {
+          const pfp = await getProfilePicForPoster(video.poster);
+          return { ...video, poster_pfp: pfp };
+        } catch {
+          return { ...video, poster_pfp: "default" };
+        }
+      })
+    );
+    return enriched;
+  };
+
 
   const filteredVideos = myVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -89,7 +97,6 @@ const MyVideos = () => {
   };
 
 
-  const navigate = useNavigate();
 
   return (
     <div className="page-container">
