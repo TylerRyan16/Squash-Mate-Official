@@ -302,15 +302,15 @@ const Upload = () => {
                                 {videoDetails.type === "Match" &&
                                     <div className='match-length-area'>
                                         <button
-                                            className={`match-length-button ${videoDetails.length === 'Five' ? 'selected' : ''}`}
+                                            className={`match-length-button ${videoDetails.length === 'Three' ? 'selected' : ''}`}
                                             name="length"
-                                            value="Five"
+                                            value="Three"
                                             onClick={handleVideoInput}
                                         >Five</button>
                                         <button
-                                            className={`match-length-button ${videoDetails.length === 'Seven' ? 'selected' : ''}`}
+                                            className={`match-length-button ${videoDetails.length === 'Five' ? 'selected' : ''}`}
                                             name="length"
-                                            value="Seven"
+                                            value="Five"
                                             onClick={handleVideoInput}
 
                                         >Seven</button>
@@ -340,18 +340,11 @@ const Upload = () => {
                                         onClick={handleVideoInput}
                                     >Single Game</button>
                                     <button
-                                        className={`match-length-button three ${videoDetails.length === 'Five' ? 'selected' : ''}`}
+                                        className={`match-length-button five ${videoDetails.length === 'Five' ? 'selected' : ''}`}
                                         name="length"
                                         value="Five"
                                         onClick={handleVideoInput}
                                     >Five</button>
-                                    <button
-                                        className={`match-length-button three ${videoDetails.length === 'Seven' ? 'selected' : ''}`}
-                                        name="length"
-                                        value="Seven"
-                                        onClick={handleVideoInput}
-
-                                    >Seven</button>
                                 </div>
                             }
 
