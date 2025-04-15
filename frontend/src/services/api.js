@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://squash-mates.onrender.com/api";
+const API_BASE_URL = "https://api.squashmate.club/api";
 
 // enable cookies for requests
 axios.defaults.withCredentials = true;
