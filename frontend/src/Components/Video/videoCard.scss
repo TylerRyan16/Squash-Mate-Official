@@ -9,6 +9,7 @@
     cursor: pointer;
     transition: transform 0.15s ease-in-out;
     min-width: 400px;
+    max-height: 100%;
 
     &:hover {
         transform: scale(1.05);
