@@ -8,6 +8,7 @@
     padding: 5px;
     cursor: pointer;
     transition: transform 0.15s ease-in-out;
+    min-width: 400px;
 
     &:hover {
         transform: scale(1.05);

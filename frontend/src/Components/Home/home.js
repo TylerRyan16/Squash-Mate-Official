@@ -8,17 +8,18 @@ import { getAllVideos, getMyVideos, getSharedVideos, getProfilePicForPoster, che
 
 // MAIN EXPORT
 function scrollLeft(id) {
-    const itemWidth = 150
+    const itemWidth = document.getElementById(id).getBoundingClientRect().width;
     const padding = 10
-    const pubGamesList = document.getElementById(id)
-    pubGamesList.scrollLeft -= itemWidth + padding
+    const videoList = document.getElementById(id)
+    videoList.scrollLeft -= itemWidth + padding
 }
 
 function scrollRight(id) {
-    const itemWidth = 150
+    const itemWidth = document.getElementById(id).getBoundingClientRect().width;
     const padding = 10
-    const pubGamesList = document.getElementById(id)
-    pubGamesList.scrollLeft += itemWidth + padding
+    const videoList = document.getElementById(id)
+    videoList.scrollLeft += itemWidth + padding
+
 }
 
 const Home = () => {
@@ -54,7 +55,7 @@ const Home = () => {
         };
         redirectIfNotLoggedIn();
         fetchAllData();
-    });
+    }, []);
 
     const redirectIfNotLoggedIn = async () => {
         try{
