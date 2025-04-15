@@ -25,9 +25,10 @@ router.post("/", async (req, res) => {
         // Save a cookie that keeps logged in for 7 days
         res.cookie("authToken", token, {
             httpOnly: true,
-            secure: true, // Ensures HTTPS is required in production
-            sameSite: "None",  // Allows cross-origin requests
+            secure: true, 
+            sameSite: "None",  
             maxAge: 7 * 24 * 60 * 60 * 1000,
+            domain: ".squashmate.club",
         });
 
 
@@ -71,9 +72,10 @@ router.post("/login", async (req, res) => {
         // set token in http-only cookie
         res.cookie("authToken", token, {
             httpOnly: true,
-            secure: true, // Ensures HTTPS is required in production
-            sameSite: "None",  // Allows cross-origin requests
+            secure: true, 
+            sameSite: "None",  
             maxAge: 7 * 24 * 60 * 60 * 1000,
+            domain: ".squashmate.club",
         });
 
         // json response
@@ -103,8 +105,9 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (req, res) => {
     res.clearCookie("authToken", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Ensures HTTPS is required in production
+        secure: true,
         sameSite: "none",  // Allows cross-origin requests
+        domain: ".squashmate.club",
     });
 
     res.json({ message: "Logged out successfully!" });
