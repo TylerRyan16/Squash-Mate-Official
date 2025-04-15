@@ -14,7 +14,6 @@ const SharedWithMe = () => {
     const fetchSharedVideos = async () => {
       try {
         const result = await getSharedVideos();
-        console.log("shared videos", result);
 
         setSharedVideos(result);
       } catch (error) {

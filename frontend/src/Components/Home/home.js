@@ -38,8 +38,6 @@ const Home = () => {
                     getSharedVideos(),
                 ]);
 
-                console.log("MINE: ", mine);
-
                 const enrichedAll = await enrichVideosWithPFP(all);
                 const enrichedMine = await enrichVideosWithPFP(mine);
                 const enrichedShared = await enrichVideosWithPFP(shared);

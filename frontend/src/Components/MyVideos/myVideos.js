@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { getMyVideos, getMyUsername } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import VideoCard from "../Video/videoCard";
 import "./myVideos.scss";
 
 const MyVideos = () => {
@@ -172,18 +173,8 @@ const MyVideos = () => {
         </div>
         <div className="rows">
           {filteredVideos.length > 0 ? (
-            filteredVideos.map((video, index) => (
-              <div className='my-videos-video-card' onClick={() => navigate(`/video/${video.id}`)}>
-                <img className="my-videos-thumbnail" src={video.thumbnail} alt='' />
-                <div className="title-area">
-                  <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                  <h4 className="video-title">{video.title}</h4>
-                </div>
-                <div className="poster-date-area">
-                  <p className="video-uploader">{video.poster}</p>
-                  <small className='video-date'>{video.date_posted}</small>
-                </div>
-              </div>
+            filteredVideos.map(video => (
+              <VideoCard key={video.id} video={video} />
             ))
           ) : (
             <p>No videos found</p>
