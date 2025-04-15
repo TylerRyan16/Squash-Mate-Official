@@ -12,6 +12,7 @@ router.get("/shared-videos", async (req, res) => {
         console.log("authtoken: ", authToken);
 
         if (!authToken) {
+            console.log("!authtoken hit and we did not find an authtoken MF MF MF");
             return res.status(401).json({ error: "Unauthorized. No token provided." });
         }
 
