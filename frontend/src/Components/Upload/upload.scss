@@ -5,14 +5,13 @@
 }
 
 .page-one {
-    align-self: flex-start;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 90%;
-    height: 100%;
+    height: 80%;
     gap: 3%;
-    margin: 0 auto;
+    margin: auto auto;
 }
 
 // VIDEO AREA
@@ -21,17 +20,60 @@
     height: auto;
 }
 
-// TITLE / MATCH TYPE
+// URL INPUT
+.url-input{
+    margin: 0;
+    font-size: clamp(20px, 1vw, 24px);
+
+    // field BG
+    .MuiOutlinedInput-root {
+        background-color: #b5d4f3;
+    }
+    
+    // placeholder text
+    .MuiInputLabel-root {
+        color: #4c4b51;
+        font-weight: 600;
+    }
+
+    // Focused label
+    .MuiInputLabel-root.Mui-focused {
+        color: black; // 👈 change this to whatever color you want
+    }
+ 
+}
+
+// TITLE 
 .title-type-area {
     display: flex;
     width: 100%;
     gap: 2%;
 }
 
-.title {
-    width: 100%;
+.title-input{
+    margin: 0;
+    font-size: clamp(20px, 1vw, 24px);
+
+    // field BG
+    .MuiOutlinedInput-root {
+        background-color: #b5d4f3;
+    }
+    
+    // placeholder text
+    .MuiInputLabel-root {
+        color: #4c4b51;
+        font-weight: 600;
+    }
+
+    // Focused label
+    .MuiInputLabel-root.Mui-focused {
+        color: black; // 👈 change this to whatever color you want
+    }
+ 
 }
 
+
+// MATCH TYPE
 .match-type-area {
     display: flex;
     justify-content: space-evenly;
@@ -39,34 +81,32 @@
     height: 60px;
 }
 
-.match-type-button {
+.match-type-mui-button{
     width: 30%;
-    height: 60px;
-    background-color: #7aa6d3;
-    font-size: clamp(16px, 1.5vw, 28px);
-    height: inherit;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+
+    .MuiButton-root{
+        font-size: clamp(18px, 1.6vw, 28px);
+        height: 60px;
+        font-weight: 600;
+        transition: all 0.25s ease-in-out;
+    }
+
+    &.MuiButton-outlined {
+        background-color: #e5e5e5;
+        font-size: clamp(12px, 1.4vw, 20px);
+
+    }
+
+    &.selected {
+        font-size: clamp(20px, 1.8vw, 32px);
+        height: 67px;
+    }
 }
 
-.match-type-button.selected {
-    height: 67px;
-    background-color: #b5d4f3;
-    font-size: clamp(20px, 1.8vw, 32px);
-}
 
 // CONTINUE
 .continue-button {
-    width: clamp(70%, 1vw, 80%);
-    height: auto;
-    background-color: #315fb9;
-    color: white;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 0;
-    font-size: clamp(32px, 1vw, 44px);
-    font-weight: 600;
-    cursor: pointer;
+    width: clamp(50%, 1vw, 80%);
 }
 
 // PAGE TWO
@@ -235,14 +275,12 @@
 }
 
 .continue2-button {
-    width: 75%;
-    background-color: #315fb9;
-    color: white;
-    padding: 5px;
+    width: clamp(70%, 1vw, 80%);
+    padding: 15px;
+    font-size: clamp(32px, 1vw, 44px);
+    font-weight: 600;
     border-radius: 8px;
-    font-size: 32px;
-    cursor: pointer;
-    margin: auto;
+    text-transform: none;
 }
 
 .right-area {
@@ -365,11 +403,6 @@
 
         .video-thumbnail {
             width: 90%;
-        }
-
-        .continue-button {
-            width: 75%;
-            margin: 0 auto;
         }
     }
 

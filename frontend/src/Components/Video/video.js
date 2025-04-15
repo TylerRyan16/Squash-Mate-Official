@@ -67,8 +67,8 @@ const Video = () => {
                 console.log("current poster: ", currentVideo.poster);
                 // use video poster to query DB for their pfp
                 const profilePicResponse = await getProfilePicForPoster(currentVideo.poster);
-                console.log("profile pic found: ", profilePicResponse.profile_pic);
-                setPosterPic(profilePicResponse.profile_pic);
+                console.log("profile pic found: ", profilePicResponse);
+                setPosterPic(profilePicResponse);
             } catch (error) {
                 console.log(error);
             }
@@ -93,22 +93,23 @@ const Video = () => {
             }
         }
 
-        fetchAllUsers();
-        getUser();
         fetchSpecificVideo(videoID);
+        getUser();
+        fetchAllUsers();
+        fetchComments(videoID);
+
     }, [])
 
     // Grab comments for the video
     useEffect(() => {
-        fetchComments(videoID);
     }, [video])
 
     // SCROLL TO NEW COMMENT WHEN POSTED
-    useEffect(() => {
-        if (videoComments.length > 0 && bottomRef.current) {
-            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [videoComments]);
+    // useEffect(() => {
+    //     if (videoComments.length > 0 && bottomRef.current) {
+    //         bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    //     }
+    // }, [videoComments]);
 
     var parsed_game_details = {}
     for (const evt in video.game_details) {

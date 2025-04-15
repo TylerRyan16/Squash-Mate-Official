@@ -1,25 +1,43 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAllVideos } from "../../services/api";
+import { getAllVideos, getMyUsername, getProfilePicForPoster } from "../../services/api";
 import VideoCard from "../Video/videoCard";
 import "./explore.scss";
 
 const Explore = () => {
-  const navigate = useNavigate();
   const [allVideos, setAllVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchAllVideos = async () => {
-      try {
-        const videos = await getAllVideos();
-        setAllVideos(videos);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchAllVideos();
-  }, []);
+      const fetchMyVideos = async () => {
+        try {
+          const name = await getMyUsername();
+          console.log("name in frontend: ", name);
+  
+          const rawVideos = await getAllVideos(name);        
+          const enrichedVideos = await enrichVideosWithPFP(rawVideos);
+  
+          setAllVideos(enrichedVideos);
+        } catch (error) {
+          console.error(`Error fetching videos or usernames: ${error}`);
+        } 
+      };
+  
+      fetchMyVideos();
+    }, []);
+  
+    const enrichVideosWithPFP = async (videos) => {
+      const enriched = await Promise.all(
+        videos.map(async (video) => {
+          try {
+            const pfp = await getProfilePicForPoster(video.poster);
+            return { ...video, poster_pfp: pfp };
+          } catch {
+            return { ...video, poster_pfp: "default" };
+          }
+        })
+      );
+      return enriched;
+    };
 
   const filteredVideos = allVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())

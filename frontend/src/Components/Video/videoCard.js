@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import {useEffect} from "react";
 import "./videoCard.scss";
 
 const VideoCard = ({ video }) => {
@@ -9,6 +10,10 @@ const VideoCard = ({ video }) => {
         if (!date) return "Unknown";
         return date.slice(0, 10);
     }
+
+    useEffect(() => {
+        console.log("Video: ", video);
+    }, [])
 
     return (
         <div className='video-card-display' onClick={() => navigate(`/video/${video.id}`)}>

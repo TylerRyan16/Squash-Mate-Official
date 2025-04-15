@@ -5,6 +5,10 @@ import { uploadVideo } from "../../services/api";
 import { getMyUsername } from "../../services/api";
 import ReactPlayer from 'react-player';
 
+// Material UI
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
 
 const Upload = () => {
     const navigate = useNavigate();
@@ -221,16 +225,16 @@ const Upload = () => {
             {/* PAGE ONE */}
             {!continuePressed && !continue2Pressed && <div className="page-one">
                 {/* LINK */}
-                <div className="input-container">
-                    <label className="floating-label">URL (required)</label>
-                    <input
-                        type="text"
-                        className="input-zone url"
-                        name="url"
-                        value={videoDetails.url}
-                        onChange={handleVideoInput}
-                    ></input>
-                </div>
+                <TextField 
+                    label="URL (required)"
+                    name="url"
+                    fullWidth
+                    value={videoDetails.url}
+                    onChange={handleVideoInput}
+                    variant="outlined"
+                    className='url-input'
+                />
+               
 
 
                 {/* VIDEO DISPLAY */}
@@ -238,47 +242,45 @@ const Upload = () => {
 
                 {/* TITLE / TYPE AREA */}
                 <div className="title-type-area">
+
                     {/* TITLE */}
-                    <div className="input-container">
-                        <label className="floating-label">Title (required)</label>
-                        <input
-                            type="text"
-                            className="input-zone title"
-                            name="title"
-                            value={videoDetails.title}
-                            onChange={handleVideoInput}
-                        ></input>
-                    </div>
+                    <TextField
+                        label="Title (required)"
+                        name="title"
+                        value={videoDetails.title}
+                        onChange={handleVideoInput}
+                        fullWidth
+                        variant="outlined"
+                        className="title-input"
+                    />
+                    
 
                     {/* MATCH TYPE */}
                     <div className="match-type-area">
-                        <button
-                            className={`match-type-button ${videoDetails.type === 'Match' ? 'selected' : ''}`}
+                       {["Match", "Game", "Casual"].map((type) => (
+                        <Button 
+                            key={type}
                             name="type"
-                            value="Match"
+                            value={type}
                             onClick={handleVideoInput}
-                        >Match</button>
-                        <button
-                            className={`match-type-button ${videoDetails.type === 'Game' ? 'selected' : ''}`}
-                            name="type"
-                            value="Game"
-                            onClick={handleVideoInput}
-
-                        >Game</button>
-                        <button
-                            className={`match-type-button ${videoDetails.type === 'Casual' ? 'selected' : ''}`}
-                            name="type"
-                            value="Casual"
-                            onClick={handleVideoInput}
-                        >Casual</button>
+                            variant={videoDetails.type === type ? "contained" : "outlined"}
+                            className={`match-type-mui-button ${videoDetails.type === type ? "selected" : ""}`}
+                            sx={{
+                                transition: "all 0.15s ease-in-out",
+                            }}
+                        >
+                            {type}
+                        </Button>
+                       ))}
                     </div>
                 </div>
 
-                {/* CONTINUE BUTTON */}
-                <button
+                <Button
+                    variant="contained"
+                    color="primary"
                     className="continue-button"
                     onClick={() => handleContinuePressed()}
-                >Continue</button>
+                >Continue</Button>
             </div>}
 
 
@@ -423,11 +425,14 @@ const Upload = () => {
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
 
-                    <button className="continue2-button" onClick={handleContinue2Pressed}>Continue</button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className="continue2-button"
+                        onClick={() => handleContinue2Pressed()}
+                    >Continue</Button>
 
                 </div>
 
