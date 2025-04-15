@@ -1,8 +1,9 @@
 .profile-page{
-    width: 100%;
-    height: 93vh;
     display: flex;
     flex-direction: row;
+    width: 100vw;
+    max-width: 100%;
+    height: 93vh;
 }
 
 .left-area{

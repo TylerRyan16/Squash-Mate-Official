@@ -6,7 +6,11 @@ import "./layout.scss";
 const Layout = ({ children }) => {
     const location = useLocation();
     const [displayTopNav, setDisplayTopNav] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+        const savedState = localStorage.getItem("sidebarOpen");
+        return savedState === null ? true : JSON.parse(savedState);
+    });
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -16,6 +20,11 @@ const Layout = ({ children }) => {
         "Your profile was updated",
         "Your video has finished uploading",
     ];
+
+    useEffect(() => {
+        // Save to localStorage whenever it changes
+        localStorage.setItem("sidebarOpen", JSON.stringify(isSidebarOpen));
+    }, [isSidebarOpen]);
 
     useEffect(() => {
         // hide topbar if on login or create profile page

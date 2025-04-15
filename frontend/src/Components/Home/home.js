@@ -3,7 +3,7 @@ import './home.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllVideos, getMyVideos, getSharedVideos, getMyUsername } from "../../services/api";
+import { getAllVideos, getMyVideos, getSharedVideos, getProfilePicForPoster } from "../../services/api";
 
 
 // MAIN EXPORT
@@ -26,59 +26,49 @@ const Home = () => {
     const [allVideos, setAllVideos] = useState([]);
     const [myVideos, setMyVideos] = useState([]);
     const [sharedWithMe, setSharedWithMe] = useState([]);
-    const [exploreVideos, setExploredVideos] = useState([]);
-    const [username, setUsername] = useState("");
 
     useEffect(() => {
-        // get your username
-        const getUser = async () => {
+        const fetchAllData = async () => {
             try {
-                const { username } = await getMyUsername();
-                setUsername(username);
-            } catch (error) {
-                console.error(error);
-            }
-        }
+                const [all, mine, shared] = await Promise.all([
+                    getAllVideos(),
+                    getMyVideos(),
+                    getSharedVideos(),
+                ]);
 
-        const fetchAllVideos = async () => {
-            try {
-                const videos = await getAllVideos();
-                setAllVideos(videos);
-            } catch (error) {
-                console.log(error);
-            }
-        }
+                const enrichedAll = await enrichVideosWithPFP(all);
+                const enrichedMine = await enrichVideosWithPFP(mine);
+                const enrichedShared = await enrichVideosWithPFP(shared);
 
-        const fetchMyVideos = async () => {
-            try {
-                const result = await getMyVideos(username);
-                console.log("my videos: ", result);
-                setMyVideos(result);
-            } catch (error) {
-                console.log(error);
+                setAllVideos(enrichedAll);
+                setMyVideos(enrichedMine);
+                setSharedWithMe(enrichedShared);
+            } catch (error){
+                console.error("Error fetching videos or usernames: ", error);
             }
-        }
+        };
 
-        const fetchSharedVideos = async () => {
-            try {
-                const result = await getSharedVideos();
-                console.log("shared videos", result);
-                setSharedWithMe(result);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        fetchSharedVideos();
-        getUser();
-        fetchMyVideos();
-        fetchAllVideos();
-    }, []);
+        fetchAllData();
+    });
 
     const isLoggedIn = () => {
         const loggedIn = localStorage.getItem('authToken');
         console.log("logged in: ", loggedIn);
         return !!loggedIn;
+    };
+
+    const enrichVideosWithPFP = async (videos) => {
+        const enriched = await Promise.all(
+            videos.map( async (video) => {
+                try {
+                    const pfp = await getProfilePicForPoster(video.poster);
+                    return {...video, poster_pfp: pfp };
+                } catch {
+                    return {...video, poster_pfp: "default" };
+                }
+            })
+        );
+        return enriched;
     };
 
     return (
@@ -98,7 +88,9 @@ const Home = () => {
                     <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
                         <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
                         <div className="title-area">
+                            {/* HERE we need to get the video uploader pfp */}
                             <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
+
                             <h4 className="video-title">{currentVideo.title}</h4>
                         </div>
                         <div className="poster-date-area">
