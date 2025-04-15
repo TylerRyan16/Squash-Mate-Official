@@ -20,8 +20,14 @@ router.get("/shared-videos", async (req, res) => {
         console.log("video references: ", sharedVideoReferences);
         console.log("video references rows: ", sharedVideoReferences.rows);
 
+        const sharedVideos = [];
+        foreach (videoReference in sharedVideoReferences.rows){
+            const video = await pool.query("SELECT * FROM videos WHERE id = $1", [videoReference.video_id]);
+            sharedVideos.push[video];
+        }
 
-        return res.status(200).json(result.rows);
+        console.log("returning videos: ", sharedVideos);
+        return res.status(200).json(sharedVideos);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "No videos shared with user." });
