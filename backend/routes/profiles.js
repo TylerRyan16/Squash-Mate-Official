@@ -25,9 +25,9 @@ router.post("/", async (req, res) => {
         // Save a cookie that keeps logged in for 7 days
         res.cookie("authToken", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Ensures HTTPS is required in production
-            sameSite: "none",  // Allows cross-origin requests
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            secure: true, // Ensures HTTPS is required in production
+            sameSite: "None",  // Allows cross-origin requests
+            maxAge: 7 * 24 * 60 * 60,
         });
 
 
@@ -71,9 +71,9 @@ router.post("/login", async (req, res) => {
         // set token in http-only cookie
         res.cookie("authToken", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Ensures HTTPS is required in production
-            sameSite: "none",  // Allows cross-origin requests
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            secure: true, // Ensures HTTPS is required in production
+            sameSite: "None",  // Allows cross-origin requests
+            maxAge: 7 * 24 * 60 * 60,
         });
 
         // json response
