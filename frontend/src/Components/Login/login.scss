@@ -26,10 +26,8 @@
 .items{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 50%;
-    height: auto;
+    width: 40%;
+    height: 50vh;
 
     h1{
         color: black;
@@ -45,8 +43,48 @@
         height: 55%;
         margin: 0;
         padding: 0;
+        align-items: center;
     }
 }
+
+.login-bottom-row{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;    
+    height: fit-content;
+}
+
+.login-buttons-area{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// INPUTS
+.login-textfield{
+    margin: 0;
+    font-size: clamp(20px, 1vw, 24px);
+
+    // field BG
+    .MuiOutlinedInput-root {
+        background-color: #b5d4f3;
+    }
+    
+    // placeholder text
+    .MuiInputLabel-root {
+        color: #4c4b51;
+        font-weight: 600;
+    }
+
+    // Focused label
+    .MuiInputLabel-root.Mui-focused {
+        color: black; 
+    }
+}
+
 
 .or{
     align-self: center;
@@ -66,20 +104,10 @@
     display: block;
 }
 
-.login-bottom-row{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;    
-    height: fit-content;
-}
-
 .forgot-password{
     align-self: flex-end;
     padding: 10px 0px;
     border-radius: 8px;
-    background-color: white;
     border: none;
     color: black;
     font-size: 14px;
@@ -92,19 +120,6 @@
     color: red;
 }
 
-
-
-.login-button, .create-profile-button{
-    padding: 10px 0px;
-    width: 100%;
-    background-color: #315fb9;
-    border-radius: 8px;
-    color: white;
-    font-size: 22px;
-    text-align: center;
-    border: none;
-    box-sizing: border-box;
-}
 
 
 @media screen and (max-width: 430px){

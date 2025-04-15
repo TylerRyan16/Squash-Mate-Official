@@ -4,7 +4,9 @@ import ReactPlayer from 'react-player';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getSpecificVideo, getCommentsForVideo, commentOnVideo, getMyUsername, deleteCommentRequest, deleteVideoRequest, getAllUsers, shareVideo, getProfilePicForPoster } from "../../services/api";
 
-
+// MUI
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 // ----------- Utility Functions ----------------------------------------------------------------------------
 function changeHeart() {
@@ -590,33 +592,57 @@ const Video = () => {
 
                         {/* Comment Input */}
                         <div className="comment-input-bar">
-                            <div className="reply-section">
-                                <div className="reply-input-section">
-                                    {replyingComment && <div className="close-button-column">
-                                        <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => closeReply()}></img>
-                                        <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator"></img>
-                                    </div>}
-                                    <div className="reply-input-container">
-                                        <textarea
-                                            className='comment-input'
-                                            placeholder="Message.."
-                                            ref={commentRef}
-                                            maxLength={200}
-                                            onKeyDown={(e) => {
-                                                if (e.key === "Enter" && !e.shiftKey) {
-                                                    e.preventDefault();
-                                                    postComment(e);
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                            <div className="input-section">
+                                {replyingComment && <div className="close-button-column">
+                                    <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => closeReply()}></img>
+                                    <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator"></img>
+                                </div>}
 
-                                {/* Post Comment */}
-                                <button className="post-reply-button" onClick={() => postComment()}>Post</button>
+
+                                <TextField
+                                    multiline
+                                    fullWidth
+                                    rows={1}
+                                    maxRows={4}
+                                    inputRef={commentRef}
+                                    placeholder="Message..."
+                                    variant="outlined"
+                                    className="comment-input"
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" && !e.shiftKey) {
+                                            e.preventDefault();
+                                            postComment(e);
+                                        }
+                                    }}
+                                    InputProps={{
+                                        sx: {
+                                            backgroundColor: "#b5d4f3",
+                                            alignItems: "flex-start",     // ensure top alignment
+                                            paddingTop: "10px",           // optional, visual buffer
+                                        }
+                                    }}
+                                />
                             </div>
 
+                            {/* Post Comment */}
+
+                            <Button
+                                variant="contained"
+                                className="post-reply-button"
+                                onClick={() => postComment()}
+                                sx={{
+                                    height: "50%",
+                                    padding: "10px 0px",
+                                    fontSize: "18px",
+                                    fontWeight: 600,
+                                }}
+
+                            >
+                                Post
+                            </Button>
                         </div>
+
+
 
 
                     </div>

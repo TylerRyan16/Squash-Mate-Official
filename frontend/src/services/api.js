@@ -9,6 +9,7 @@ axios.defaults.withCredentials = true;
 const api = axios.create({
     baseURL: API_BASE_URL,
     header: { "Content-Type": "application/json" },
+    withCredentials: true
 });
 
 // PROFILES

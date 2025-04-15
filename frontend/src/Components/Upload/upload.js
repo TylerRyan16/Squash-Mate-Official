@@ -8,6 +8,7 @@ import ReactPlayer from 'react-player';
 // Material UI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 const Upload = () => {
@@ -225,16 +226,16 @@ const Upload = () => {
             {/* PAGE ONE */}
             {!continuePressed && !continue2Pressed && <div className="page-one">
                 {/* LINK */}
-                <TextField 
+                <TextField
                     label="URL (required)"
                     name="url"
                     fullWidth
                     value={videoDetails.url}
                     onChange={handleVideoInput}
                     variant="outlined"
-                    className='url-input'
+                    className='upload-input'
                 />
-               
+
 
 
                 {/* VIDEO DISPLAY */}
@@ -251,27 +252,27 @@ const Upload = () => {
                         onChange={handleVideoInput}
                         fullWidth
                         variant="outlined"
-                        className="title-input"
+                        className="upload-input"
                     />
-                    
+
 
                     {/* MATCH TYPE */}
                     <div className="match-type-area">
-                       {["Match", "Game", "Casual"].map((type) => (
-                        <Button 
-                            key={type}
-                            name="type"
-                            value={type}
-                            onClick={handleVideoInput}
-                            variant={videoDetails.type === type ? "contained" : "outlined"}
-                            className={`match-type-mui-button ${videoDetails.type === type ? "selected" : ""}`}
-                            sx={{
-                                transition: "all 0.15s ease-in-out",
-                            }}
-                        >
-                            {type}
-                        </Button>
-                       ))}
+                        {["Match", "Game", "Casual"].map((type) => (
+                            <Button
+                                key={type}
+                                name="type"
+                                value={type}
+                                onClick={handleVideoInput}
+                                variant={videoDetails.type === type ? "contained" : "outlined"}
+                                className={`match-type-mui-button ${videoDetails.type === type ? "selected" : ""}`}
+                                sx={{
+                                    transition: "all 0.15s ease-in-out",
+                                }}
+                            >
+                                {type}
+                            </Button>
+                        ))}
                     </div>
                 </div>
 
@@ -280,205 +281,267 @@ const Upload = () => {
                     color="primary"
                     className="continue-button"
                     onClick={() => handleContinuePressed()}
+                    sx={{
+                        width: "50%",
+                        padding: "10px 0px",
+                        fontSize: "18px",
+                        fontWeight: 600,
+                    }}
                 >Continue</Button>
             </div>}
 
 
             {/* PAGE TWO */}
-            {continuePressed && !continue2Pressed && <div className="page-two">
-                <div className="left-vertical-upload">
-                    <div className="upload-input-2">
-                        <div className="left-upload-input-section">
-                            {/* MORE DETAILS */}
+            {continuePressed && !continue2Pressed && (
+                <div className="page-two">
 
-                            {/* LENGTH: TYPE = MATCH */}
-                            <div className="best-of-area">
-                                <p>Best Of</p>
-                                {videoDetails.type === "Match" &&
-                                    <div className='match-length-area'>
-                                        <button
-                                            className={`match-length-button ${videoDetails.length === 'Three' ? 'selected' : ''}`}
-                                            name="length"
-                                            value="Three"
-                                            onClick={handleVideoInput}
-                                        >Three</button>
-                                        <button
-                                            className={`match-length-button ${videoDetails.length === 'Five' ? 'selected' : ''}`}
-                                            name="length"
-                                            value="Five"
-                                            onClick={handleVideoInput}
+                    <Button
+                        onClick={() => setContinuePressed(prev => !prev)}
+                        className="back-button"
+                        startIcon={<ArrowBackIcon />}
+                        variant="outline"
+                        sx={{
+                            position: "absolute",
+                            top: "20px",
+                            left: "20px",
+                            marginBottom: "20px",
+                            zIndex: 10,
+                            fontWeight: 600
+                        }}
+                    >
+                        Back
+                    </Button>
+                    <div className="left-vertical-upload">
+                        <div className="upload-input-2">
+                            <div className="left-upload-input-section">
 
-                                        >Five</button>
-                                    </div>
-                                }
-                            </div>
+                                {/* BEST OF */}
+                                <div className="best-of-area">
+                                    <h3>Best Of</h3>
+                                    {videoDetails.type === "Match" && (
+                                        <div className="match-length-area">
+                                            {["Three", "Five"].map((length) => (
+                                                <Button
+                                                    key={length}
+                                                    name="length"
+                                                    value={length}
+                                                    variant={videoDetails.length === length ? "contained" : "outlined"}
+                                                    onClick={handleVideoInput}
+                                                    className={`match-type-mui-button ${videoDetails.length === length ? "selected" : ""}`}
+                                                    sx={{
+                                                        transition: "all 0.15s ease-in-out",
+                                                        width: '50%',
+                                                    }}                                                >
+                                                    {length}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    )}
 
-                            {/* LENGTH: TYPE = GAME */}
-                            {videoDetails.type === "Game" &&
-                                <div className='match-length-area'>
-                                    <button
-                                        className={`match-length-button ${videoDetails.length === 'Single' ? 'selected' : ''}`}
-                                        name="length"
-                                        value="Single"
-                                        onClick={handleVideoInput}
-                                    >Single Game</button>
+                                    {videoDetails.type === "Game" && (
+                                        <div className="match-length-area">
+                                            <Button
+                                                name="length"
+                                                value="Single"
+                                                variant="contained"
+                                                onClick={handleVideoInput}
+                                                className="match-type-mui-button selected"
+                                                sx={{
+                                                    transition: "all 0.15s ease-in-out",
+                                                    width: '100%',
+
+                                                }}                                            >
+                                                Single Game
+                                            </Button>
+                                        </div>
+                                    )}
+
+                                    {videoDetails.type === "Casual" && (
+                                        <div className="match-length-area">
+                                            {["Single", "Five"].map((length) => (
+                                                <Button
+                                                    key={length}
+                                                    name="length"
+                                                    value={length}
+                                                    variant={videoDetails.length === length ? "contained" : "outlined"}
+                                                    onClick={handleVideoInput}
+                                                    className={`match-type-mui-button ${videoDetails.length === length ? "selected" : ""}`}
+                                                    sx={{
+                                                        transition: "all 0.15s ease-in-out",
+                                                        width: '50%',
+                                                    }}                                                         >
+                                                    {length === "Single" ? "Single Game" : "Five"}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                            }
 
-                            {/* LENGTH: TYPE = GAME */}
-                            {videoDetails.type === "Casual" &&
-                                <div className='match-length-area'>
-                                    <button
-                                        className={`match-length-button three ${videoDetails.length === 'Single' ? 'selected' : ''}`}
-                                        name="length"
-                                        value="Single"
-                                        onClick={handleVideoInput}
-                                    >Single Game</button>
-                                    <button
-                                        className={`match-length-button five ${videoDetails.length === 'Five' ? 'selected' : ''}`}
-                                        name="length"
-                                        value="Five"
-                                        onClick={handleVideoInput}
-                                    >Five</button>
-                                </div>
-                            }
-
-                            {/* DATE ETC */}
-                            <div className="input-container">
-                                <label className="floating-label">Date of Play (optional)</label>
-                                <input
+                                {/* Date of Play */}
+                                <TextField
                                     type="date"
-                                    className="input-zone date"
+                                    label="Date of Play (optional)"
                                     name="tournament_date"
+                                    className='upload-input'
                                     value={videoDetails.tournament_date}
                                     onChange={handleVideoInput}
-                                ></input>
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2 }}
+                                />
 
-                            </div>
-
-
-                            {/* TOURNAMENT NAME */}
-                            <div className="input-container">
-                                <label className="floating-label">Tournament Name (optional)</label>
-                                <input
-                                    type="text"
-                                    className="input-zone tournament-input"
+                                {/* Tournament Name */}
+                                <TextField
+                                    label="Tournament Name (optional)"
                                     name="tournament_name"
+                                    className='upload-input'
                                     value={videoDetails.tournament_name}
                                     onChange={handleVideoInput}
-                                ></input>
-                            </div>
-                            <div className="input-container">
-                                <label className="floating-label">Tournament Location (optional)</label>
-                                <input
-                                    type="text"
-                                    className="input-zone tournament-input"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                />
+
+                                {/* Tournament Location */}
+                                <TextField
+                                    label="Tournament Location (optional)"
                                     name="tournament_location"
+                                    className='upload-input'
                                     value={videoDetails.tournament_location}
                                     onChange={handleVideoInput}
-                                ></input>
-                            </div>
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                />
 
-                            {/* PLAYER INFO */}
-                            <div className="player-info">
+                                {/* Player Info */}
+                                <div className="player-info">
+                                    <h3>Player Names & Jersey Colors</h3>
 
-                                <h3>Player Names & Jersey Colors</h3>
-                                <div className="player-row">
-                                    <div className="input-container name-input">
-                                        <label className="floating-label">Player 1 Name</label>
-                                        <input
-                                            type="text"
-                                            className="input-zone tournament-input"
+                                    {/* Player 1 */}
+                                    <div className="player-row">
+                                        <TextField
+                                            label="Player 1 Name"
                                             name="player1_name"
+                                            className='upload-input'
                                             value={videoDetails.player1_name}
                                             onChange={handleVideoInput}
+                                            sx={{ flex: 1, mr: 2 }}
+                                        />
+                                        <input
+                                            type="color"
+                                            name="player1_color"
+                                            value={videoDetails.player1_color}
+                                            onChange={handleVideoInput}
+                                            className="color-input"
                                         />
                                     </div>
 
-                                    <input
-                                        type="color"
-                                        className="color-input"
-                                        name="player1_color"
-                                        value={videoDetails.player1_color}
-                                        onChange={handleVideoInput}
-                                    />
-                                </div>
-
-                                <div className="player-row">
-                                    <div className="input-container name-input">
-                                        <label className="floating-label">Player 2 Name</label>
-                                        <input
-                                            type="text"
-                                            className="input-zone tournament-input"
+                                    {/* Player 2 */}
+                                    <div className="player-row">
+                                        <TextField
+                                            label="Player 2 Name"
                                             name="player2_name"
+                                            className='upload-input'
                                             value={videoDetails.player2_name}
                                             onChange={handleVideoInput}
+                                            sx={{ flex: 1, mr: 2 }}
+                                        />
+                                        <input
+                                            type="color"
+                                            name="player2_color"
+                                            value={videoDetails.player2_color}
+                                            onChange={handleVideoInput}
+                                            className="color-input"
                                         />
                                     </div>
-                                    <input
-                                        type="color"
-                                        className="color-input"
-                                        name="player2_color"
-                                        value={videoDetails.player2_color}
-                                        onChange={handleVideoInput}
-                                    />
                                 </div>
                             </div>
                         </div>
+
+                        {/* Continue Button 2*/}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className="continue2-button"
+                            onClick={handleContinue2Pressed}
+                            sx={{
+                                width: "55%",
+                                padding: "10px 0px",
+                                fontSize: "18px",
+                                fontWeight: 600,
+                            }}
+                        >
+                            Continue
+                        </Button>
                     </div>
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className="continue2-button"
-                        onClick={() => handleContinue2Pressed()}
-                    >Continue</Button>
+                    {/* Right side remains untouched for now */}
+                    <div className="right-area">
+                        <h1>Preview</h1>
+                        <img src={thumbnail} className="page-two-thumbnail" alt="video thumbnail" />
+                        <div className="detail-display-background">
+                            <h2>{videoDetails.title}</h2>
+                            <p>{videoDetails.type}</p>
+                        </div>
 
-                </div>
-
-
-
-                {/* RIGHT */}
-                <div className="right-area">
-                    <h1>Preview</h1>
-                    <img src={thumbnail} className="page-two-thumbnail" alt="video thumbnail"></img>
-                    <div className="detail-display-background">
-                        <h2> {videoDetails.title}</h2>
-                        <p> {videoDetails.type}</p>
-                    </div>
-                    <div className="input-container">
-                        <label className="floating-label">Description (optional)</label>
-                        <textarea
-                            type="text"
-                            className="input-zone description"
+                        <TextField
+                            label="Description (optional)"
                             name="description"
-                            maxLength={200}
                             value={videoDetails.description}
                             onChange={handleVideoInput}
-                        ></textarea>
-                    </div>
+                            multiline
+                            rows={6}
+                            maxRows={10}
+                            fullWidth
+                            inputProps={{ maxLength: 200 }}
+                            className="upload-input"
+                        >
+                        </TextField>
 
+                    </div>
                 </div>
-            </div>}
+            )}
+
             {/*PAGE THREE*/}
             {continuePressed && continue2Pressed && <div className="page-three">
-                <button className="back-button"
-                    onClick={() => setContinue2Pressed(prevState => !prevState)}
-                >Back</button>
-                {/* YouTube Video Player */}
-                <h3>Add Marks to Video</h3>
+                <Button
+                    onClick={() => setContinue2Pressed(prev => !prev)}
+                    className="back-button"
+                    startIcon={<ArrowBackIcon />}
+                    variant="outline"
+                    sx={{
+                        position: "absolute",
+                        top: "20px",
+                        left: "20px",
+                        marginBottom: "20px",
+                        zIndex: 10,
+                        fontWeight: 600
+                        
+                    }}
+                >
+                    Back
+                </Button>
+
+                {/* <h3>Add Marks to Video</h3> */}
+
+
                 <div className="upload-video-centered" >
-                    <ReactPlayer
-                        ref={playerRef}
-                        url={videoDetails.url}
-                        playing={playing}
-                        controls={false}
-                        width="720px"
-                        height="405px"
-                        onProgress={handleProgress}
-                    />
+                    <div className="upload-video-player-wrapper">
+                        <ReactPlayer
+                            ref={playerRef}
+                            url={videoDetails.url}
+                            playing={playing}
+                            controls={false}
+                            width="720px"
+                            height="405px"
+                            className="upload-player"
+                            onProgress={handleProgress}
+                            onPlay={() => setPlaying(true)}
+                            onPause={() => setPlaying(false)}
+                        />
+                    </div>
+
                     <div className="upload-video-controls">
-                        <button onClick={handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                        <button onClick={handlePlayPause}></button>
                         <button onClick={handlePlayPause}><img className="play-pause" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
                         {/* Timeline */}
 
@@ -498,40 +561,47 @@ const Upload = () => {
                             </div>
                         </div>
                     </div>
+
                 </div>
+
+
                 <div className="point-controls">
-                    <button className="point-button" onClick={() => increaseScore("player1_score", videoDetails.player1_score)}>+</button>
-                    <button className="point-button" onClick={() => decreaseScore("player1_score")}>-</button>
+                    <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="point-button" onClick={() => increaseScore("player1_score", videoDetails.player1_score)}>+</Button>
+                    <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="point-button" onClick={() => decreaseScore("player1_score")}>-</Button>
+
+
                     <div className="point-display">
                         <div className="player1-color" id='player1-color' style={{ backgroundColor: videoDetails.player1_color }}></div>
                         <p className='player-name'>{videoDetails.player1_name}</p>
                         <div className="player1_wins" id="player1_wins">0</div>
-                        <div className='score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
+                        <div className='score-background'><p id="player1_score">0</p><p>-</p><p id="player2_score">0</p></div>
                         <div className="player2_wins" id="player2_wins">0</div>
                         <p className='player-name'>{videoDetails.player2_name}</p>
                         <div className="player2-color" style={{ backgroundColor: videoDetails.player2_color }}></div>
-
                     </div>
-                    <button className="point-button" onClick={() => increaseScore("player2_score", videoDetails.player2_score)}>+</button>
-                    <button className="point-button" onClick={() => decreaseScore("player2_score")}>-</button>
+
+
+                    <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="point-button" onClick={() => increaseScore("player2_score", videoDetails.player2_score)}>+</Button>
+                    <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="point-button" onClick={() => decreaseScore("player2_score")}>-</Button>
                 </div>
+
                 <div className="call-controls">
                     <div className="player1-calls">
-                        <button className="call-button" onClick={() => displayCall("Yes Let", 1)}>Yes Let</button>
-                        <button className="call-button" onClick={() => displayCall("No Let", 1)}>No Let</button>
-                        <button className="call-button" onClick={() => displayCall("Stroke", 1)}>Stroke</button>
-                        <button className="call-button" onClick={() => displayCall("Fault", 1)}>Fault</button>
+                        <Button sx={{ padding: "5px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("Yes Let", 1)}>Yes Let</Button>
+                        <Button sx={{ padding: "5px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("No Let", 1)}>No Let</Button>
+                        <Button sx={{ padding: "5px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("Stroke", 1)}>Stroke</Button>
+                        <Button sx={{ padding: "5px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("Fault", 1)}>Fault</Button>
                     </div>
-                    {/*<hr></hr>*/}
+
                     <div className="player2-calls">
-                        <button className="call-button" onClick={() => displayCall("Yes Let", 2)}>Yes Let</button>
-                        <button className="call-button" onClick={() => displayCall("No Let", 2)}>No Let</button>
-                        <button className="call-button" onClick={() => displayCall("Stroke", 2)}>Stroke</button>
-                        <button className="call-button" onClick={() => displayCall("Fault", 2)}>Fault</button>
+                        <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("Yes Let", 2)}>Yes Let</Button>
+                        <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("No Let", 2)}>No Let</Button>
+                        <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("Stroke", 2)}>Stroke</Button>
+                        <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="call-button" onClick={() => displayCall("Fault", 2)}>Fault</Button>
                     </div>
 
                 </div>
-                <button className="upload-button" onClick={handleVideoUpload}>Upload</button>
+                <Button sx={{ padding: "10px 0px", fontSize: "18px", fontWeight: 600, }} variant="contained" className="upload-button" onClick={handleVideoUpload}>Upload</Button>
             </div>}
         </div>
     );
