@@ -75,7 +75,6 @@ export const getAllUsers = async () => {
 
 // get profile pic for user
 export const getProfilePicForPoster = async (poster) => {
-    console.log("backend check for poster: ", poster);
     try {
         const response = await api.get(`/profiles/pic?username=${encodeURIComponent(poster)}`);
         return response.data;

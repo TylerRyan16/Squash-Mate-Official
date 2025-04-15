@@ -1,6 +1,6 @@
 
 import './home.scss';
-import { useNavigate } from 'react-router-dom';
+import VideoCard from "../Video/videoCard";
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllVideos, getMyVideos, getSharedVideos, getProfilePicForPoster } from "../../services/api";
@@ -22,7 +22,7 @@ function scrollRight(id) {
 }
 
 const Home = () => {
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
     const [allVideos, setAllVideos] = useState([]);
     const [myVideos, setMyVideos] = useState([]);
     const [sharedWithMe, setSharedWithMe] = useState([]);
@@ -43,8 +43,10 @@ const Home = () => {
                 setAllVideos(enrichedAll);
                 setMyVideos(enrichedMine);
                 setSharedWithMe(enrichedShared);
-            } catch (error){
+            } catch (error) {
                 console.error("Error fetching videos or usernames: ", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -59,19 +61,32 @@ const Home = () => {
 
     const enrichVideosWithPFP = async (videos) => {
         const enriched = await Promise.all(
-            videos.map( async (video) => {
+            videos.map(async (video) => {
                 try {
                     const pfp = await getProfilePicForPoster(video.poster);
-                    return {...video, poster_pfp: pfp };
+                    return { ...video, poster_pfp: pfp };
                 } catch {
-                    return {...video, poster_pfp: "default" };
+                    return { ...video, poster_pfp: "default" };
                 }
             })
         );
         return enriched;
     };
 
+    // if (loading) {
+    //     return (
+    //         <div className="loader-container">
+    //             <img src="/assets/icons/loading-spinner.gif" alt="Loading..." className="loading-spinner" />
+    //         </div>
+    //     )
+    // }
+
+    if (loading) {
+        return <div className="loader-container"><p>Loading videos...</p></div>;
+    }
+
     return (
+
         <div className="home-container">
             <h1 id='app-title'>Squash Mate</h1>
             <h3 id='slogan'>Elevate Your Game</h3>
@@ -84,20 +99,8 @@ const Home = () => {
             </div>
 
             <div className="all-videos-list">
-                {allVideos.map(currentVideo => (
-                    <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                        <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                        <div className="title-area">
-                            {/* HERE we need to get the video uploader pfp */}
-                            <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-
-                            <h4 className="video-title">{currentVideo.title}</h4>
-                        </div>
-                        <div className="poster-date-area">
-                            <p className="video-uploader">{currentVideo.poster}</p>
-                            <small className='video-date'>{currentVideo.date_posted}</small>
-                        </div>
-                    </div>
+                {allVideos.map(video => (
+                    <VideoCard key={video.id} video={video} />
                 ))}
             </div>
 
@@ -115,18 +118,8 @@ const Home = () => {
                 </button>
 
                 <div id="my-videos-list" className="my-videos-list">
-                    {myVideos.length !== 0 && myVideos.map(currentVideo => (
-                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                            <div className="title-area">
-                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                                <h4 className="video-title">{currentVideo.title}</h4>
-                            </div>
-                            <div className="poster-date-area">
-                                <p className="video-uploader">{currentVideo.poster}</p>
-                                <small className='video-date'>{currentVideo.date_posted}</small>
-                            </div>
-                        </div>
+                    {myVideos.length !== 0 && myVideos.map(video => (
+                        <VideoCard key={video.id} video={video} />
                     ))}
 
                     {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p>}
@@ -151,19 +144,10 @@ const Home = () => {
                 <button id="left-scroll-shared" className="left-scroll" onClick={() => scrollLeft('shared-list')}>
                     <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
                 </button>
+
                 <div id="shared-list" className="my-videos-list">
-                    {sharedWithMe.length !== 0 && sharedWithMe.map(currentVideo => (
-                        <div className='home-video-card' onClick={() => navigate(`/video/${currentVideo.id}`)}>
-                            <img className="home-thumbnail" src={currentVideo.thumbnail} alt='' />
-                            <div className="title-area">
-                                <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                                <h4 className="video-title">{currentVideo.title}</h4>
-                            </div>
-                            <div className="poster-date-area">
-                                <p className="video-uploader">{currentVideo.poster}</p>
-                                <small className='video-date'>{currentVideo.date_posted}</small>
-                            </div>
-                        </div>
+                    {sharedWithMe.length !== 0 && sharedWithMe.map(video => (
+                        <VideoCard key={video.id} video={video} />
                     ))}
 
                     {sharedWithMe.length === 0 && <p>Nobody has shared any videos with you :(</p>}
