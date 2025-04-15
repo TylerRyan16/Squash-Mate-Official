@@ -16,7 +16,11 @@ router.get("/shared-videos", async (req, res) => {
         // get user id
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
 
-        const result = await pool.query("SELECT id, video_id, shared_at, shared_by FROM shared_videos WHERE user_id = $1", [decoded.userId]);
+        const sharedVideoReferences = await pool.query("SELECT id, video_id, shared_at, shared_by FROM shared_videos WHERE user_id = $1", [decoded.userId]);
+        console.log("video references: ", sharedVideoReferences);
+        console.log("video references rows: ", sharedVideoReferences.rows);
+
+        const videoResult = awai
 
         return res.status(200).json(result.rows);
     } catch (error) {
