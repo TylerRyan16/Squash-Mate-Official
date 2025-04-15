@@ -31,16 +31,11 @@ router.get("/my-videos", async (req, res) => {
         console.log("decoded: ", decoded);
 
         const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [decoded.username]);
-
-        if (result.rows.length === 0) {
-            return res.status(401).json({ error: "User not found" });
-        }
-
-        res.json(result.rows);
-        console.log(result.rows);
+        
+        return res.status(200).json({ error: "User not found" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch user data." });
+        res.status(500).json({ error: "Found no videos for user." });
     }
 });
 
