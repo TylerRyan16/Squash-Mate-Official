@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 // middleware
 app.use(cors({
-    origin: ["https://squash-mates.onrender.com", "http://localhost:3000", "https://squashmate.vercel.app", "https://squashmate.club", "https://www.squashmate.club"],
+    origin: ["https://squash-mates.onrender.com", "http://localhost:3000", "https://squashmate.vercel.app", "https://squashmate.club", "https://www.squashmate.club", "https://api.squashmate.club"],
     credentials: true
 }));
 app.use(bodyParser.json());
