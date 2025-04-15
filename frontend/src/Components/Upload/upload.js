@@ -218,9 +218,6 @@ const Upload = () => {
 
     return (
         <div className="page-container">
-            <h1 className="page-header">Upload a Video</h1>
-
-
             {/* PAGE ONE */}
             {!continuePressed && !continue2Pressed && <div className="page-one">
                 {/* LINK */}
@@ -287,10 +284,6 @@ const Upload = () => {
 
             {/* PAGE TWO */}
             {continuePressed && !continue2Pressed && <div className="page-two">
-                {/* <button className="back-button"
-                    onClick={() => setContinuePressed(prevState => !prevState)}
-                >Back</button> */}
-
                 <div className="left-vertical-upload">
                     <div className="upload-input-2">
                         <div className="left-upload-input-section">
@@ -306,14 +299,14 @@ const Upload = () => {
                                             name="length"
                                             value="Three"
                                             onClick={handleVideoInput}
-                                        >Five</button>
+                                        >Three</button>
                                         <button
                                             className={`match-length-button ${videoDetails.length === 'Five' ? 'selected' : ''}`}
                                             name="length"
                                             value="Five"
                                             onClick={handleVideoInput}
 
-                                        >Seven</button>
+                                        >Five</button>
                                     </div>
                                 }
                             </div>
@@ -386,6 +379,8 @@ const Upload = () => {
 
                             {/* PLAYER INFO */}
                             <div className="player-info">
+
+                                <h3>Player Names & Jersey Colors</h3>
                                 <div className="player-row">
                                     <div className="input-container name-input">
                                         <label className="floating-label">Player 1 Name</label>
@@ -397,16 +392,14 @@ const Upload = () => {
                                             onChange={handleVideoInput}
                                         />
                                     </div>
-                                    <div className="input-container color-input">
-                                        <label className="floating-label">Player 1 Jersey Color</label>
-                                        <input
-                                            type="color"
-                                            className="input-zone"
-                                            name="player1_color"
-                                            value={videoDetails.player1_color}
-                                            onChange={handleVideoInput}
-                                        />
-                                    </div>
+
+                                    <input
+                                        type="color"
+                                        className="color-input"
+                                        name="player1_color"
+                                        value={videoDetails.player1_color}
+                                        onChange={handleVideoInput}
+                                    />
                                 </div>
 
                                 <div className="player-row">
@@ -420,34 +413,18 @@ const Upload = () => {
                                             onChange={handleVideoInput}
                                         />
                                     </div>
-                                    <div className="input-container color-input">
-                                        <label className="floating-label">Player 2 Jersey Color</label>
-                                        <input
-                                            type="color"
-                                            className="input-zone"
-                                            name="player2_color"
-                                            value={videoDetails.player2_color}
-                                            onChange={handleVideoInput}
-                                        />
-                                    </div>
+                                    <input
+                                        type="color"
+                                        className="color-input"
+                                        name="player2_color"
+                                        value={videoDetails.player2_color}
+                                        onChange={handleVideoInput}
+                                    />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="right-upload-input-section">
 
-                            <div className="input-container">
-                                <label className="floating-label">Description (optional)</label>
-                                <input
-                                    type="text"
-                                    className="input-zone description"
-                                    name="description"
-                                    value={videoDetails.description}
-                                    onChange={handleVideoInput}
-                                ></input>
-                            </div>
-
-                        </div>
                     </div>
 
                     <button className="continue2-button" onClick={handleContinue2Pressed}>Continue</button>
@@ -461,8 +438,19 @@ const Upload = () => {
                     <h1>Preview</h1>
                     <img src={thumbnail} className="page-two-thumbnail" alt="video thumbnail"></img>
                     <div className="detail-display-background">
-                        <h4> {videoDetails.title}</h4>
+                        <h2> {videoDetails.title}</h2>
                         <p> {videoDetails.type}</p>
+                    </div>
+                    <div className="input-container">
+                        <label className="floating-label">Description (optional)</label>
+                        <textarea
+                            type="text"
+                            className="input-zone description"
+                            name="description"
+                            maxLength={200}
+                            value={videoDetails.description}
+                            onChange={handleVideoInput}
+                        ></textarea>
                     </div>
 
                 </div>

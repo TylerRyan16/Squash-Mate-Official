@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
             httpOnly: true,
             secure: true, // Ensures HTTPS is required in production
             sameSite: "None",  // Allows cross-origin requests
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
 
@@ -73,7 +73,7 @@ router.post("/login", async (req, res) => {
             httpOnly: true,
             secure: true, // Ensures HTTPS is required in production
             sameSite: "None",  // Allows cross-origin requests
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         // json response
