@@ -20,19 +20,15 @@ router.get("/my-videos", async (req, res) => {
     console.log("trying to get my  videos in backend route");
     try {
         const authToken = req.cookies.authToken;
-        console.log("authtoken: ", authToken);
-
         if (!authToken) {
             return res.status(401).json({ error: "Unauthorized. No token provided." });
         }
 
         // get user id
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
-        console.log("decoded: ", decoded);
-
         const result = await pool.query("SELECT id, url, poster, date_posted, title, description, match_type, match_length, tournament_name, tournament_date, tournament_location, thumbnail FROM videos WHERE poster = $1", [decoded.username]);
         
-        return res.status(200).json({ error: "User not found" });
+        return res.status(200).json(result.rows);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Found no videos for user." });

@@ -36,6 +36,8 @@ const Home = () => {
                     getSharedVideos(),
                 ]);
 
+                console.log("MINE: ", mine);
+
                 const enrichedAll = await enrichVideosWithPFP(all);
                 const enrichedMine = await enrichVideosWithPFP(mine);
                 const enrichedShared = await enrichVideosWithPFP(shared);
@@ -44,7 +46,7 @@ const Home = () => {
                 setMyVideos(enrichedMine);
                 setSharedWithMe(enrichedShared);
             } catch (error) {
-                console.error("Error fetching videos or usernames: ", error);
+                console.error(`Error fetching videos or usernames: ${error}`);
             } finally {
                 setLoading(false);
             }
