@@ -2,6 +2,7 @@ import "./shared.scss";
 import { getAllVideos, getSharedVideos, getSpecificVideo } from "../../services/api";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import VideoCard from "../Video/videoCard";
 
 
 const SharedWithMe = () => {
@@ -15,14 +16,7 @@ const SharedWithMe = () => {
         const result = await getSharedVideos();
         console.log("shared videos", result);
 
-        const videoList = [];
-
-        for (const sharedVideo of result){
-          const video = await getSpecificVideo(sharedVideo.video_id);
-          videoList.push(video);
-        }
-
-        setSharedVideos(videoList);
+        setSharedVideos(result);
       } catch (error) {
         console.error(error);
       }
@@ -49,18 +43,8 @@ const SharedWithMe = () => {
         <div className="shared-video-display-area">
           <div className="rows">
             {filteredVideos.length > 0 ? (
-              filteredVideos.map((video, index) => (
-                <div className='shared-video-card' onClick={() => navigate(`/video/${video.id}`)}>
-                  <img className="shared-thumbnail" src={video.thumbnail} alt='' />
-                  <div className="title-area">
-                    <img className="uploader-cover-pic" src="/assets/squash-guy.jpg" alt="profile pic"></img>
-                    <h4 className="video-title">{video.title}</h4>
-                  </div>
-                  <div className="poster-date-area">
-                    <p className="video-uploader">{video.poster}</p>
-                    <small className='video-date'>{video.date_posted}</small>
-                  </div>
-                </div>
+              filteredVideos.map(video => (
+                <VideoCard key={video.id} video={video} />
               ))
             ) : (
               <p>No videos found</p>

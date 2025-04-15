@@ -39,12 +39,11 @@ button{
     align-items: center;
     width: 95%;
     margin: auto;
-    height: 5%;
+    height: 3%;
 }
 
 .category-name{
     padding: 10px;
-    margin-top: 5px;
 }
 
 .view-more{
@@ -68,14 +67,18 @@ button{
 
 .carousel {
     width: 95%;
-    height: 35vh;
+    height: 45vh;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin:auto;
     transition: all 0.25s ease-in;
     border-radius: 8px;
     margin-bottom: 2%;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
 }
 
 .all-videos-list{
@@ -94,11 +97,18 @@ button{
     padding-top: 15px;
 }
 
-.my-videos-list{
+.my-videos-list {
     display: flex;
     gap: 35px;
-    width: fit-content;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
     height: fit-content;
+    width: 100%;
+}
+
+.my-videos-list::-webkit-scrollbar {
+    display: none; // optional: hides scrollbar
 }
 
 
