@@ -141,7 +141,7 @@ router.get("/logged-in", async (req, res) => {
         const authToken = req.cookies.authToken;
 
         if (!authToken) {
-            return res.status(401).json(false);
+            return res.status(200).json(false);
         }
 
         else {
