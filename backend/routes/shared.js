@@ -9,32 +9,25 @@ const pool = require("../config/db.js");
 router.get("/shared-videos", async (req, res) => {
     try {
         const authToken = req.cookies.authToken;
-        console.log("authtoken: ", authToken);
-
         if (!authToken) {
-            console.log("!authtoken hit and we did not find an authtoken MF MF MF");
             return res.status(401).json({ error: "Unauthorized. No token provided." });
         }
 
         // get user id
         const decoded = jwt.verify(authToken, process.env.SECRET_KEY);
-        console.log("decoded: ", decoded);
 
         const result = await pool.query("SELECT id, video_id, shared_at, shared_by FROM shared_videos WHERE user_id = $1", [decoded.userId]);
 
-
-        return res.status(200).json({ error: "No videos shared with current user." });
-
+        return res.status(200).json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch user data." });
+        res.status(500).json({ error: "No videos shared with user." });
     }
 });
 
 // add a new share to database
 router.post("/", async (req, res) => {
     const { video_id, user_id, shared_at } = req.body;
-    console.log("shared video post in backend: ", req.body);
     const authToken = req.cookies.authToken;
 
     if (!authToken) {
