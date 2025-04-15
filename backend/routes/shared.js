@@ -20,7 +20,6 @@ router.get("/shared-videos", async (req, res) => {
         console.log("video references: ", sharedVideoReferences);
         console.log("video references rows: ", sharedVideoReferences.rows);
 
-        const videoResult = awai
 
         return res.status(200).json(result.rows);
     } catch (error) {
