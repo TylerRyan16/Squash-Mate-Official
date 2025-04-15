@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import { createAccount } from "../../services/api";
 import "./createProfile.scss";
 
+// MUI
+import TextField from "@mui/material/TextField";
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+
 const CreateProfile = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -117,6 +122,7 @@ const CreateProfile = () => {
         if (!profileDetails.email) missingFields.push("email");
         if (!profileDetails.password) missingFields.push("password");
         if (!profileDetails.dateOfBirth) missingFields.push("dateOfBirth");
+        if (!profileDetails.playerLevel) missingFields.push("playerLevel");
 
         // flash effect: add class and remove it after .2 seconds
         console.log("missing fields in flash loop: ", missingFields);
@@ -174,128 +180,133 @@ const CreateProfile = () => {
                     <div className="first-last-name-area">
 
                         {/* FIRST NAME */}
-                        <div className="input-container">
-                            <label className="floating-label profile-label">First (required)</label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                className={`input-zone zone-profile first-name ${invalidFields.includes("firstName") ? "invalid" : ""}`}
-                                value={profileDetails.firstName}
-                                onChange={handleInputChange}
-                            />
-
-                        </div>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            label="First (required)"
+                            name="firstName"
+                            value={profileDetails.firstName}
+                            onChange={handleInputChange}
+                            className={`create-profile-input ${invalidFields.includes("firstName") ? "invalid" : ""}`}
+                        />
 
                         {/* LAST NAME */}
-                        <div className="input-container">
-                            <label className="floating-label profile-label">Last (required)</label>
-                            <input
-                                type="text"
-                                name="lastName"
-                                className={`input-zone zone-profile last-name ${invalidFields.includes("lastName") ? "invalid" : ""} `}
-                                value={profileDetails.lastName}
-                                onChange={handleInputChange}
-                            />
-
-                        </div>
+                        <TextField
+                            fullWidth
+                            label="Last (required)"
+                            variant="outlined"
+                            name="lastName"
+                            value={profileDetails.lastName}
+                            onChange={handleInputChange}
+                            className={`create-profile-input ${invalidFields.includes("lastName") ? "invalid" : ""}`}
+                        />
                     </div>
 
 
                     {/* USERNAME */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Username (required)</label>
-                        <input
-                            type="text"
-                            name="username"
-                            autoComplete="username"
-                            className={`input-zone zone-profile ${invalidFields.includes("username") ? "invalid" : ""} `}
-                            value={profileDetails.username}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        label="Username (required)"
+                        name="username"
+                        autoComplete="username"
+                        variant="outlined"
+                        value={profileDetails.username}
+                        onChange={handleInputChange}
+                        className={`create-profile-input ${invalidFields.includes("username") ? "invalid" : ""}`}
+                    />
 
                     {/* EMAIL */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Email (required)</label>
-                        <input
-                            type="text"
-                            name="email"
-                            className={`input-zone zone-profile ${invalidFields.includes("email") ? "invalid" : ""} `}
-                            value={profileDetails.email}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        label="Email (required)"
+                        name="email"
+                        variant="outlined"
+                        value={profileDetails.email}
+                        onChange={handleInputChange}
+                        className={`create-profile-input ${invalidFields.includes("email") ? "invalid" : ""}`}
+                    />
 
                     {/* PASSWORD */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Password (required)</label>
-                        <input
-                            type="password"
-                            name="password"
-                            autoComplete="current-password"
-                            className={`input-zone zone-profile ${invalidFields.includes("password") ? "invalid" : ""} `}
-                            value={profileDetails.password}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        label="Password (required)"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        variant="outlined"
+                        value={profileDetails.password}
+                        onChange={handleInputChange}
+                        className={`create-profile-input ${invalidFields.includes("password") ? "invalid" : ""}`}
+                    />
 
                     {/* DATE OF BIRTH */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Date of Birth (required)</label>
-                        <input
-                            type="date"
-                            name="dateOfBirth"
-                            className={`input-zone zone-profile ${invalidFields.includes("dateOfBirth") ? "invalid" : ""} `}
-                            onChange={handleInputChange}
-                        />
+                    <TextField
+                        fullWidth
+                        label="Date of Birth (required)"
+                        name="dateOfBirth"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        variant="outlined"
+                        value={profileDetails.dateOfBirth}
+                        onChange={handleInputChange}
+                        className={`create-profile-input ${invalidFields.includes("dateOfBirth") ? "invalid" : ""}`}
+                    />
 
-                    </div>
 
                     {/* PLAYER LEVEL */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Player Level (required)</label>
-                        <select className="level-selection" name="playerLevel" value={profileDetails.playerLevel} onChange={handleInputChange}>
-                            <option value="">Select Level</option>
-                            <option name="playerLevel" value="Beginner">Beginner</option>
-                            <option name="playerLevel" value="Intermediate">Intermediate</option>
-                            <option name="playerLevel" value="Pro">Pro</option>
-                        </select>
-                    </div>
+                    <TextField
+                        fullWidth
+                        select
+                        label="Skill Level (Required)"
+                        name="playerLevel"
+                        value={profileDetails.playerLevel}
+                        onChange={handleInputChange}
+                        className={`create-profile-input ${invalidFields.includes("playerLevel") ? "invalid" : ""}`}
+                    >
+                        <MenuItem value="">Select Level</MenuItem>
+                        <MenuItem value="Beginner">Beginner</MenuItem>
+                        <MenuItem value="Intermediate">Intermediate</MenuItem>
+                        <MenuItem value="Pro">Pro</MenuItem>
+
+                    </TextField>
+
 
                     {/* CLUB LOCKER URL */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Club Locker URL (optional)</label>
-                        <input
-                            type="text"
-                            name="clubLockerURL"
-                            className={`input-zone zone-profile`}
-                            value={profileDetails.clubLockerURL}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        label="Club Locker URL (optional)"
+                        name="clubLockerURL"
+                        variant="outlined"
+                        value={profileDetails.clubLockerURL}
+                        onChange={handleInputChange}
+                        className="create-profile-input"
+                    />
 
                     {/* COUNTRY */}
-                    <div className="input-container">
-                        <label className="floating-label profile-label">Country (optional)</label>
-                        <input
-                            type="text"
-                            name="country"
-                            className={`input-zone zone-profile`}
-                            value={profileDetails.country}
-                            onChange={handleInputChange}
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        label="Country (optional)"
+                        name="country"
+                        variant="outlined"
+                        value={profileDetails.country}
+                        onChange={handleInputChange}
+                        className="create-profile-input"
+                    />
                 </form>
 
-                <Link to="/"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        handleCreateProfile();
-                    }}
+                <Button
+                    variant="contained"
+                    fullWidth
                     className="create-profile"
+                    onClick={handleCreateProfile}
+                    sx={{
+                        padding: "10px 0px",
+                        fontSize: "18px",
+                        fontWeight: 600,
+                    }}
                 >
                     Create Profile
-                </Link>
+                </Button>
             </div>
 
 

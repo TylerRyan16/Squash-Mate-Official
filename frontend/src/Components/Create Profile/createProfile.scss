@@ -59,9 +59,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background-color: #4693e1;
-    border-radius: 12px;
     padding: 0 2%;
+    padding-bottom: 2%;
+
     gap: 3%;
 
     form{
@@ -76,7 +76,9 @@
 }
 
 .header {
-    color: white;
+    margin: 0;
+    padding: 0;
+    color: black;
 }
 
 .first-last-name-area {
@@ -86,33 +88,44 @@
     gap: 4%;
 }
 
-.first-name{
-    width: 98%;
-}
+.create-profile-input {
+    margin: 0;
 
-.last-name{
-    width: 100%;
-}
+    .MuiOutlinedInput-root {
+        background-color: #b5d4f3;
+        font-size: clamp(20px, 1vw, 24px);
+        transition: all 0.2s ease-in-out;
 
-.invalid {
-    border: 2px solid rgba(255, 0, 0, 0.5) !important;
-    transition: all 0.1s ease-in-out;
-}
-
-.flash{
-    animation: flash-border 0.2s ease-in-out;
-}
-
-@keyframes flash-border{
-    0%{
-        border-color: rgba(255, 0, 0, .8);
-        box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
+        // Default border
+        fieldset {
+            transition: all 0.2s ease-in-out;
+        }
     }
-    100% {
-        border-color: rgba(255, 0, 0, 0.5);
-        box-shadow: none;
+
+    .MuiInputLabel-root {
+        color: #4c4b51;
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .MuiInputLabel-root.Mui-focused {
+        color: black;
+    }
+
+    &.invalid {
+        .MuiOutlinedInput-root {
+            fieldset {
+                border-color: rgba(255, 0, 0, 0.6) !important;
+                box-shadow: 0 0 4px rgba(255, 0, 0, 0.4);
+            }
+        }
+
+        .MuiInputLabel-root {
+            color: red !important;
+        }
     }
 }
+
 
 .level-selection{
     width: 100%;
@@ -123,19 +136,6 @@
     border-radius: 8px;
     background-color: #b5d4f3;
 }
-
-.create-profile {
-    padding: 15px 15px;
-    width: 75%;
-    height: fit-content;
-    background-color: #315fb9;
-    border-radius: 8px;
-    color: white;
-    font-size: 30px;
-    margin: 15px auto;
-    text-align: center;
-}
-
 
 .create-account-right-area{
     height: 90%;

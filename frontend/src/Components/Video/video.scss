@@ -362,15 +362,12 @@
   align-items: center;
   width: 100%;
   height:100%;
-
 }
 
 .react-player {
   //position: absolute;
   left: auto;
   top: 0;
-  
-
 }
 
 .controls {
@@ -397,7 +394,6 @@
 
 //COMMENTING
 .comment-section {
-  background-color: #cccccc;
   border-radius: 12px;
   width: 30%;
   height: 100%;
@@ -407,6 +403,7 @@
   justify-content: flex-start;
   margin: auto auto;
   position: relative;
+  gap: 2%;
 }
 
 .comment-section-top-bar {
@@ -416,8 +413,6 @@
   flex-direction: column;
   align-items: center;
 }
-
-
 
 #coaching-header {
   margin: 0;
@@ -430,8 +425,8 @@
   overflow-y: auto;
   scrollbar-width: thin;
   background-color: #bababa;
-  border-radius: 16px;
-  padding: 5px;
+  border-radius: 4px;
+  padding: 10px 5px;
 }
 
 .no-comments-text {
@@ -606,34 +601,39 @@
   width: 100%;
   height: 15%;
   display: flex;
-  flex-direction: row;
-  display: flex;
-  flex-direction: column;
-}
-
-// TYPE COMMENT / POST BUTTON AREA
-.post-section {
-  display: flex;
-  flex-direction: row;
+  flex-direction: colun;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  justify-content: center;
+  gap: 2%;
 }
 
-.reply-section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.reply-input-section{
+.input-section{
   position: relative;
   width: 75%;
   height: 100%;
   display: flex;
   flex-direction: row;
+}
+
+.comment-input {
+  margin: 0;
+
+  .MuiOutlinedInput-root {
+      background-color: #b5d4f3;
+      height: 100%;
+  }
+
+  .MuiInputLabel-root {
+      color: #4c4b51;
+      font-weight: 600;
+  }
+
+  .MuiInputLabel-root.Mui-focused {
+      color: black;
+  }
+
+  // Raise the text inside the input
+  
 }
 
 .close-button-column{
@@ -688,28 +688,26 @@
 }
 
 
-.comment-input {
-  width: 100%;
-  height: 85%;
-  resize: none;
-  padding-left: 10px;
-  border-radius: 8px;
-  box-sizing: border-box;
-  border: 2px solid grey;
-  background-color: #b5d4f3;
-  font-size: clamp(12px, .8vw, 18px);
-  line-height: 1;
-  overflow-y: auto;
-  margin-left: 5px;
-  scrollbar-width: thin;
+.comment{
+  margin: 0;
+  font-size: clamp(20px, 1vw, 24px);
 
+  // field BG
+  .MuiOutlinedInput-root {
+      background-color: #b5d4f3;
+  }
+  
+  // placeholder text
+  .MuiInputLabel-root {
+      color: #4c4b51;
+      font-weight: 600;
+  }
 
-  &::placeholder {
-    font-size: 12px;
-    vertical-align: top;
+  // Focused label
+  .MuiInputLabel-root.Mui-focused {
+      color: black; // 👈 change this to whatever color you want
   }
 }
-
 
 .video-point-display{
   background-color: rgb(75, 60, 60);

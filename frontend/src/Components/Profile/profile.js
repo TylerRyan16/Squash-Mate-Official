@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserData, logout, updateProfileRequest } from "../../services/api";
 
+//MUI
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+
 const Profile = () => {
     const navigate = useNavigate();
     const [originalData, setOriginalData] = useState([]);
@@ -192,95 +197,82 @@ const Profile = () => {
 
 
                     {/* first name */}
-                    <div className="input-container">
-                        <label className="floating-label">First Name</label>
-                        <input
-                            className="input-zone"
-                            type="text"
-                            name="first-name"
-                            value={userData.first_name}
-                            readOnly={!editProfileEnabled}
-                            onChange={(e) => setUserData({ ...userData, first_name: e.target.value })}
-
-
-                        />
-                    </div>
+                    <TextField
+                        label="First Name"
+                        variant="outlined"
+                        fullWidth
+                        className="input-zone"
+                        value={userData.first_name}
+                        onChange={(e) => setUserData({ ...userData, first_name: e.target.value })}
+                        InputProps={{ readOnly: !editProfileEnabled }}
+                        sx={{ mb: 2 }}
+                    />
 
 
                     {/* last name */}
-                    <div className="input-container">
-                        <label className="floating-label">Last Name</label>
-                        <input
-                            className="input-zone"
-                            type="text"
-                            name="last-name"
-                            value={userData.last_name}
-                            readOnly={!editProfileEnabled}
-                            onChange={(e) => setUserData({ ...userData, last_name: e.target.value })}
-
-
-                        />
-                    </div>
+                    <TextField
+                        label="Last Name"
+                        variant="outlined"
+                        fullWidth
+                        className="input-zone"
+                        value={userData.last_name}
+                        onChange={(e) => setUserData({ ...userData, last_name: e.target.value })}
+                        InputProps={{ readOnly: !editProfileEnabled }}
+                        sx={{ mb: 2 }}
+                    />
 
 
                     {/* date of birth */}
-                    <div className="input-container">
-                        <label className="floating-label">Date of Birth</label>
-                        <input
-                            className="input-zone"
-                            type="text"
-                            name="date-of-birth"
-                            value={userData.date_of_birth || 'N/A'}
-                            readOnly={!editProfileEnabled}
-                            onChange={(e) => setUserData({ ...userData, date_of_birth: e.target.value })}
-
-
-                        />
-                    </div>
+                    <TextField
+                        label="Date of Birth"
+                        variant="outlined"
+                        fullWidth
+                        className="input-zone"
+                        value={userData.date_of_birth || 'N/A'}
+                        onChange={(e) => setUserData({ ...userData, date_of_birth: e.target.value })}
+                        InputProps={{ readOnly: !editProfileEnabled }}
+                        sx={{ mb: 2 }}
+                    />
 
 
                     {/* country */}
-                    <div className="input-container">
-                        <label className="floating-label">Country</label>
-                        <input
-                            className="input-zone"
-                            type="text"
-                            name="country"
-                            value={userData.country || 'N/A'}
-                            readOnly={!editProfileEnabled}
-                            onChange={(e) => setUserData({ ...userData, country: e.target.value })}
-
-
-                        />
-                    </div>
+                    <TextField
+                        label="Country"
+                        variant="outlined"
+                        fullWidth
+                        className="input-zone"
+                        value={userData.country || 'N/A'}
+                        onChange={(e) => setUserData({ ...userData, country: e.target.value })}
+                        InputProps={{ readOnly: !editProfileEnabled }}
+                        sx={{ mb: 2 }}
+                    />
                 </div>
 
                 <h1 id="security-title">Security</h1>
+
                 {/* email */}
-                <div className="input-container">
-                    <label className="floating-label">Email</label>
-                    <input
-                        className="input-zone"
-                        type="text"
-                        name="email"
-                        value={userData.email}
-                        readOnly={true}
-                    />
-                </div>
+                <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    className="input-zone"
+                    value={userData.email}
+                    InputProps={{ readOnly: true }}
+                    sx={{ mb: 2 }}
+                />
 
 
 
                 {/* password */}
-                <div className="input-container">
-                    <label className="floating-label">Password</label>
-                    <input
-                        className="input-zone"
-                        type="text"
-                        name="password"
-                        value="************"
-                        readOnly={!editProfileEnabled}
-                    />
-                </div>
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    className="input-zone"
+                    value="************"
+                    InputProps={{ readOnly: true }}
+                    sx={{ mb: 2 }}
+                />
 
                 <div className="security-button-area">
                     <button

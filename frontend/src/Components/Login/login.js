@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useState } from "react";
 import { login } from "../../services/api";
 
+// MUI
+import TextField from "@mui/material/TextField";
+import Button from '@mui/material/Button';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -57,31 +60,32 @@ const Landing = () => {
                 <form onSubmit={validateUserLogin}>
                     <h1>Welcome</h1>
 
-                    {/* EMAIL */}
-                    <div className="input-container">
-                        <label className="floating-label">Email</label>
-                        <input
-                            className="input-zone email"
-                            type="text"
-                            name="email"
-                            value={email}
-                            onChange={handleInputChange}
-                            autoComplete="email"
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Email"
+                        name="email"
+                        value={email}
+                        onChange={handleInputChange}
+                        autoComplete="email"
+                        className="login-textfield"
+                    />
+
+
 
                     {/* PASSWORD */}
-                    <div className="input-container">
-                        <label className="floating-label">Password</label>
-                        <input
-                            className="input-zone password"
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={handleInputChange}
-                            autoComplete="current-password"
-                        />
-                    </div>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={password}
+                        onChange={handleInputChange}
+                        autoComplete="current-password"
+                        className="login-textfield"
+                    />
+
                     <div className="login-bottom-row">
                         <button className="forgot-password">Forgot Password?</button>
                         <p
@@ -90,15 +94,40 @@ const Landing = () => {
                             The username or password you entered is incorrect.
                         </p>
                     </div>
-                    <button className="login-button" type="submit">Login</button>
 
-                    <p className="or">Or</p>
-                    <button
-                        type="button"
-                        className="create-profile-button"
-                        onClick={() => navigate("/create-profile", { state: { email, password } })}
-                        onMouseDown={(e) => e.preventDefault()}
-                    >Sign Up</button>
+                    <div className="login-buttons-area">
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            type="submit"
+                            className="login-button"
+                            sx={{
+                                width: "75%",
+                                padding: "10px 0px",
+                                fontSize: "18px",
+                                fontWeight: 600,
+                            }}
+
+                        >Login</Button>
+
+                        <p className="or">Or</p>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            type="button"
+                            className="login-button"
+                            onClick={() => navigate("/create-profile", { state: { email, password } })}
+                            onMouseDown={(e) => e.preventDefault()}
+                            sx={{
+                                width: "75%",
+                                padding: "10px 0px",
+                                fontSize: "18px",
+                                fontWeight: 600,
+                            }}
+                        >
+                            Sign Up
+                        </Button>
+                    </div>
 
                 </form>
 
