@@ -27,6 +27,7 @@ const Home = () => {
     const [allVideos, setAllVideos] = useState([]);
     const [myVideos, setMyVideos] = useState([]);
     const [sharedWithMe, setSharedWithMe] = useState([]);
+    const [loggedIn, setLoggedIn] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,12 +57,14 @@ const Home = () => {
     }, []);
 
     const redirectIfNotLoggedIn = async () => {
-        try{
+        try {
             const loggedIn = await checkLoggedIn();
-            if (!loggedIn){
+            setLoggedIn(loggedIn);
+            console.log("logged in:", loggedIn);
+            if (!loggedIn) {
                 navigate("/login");
             }
-        } catch (error){
+        } catch (error) {
             console.error(error);
         }
     };
@@ -92,83 +95,89 @@ const Home = () => {
         return <div className="loader-container"><p>Loading videos...</p></div>;
     }
 
-    return (
-
-        <div className="home-container">
-            <h1 id='app-title'>Squash Mate</h1>
-            <h3 id='slogan'>Elevate Your Game</h3>
-
-
-            {/* EXPLORE PAGE */}
-            <div className="category-name-button-area">
-                <h1 className='category-name'>Explore</h1>
-                <Link to="/explore" className="view-more">View More</Link>
-            </div>
-
-            <div className="all-videos-list">
-                {allVideos.map(video => (
-                    <VideoCard key={video.id} video={video} />
-                ))}
-            </div>
+    if (loggedIn === false) {
+        return (
+            <div className="loader"></div>
+        )
+    } else {
+        return (
+            <div className="home-container">
+                <h1 id='app-title'>Squash Mate</h1>
+                <h3 id='slogan'>Elevate Your Game</h3>
 
 
-            {/* MY VIDEOS */}
-            <div className="category-name-button-area">
-                <h1 className='category-name'>My Videos</h1>
-                <Link to="/my-videos" className="view-more">View More</Link>
-            </div>
-
-            <div className="carousel">
-                {/* left arrow */}
-                <button id="left-scroll-my-videos" className="left-scroll" onClick={() => scrollLeft('my-videos-list')}>
-                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-
-                <div id="my-videos-list" className="my-videos-list">
-                    {myVideos.length !== 0 && myVideos.map(video => (
-                        <VideoCard key={video.id} video={video} />
-                    ))}
-
-                    {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p>}
-
-
+                {/* EXPLORE PAGE */}
+                <div className="category-name-button-area">
+                    <h1 className='category-name'>Explore</h1>
+                    <Link to="/explore" className="view-more">View More</Link>
                 </div>
 
-                {/* right arrow */}
-                <button id="right-scroll-my-videos" className="right-scroll" onClick={() => scrollRight("my-videos-list")}>
-                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-            </div>
-
-            {/* SHARED WITH ME */}
-            <div className="category-name-button-area">
-                <h1 className='category-name'>Shared With Me</h1>
-                <Link to="/shared-with-me" className="view-more">View More</Link>
-            </div>
-
-            <div className="carousel">
-                {/* left arrow */}
-                <button id="left-scroll-shared" className="left-scroll" onClick={() => scrollLeft('shared-list')}>
-                    <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-
-                <div id="shared-list" className="my-videos-list">
-                    {sharedWithMe.length !== 0 && sharedWithMe.map(video => (
+                <div className="all-videos-list">
+                    {allVideos.map(video => (
                         <VideoCard key={video.id} video={video} />
                     ))}
-
-                    {sharedWithMe.length === 0 && <p>Nobody has shared any videos with you :(</p>}
-
                 </div>
-                {/* right arrow */}
-                <button id="right-scroll-shared" className="right-scroll" onClick={() => scrollRight("shared-list")}>
-                    <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                </button>
-            </div>
 
-            <div className="empty-banner"></div>
-        </div>
-    );
+
+                {/* MY VIDEOS */}
+                <div className="category-name-button-area">
+                    <h1 className='category-name'>My Videos</h1>
+                    <Link to="/my-videos" className="view-more">View More</Link>
+                </div>
+
+                <div className="carousel">
+                    {/* left arrow */}
+                    <button id="left-scroll-my-videos" className="left-scroll" onClick={() => scrollLeft('my-videos-list')}>
+                        <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                    </button>
+
+                    <div id="my-videos-list" className="my-videos-list">
+                        {myVideos.length !== 0 && myVideos.map(video => (
+                            <VideoCard key={video.id} video={video} />
+                        ))}
+
+                        {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p>}
+
+
+                    </div>
+
+                    {/* right arrow */}
+                    <button id="right-scroll-my-videos" className="right-scroll" onClick={() => scrollRight("my-videos-list")}>
+                        <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                    </button>
+                </div>
+
+                {/* SHARED WITH ME */}
+                <div className="category-name-button-area">
+                    <h1 className='category-name'>Shared With Me</h1>
+                    <Link to="/shared-with-me" className="view-more">View More</Link>
+                </div>
+
+                <div className="carousel">
+                    {/* left arrow */}
+                    <button id="left-scroll-shared" className="left-scroll" onClick={() => scrollLeft('shared-list')}>
+                        <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                    </button>
+
+                    <div id="shared-list" className="my-videos-list">
+                        {sharedWithMe.length !== 0 && sharedWithMe.map(video => (
+                            <VideoCard key={video.id} video={video} />
+                        ))}
+
+                        {sharedWithMe.length === 0 && <p>Nobody has shared any videos with you :(</p>}
+
+                    </div>
+                    {/* right arrow */}
+                    <button id="right-scroll-shared" className="right-scroll" onClick={() => scrollRight("shared-list")}>
+                        <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                    </button>
+                </div>
+
+                <div className="empty-banner"></div>
+            </div>
+        );
+    }
+
 }
 
 export default Home;

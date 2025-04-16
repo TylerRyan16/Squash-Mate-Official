@@ -18,6 +18,7 @@ const Sidebar = ({ isOpen }) => {
         return null;
     }
 
+
     return (
         <div className={`sidebar ${!isOpen ? 'hidden' : ''}`}>
             {/* upload button */}
