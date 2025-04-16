@@ -180,13 +180,14 @@ const Video = () => {
         }
 
 
-        // clear comment textarea
+        // clear comment 
         commentRef.current.value = "";
 
         try {
             await commentOnVideo(commentToSend);
             await fetchComments(videoID);
             setReplyingComment(null);
+            const commentsArea = document.getElementById("")
 
         } catch (error) {
             console.error(error);
@@ -593,7 +594,7 @@ const Video = () => {
 
 
                         {/* Comments List */}
-                        <div className="comments-area">
+                        <div className="comments-area" id="comments-scroll">
                             {noComments && <h4 className='no-comments-text'>No Comments to Display</h4>}
 
                             {rootComments.map(commentInfo => (

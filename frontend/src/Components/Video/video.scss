@@ -421,8 +421,8 @@
 
 .comments-area {
   width: 98%;
-  height: 80%;
-  overflow-y: auto;
+  height: 60vh;
+  overflow-y: scroll;
   scrollbar-width: thin;
   background-color: #bababa;
   border-radius: 4px;
