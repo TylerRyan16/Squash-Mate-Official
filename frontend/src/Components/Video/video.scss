@@ -701,7 +701,7 @@
 
 .video-point-display{
   background-color: rgb(75, 60, 60);
-  border-radius: 30px;
+  border-radius: 8px;
   //bottom: 7%;
   width: 40%;
   height: 10%;
@@ -718,8 +718,6 @@
   min-height: 100%;
   width: 10%;
   background-color: aquamarine;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
 }
 
 .video-player2-color{
@@ -727,8 +725,6 @@
   min-height: 100%;
   width: 10%;
   background-color: red;
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
 }
 
 .video-player-name{

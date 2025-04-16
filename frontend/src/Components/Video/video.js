@@ -39,6 +39,7 @@ const Video = () => {
     const commentRef = useRef();
     const bottomRef = useRef(null);
     const [amPoster, setAmPoster] = useState(false);
+    const [profilePicMap, setProfilePicMap] = useState({});
 
     // video player stuff
     const [playing, setPlaying] = useState(false);
@@ -132,6 +133,20 @@ const Video = () => {
             } else {
                 setNoComments(false);
             }
+
+            const picMap = {};
+            for (const comment of comments){
+                const name = comment.commenter_name;
+                if (!picMap[name]){
+                    try {
+                        const pic = await getProfilePicForPoster(name);
+                        picMap[name] = pic;
+                    } catch (error){
+                        picMap[name] = "default";
+                    }
+                }
+            }
+            setProfilePicMap(picMap);
         } catch (error) {
             console.error(error);
         }
@@ -247,7 +262,7 @@ const Video = () => {
                 <>
                     <div className="specific-comment reply" key={reply.id}>
                         <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator-display"></img>
-                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+                        <img src={`/assets/characters/${profilePicMap[reply.commenter_name || "default"]}.png`} alt='profile cover' className="comment-profile-pic"></img>
                         <div className="comment-div">
                             <div className="comment-top-bar">
                                 <h4 className="commenter-name">{reply.commenter_name}</h4>
@@ -383,6 +398,16 @@ const Video = () => {
 
         }
     };
+
+    const getProfilePic = async (username) => {
+        try {
+            const response = await getProfilePicForPoster(username);
+            console.log("found profile color: ", response);
+            return response;
+        } catch (error){
+            console.log(error);
+        }
+    }
 
     // ----------- Rendered Content ----------------------------------------------------------------------------
     return (
@@ -575,7 +600,7 @@ const Video = () => {
                                 <div className="comment-and-replies">
                                     <div className="specific-comment" key={commentInfo.id}>
                                         {/* ROOT COMMENT */}
-                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+                                        <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`}  alt='profile cover' className="comment-profile-pic"></img>
                                         <div className="comment-div">
                                             <div className="comment-top-bar">
                                                 <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
