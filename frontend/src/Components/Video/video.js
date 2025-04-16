@@ -39,6 +39,7 @@ const Video = () => {
     const commentRef = useRef();
     const bottomRef = useRef(null);
     const [amPoster, setAmPoster] = useState(false);
+    const [profilePicMap, setProfilePicMap] = useState({});
 
     // video player stuff
     const [playing, setPlaying] = useState(false);
@@ -132,6 +133,20 @@ const Video = () => {
             } else {
                 setNoComments(false);
             }
+
+            const picMap = {};
+            for (const comment of comments){
+                const name = comment.commenter_name;
+                if (!picMap[name]){
+                    try {
+                        const pic = await getProfilePicForPoster(name);
+                        picMap[name] = pic;
+                    } catch (error){
+                        picMap[name] = "default";
+                    }
+                }
+            }
+            setProfilePicMap(picMap);
         } catch (error) {
             console.error(error);
         }
@@ -165,13 +180,14 @@ const Video = () => {
         }
 
 
-        // clear comment textarea
+        // clear comment 
         commentRef.current.value = "";
 
         try {
             await commentOnVideo(commentToSend);
             await fetchComments(videoID);
             setReplyingComment(null);
+            const commentsArea = document.getElementById("")
 
         } catch (error) {
             console.error(error);
@@ -247,7 +263,7 @@ const Video = () => {
                 <>
                     <div className="specific-comment reply" key={reply.id}>
                         <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator-display"></img>
-                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+                        <img src={`/assets/characters/${profilePicMap[reply.commenter_name || "default"]}.png`} alt='profile cover' className="comment-profile-pic"></img>
                         <div className="comment-div">
                             <div className="comment-top-bar">
                                 <h4 className="commenter-name">{reply.commenter_name}</h4>
@@ -383,6 +399,16 @@ const Video = () => {
 
         }
     };
+
+    const getProfilePic = async (username) => {
+        try {
+            const response = await getProfilePicForPoster(username);
+            console.log("found profile color: ", response);
+            return response;
+        } catch (error){
+            console.log(error);
+        }
+    }
 
     // ----------- Rendered Content ----------------------------------------------------------------------------
     return (
@@ -520,8 +546,29 @@ const Video = () => {
                                 ></input>
                                 <div className="slider-background">
                                     <div id="timestamps">
-                                        {Object.keys(parsed_game_details).map(time => (<div className='tick' style={{ left: (commentRatio(time) * 100 + 0.5) + '%' }}><span class='tooltiptext'>{parsed_game_details[time]}</span></div>)
-                                        )}
+                                        {
+
+                                        }
+                                        {Object.keys(parsed_game_details).map(time => {
+                                            const details = parsed_game_details[time];
+                                            const playerName = details.split(" ")[0];
+                                            const bgColor = playerName === video.player1_name
+                                                ? video.player1_color
+                                                : video.player2_color;
+
+                                            return (
+                                                <div
+                                                    className='tick'
+                                                    key={time}
+                                                    style={{
+                                                        left: (commentRatio(time) * 100 + 0.5) + '%',
+                                                        backgroundColor: bgColor,
+                                                    }}
+                                                >
+                                                    <span className='tooltiptext'>{details}</span>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -547,14 +594,14 @@ const Video = () => {
 
 
                         {/* Comments List */}
-                        <div className="comments-area">
+                        <div className="comments-area" id="comments-scroll">
                             {noComments && <h4 className='no-comments-text'>No Comments to Display</h4>}
 
                             {rootComments.map(commentInfo => (
                                 <div className="comment-and-replies">
                                     <div className="specific-comment" key={commentInfo.id}>
                                         {/* ROOT COMMENT */}
-                                        <img src='/assets/squash-guy.jpg' alt='profile cover' className="comment-profile-pic"></img>
+                                        <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`}  alt='profile cover' className="comment-profile-pic"></img>
                                         <div className="comment-div">
                                             <div className="comment-top-bar">
                                                 <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
