@@ -184,7 +184,9 @@ const Upload = () => {
             videoDetails.game_details.push(playerRef.current?.getCurrentTime() + " " + videoDetails.player1_name + " " + callName)
             const length = videoDetails.game_details.length;
             const timestamps = document.getElementById("timestamps")
-            timestamps.innerHTML += "<div class='tick' id='tick" + playerNum + callName.toString() + length + "'><span class='tooltiptext'>" + videoDetails.player1_name + " " + callName.toString() + "</span></div>";
+            timestamps.innerHTML += "<div class='tick' id='tick" + playerNum + callName.toString() + length +
+                "' style='background-color: " + videoDetails.player1_color + ";'>" +
+                "<span class='tooltiptext'>" + videoDetails.player1_name + " " + callName.toString() + "</span></div>";
             const tick = document.getElementById("tick" + playerNum + callName.toString() + length);
             tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) + '%'
         }
@@ -192,8 +194,9 @@ const Upload = () => {
             videoDetails.game_details.push(playerRef.current?.getCurrentTime() + " " + videoDetails.player2_name + " " + callName)
             const length = videoDetails.game_details.length;
             const timestamps = document.getElementById("timestamps")
-            timestamps.innerHTML += "<div class='tick' id='tick" + playerNum + callName.toString() + length + "'><span class='tooltiptext'>" + videoDetails.player2_name + " " + callName.toString() + "</span></div>";
-            const tick = document.getElementById("tick" + playerNum + callName.toString() + length);
+            timestamps.innerHTML += "<div class='tick' id='tick" + playerNum + callName.toString() + length +
+                "' style='background-color: " + videoDetails.player2_color + ";'>" +
+                "<span class='tooltiptext'>" + videoDetails.player2_name + " " + callName.toString() + "</span></div>"; const tick = document.getElementById("tick" + playerNum + callName.toString() + length);
             tick.style.left = (commentRatio(playerRef.current?.getCurrentTime()) * 100 + 0.5) + '%'
         }
     }
@@ -515,7 +518,7 @@ const Upload = () => {
                         marginBottom: "20px",
                         zIndex: 10,
                         fontWeight: 600
-                        
+
                     }}
                 >
                     Back

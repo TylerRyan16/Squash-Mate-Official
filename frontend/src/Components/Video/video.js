@@ -520,8 +520,29 @@ const Video = () => {
                                 ></input>
                                 <div className="slider-background">
                                     <div id="timestamps">
-                                        {Object.keys(parsed_game_details).map(time => (<div className='tick' style={{ left: (commentRatio(time) * 100 + 0.5) + '%' }}><span class='tooltiptext'>{parsed_game_details[time]}</span></div>)
-                                        )}
+                                        {
+
+                                        }
+                                        {Object.keys(parsed_game_details).map(time => {
+                                            const details = parsed_game_details[time];
+                                            const playerName = details.split(" ")[0];
+                                            const bgColor = playerName === video.player1_name
+                                                ? video.player1_color
+                                                : video.player2_color;
+
+                                            return (
+                                                <div
+                                                    className='tick'
+                                                    key={time}
+                                                    style={{
+                                                        left: (commentRatio(time) * 100 + 0.5) + '%',
+                                                        backgroundColor: bgColor,
+                                                    }}
+                                                >
+                                                    <span className='tooltiptext'>{details}</span>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>

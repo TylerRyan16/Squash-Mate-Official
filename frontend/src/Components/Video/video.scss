@@ -501,7 +501,12 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
 
+.commenter-name{
+  margin: 0;
+  padding: 0;
+  font-size: clamp(14px, 1vw, 18px);
 }
 
 .delete-date-zone{
@@ -690,31 +695,16 @@
 
 .comment{
   margin: 0;
-  font-size: clamp(20px, 1vw, 24px);
-
-  // field BG
-  .MuiOutlinedInput-root {
-      background-color: #b5d4f3;
-  }
-  
-  // placeholder text
-  .MuiInputLabel-root {
-      color: #4c4b51;
-      font-weight: 600;
-  }
-
-  // Focused label
-  .MuiInputLabel-root.Mui-focused {
-      color: black; // 👈 change this to whatever color you want
-  }
+  padding: 0;
+  font-size: clamp(8px, 1vw, 16px);
 }
 
 .video-point-display{
   background-color: rgb(75, 60, 60);
   border-radius: 30px;
   //bottom: 7%;
-  width: 20%;
-  height: auto;
+  width: 40%;
+  height: 10%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -722,28 +712,33 @@
   align-self: center;
   border: 0.2rem  rgb(61, 61, 61) solid;
 }
+
 .video-player1-color{
-  //position: relative;
   flex-grow:1;
   min-height: 100%;
+  width: 10%;
   background-color: aquamarine;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
-
-
 }
+
 .video-player2-color{
   flex-grow:1;
   min-height: 100%;
+  width: 10%;
   background-color: red;
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
-
-
 }
+
 .video-player-name{
-  width: 25%;
+  width: 35%;
   text-align: center;
+  color: white;
+  font-size: clamp(14px, 1vw, 18px);
+  font-weight: 600;
+  margin: 0;
+  padding: 15px;
 }
 
 .video-player1_wins{
@@ -751,18 +746,23 @@
   background-color: #315fb9;
   align-content: center;
   color: white;
-  width: 5%;
+  width: 8%;
   text-align: center;
+  font-size: clamp(22px, 1vw, 26px);
+  font-weight: 600;
 }
+
 .video-player2_wins{
   min-height: 100%;
   background-color: #315fb9;
   align-content: center;
   color: white;
-  width: 5%;
+  width: 8%;
   text-align: center;
-
+  font-size: clamp(22px, 1vw, 26px);
+  font-weight: 600;
 }
+
 .video-score-background{
   background-color: rgb(61, 61, 61);
   color:white;
@@ -772,7 +772,17 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 7%;
+}
+
+
+#player1_score{
+  font-size: clamp(18px, 1vw, 22px);
+}
+
+#player2_score{
+  font-size: clamp(18px, 1vw, 22px);
 }
 
 .video-description{
