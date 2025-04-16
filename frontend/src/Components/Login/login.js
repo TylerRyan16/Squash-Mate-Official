@@ -40,7 +40,7 @@ const Landing = () => {
         try {
             const userData = await login(email, password);
             if (userData) {
-                navigate('/');
+                window.location.href = "/"; // full refresh instead of simple navigate (forces page to render to check auth again)
             }
 
         } catch (error) {

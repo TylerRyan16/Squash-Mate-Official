@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import Sidebar from "../Sidebar/sidebar";
+import { checkLoggedIn } from "../../services/api";
 import "./layout.scss";
 
 const Layout = ({ children }) => {
@@ -12,7 +13,9 @@ const Layout = ({ children }) => {
     });
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(null);
     const dropdownRef = useRef(null);
+
 
     // hardcoded notifications
     const notifications = [
@@ -21,13 +24,14 @@ const Layout = ({ children }) => {
         "Your video has finished uploading",
     ];
 
+    // save sidebar status
     useEffect(() => {
         // Save to localStorage whenever it changes
         localStorage.setItem("sidebarOpen", JSON.stringify(isSidebarOpen));
     }, [isSidebarOpen]);
 
+    // hide topbar
     useEffect(() => {
-        // hide topbar if on login or create profile page
         if (location.pathname.includes("/login") || location.pathname.includes("/create-profile")) {
             setDisplayTopNav(false);
         } else {
@@ -47,15 +51,44 @@ const Layout = ({ children }) => {
         };
     }, [location])
 
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const loggedInStatus = await checkLoggedIn();
+                setLoggedIn(loggedInStatus);
+            } catch (error) {
+                console.error(error);
+                setLoggedIn(false);
+            } 
+        };
+
+        checkAuth();
+    }, [])
+
+    const isAuthPage = location.pathname.includes("/login") || location.pathname.includes("/create-profile");
+
+    if (loggedIn === null) {
+        return (
+            <div className="loader-container">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
+    
+    if (loggedIn === false && !isAuthPage) {
+        return <Navigate to="/login" replace />;
+    }
+    
+
     return (
         <div className="layout-container">
-            {<Sidebar isOpen={isSidebarOpen} />}
+            {< Sidebar isOpen={isSidebarOpen} />}
 
             {/* TOP NAV BAR (PROFILE & NOTIFS) */}
             <div className={`content-area-with-top-navbar ${isSidebarOpen ? "sidebar-open" : 'sidebar-closed'}`}>
                 <div className="top-nav-bar">
                     {/* menu button - for smaller screens */}
-                    { displayTopNav && <img src="/assets/icons/hamburger icon.png" alt="close sidebar button" className="menu-button"
+                    {displayTopNav && <img src="/assets/icons/hamburger icon.png" alt="close sidebar button" className="menu-button"
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
                     </img>}
@@ -100,6 +133,7 @@ const Layout = ({ children }) => {
                 </main>
             </div>
         </div>
+
     );
 };
 
