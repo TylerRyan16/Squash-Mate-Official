@@ -514,26 +514,6 @@
   flex-direction: row;
 }
 
-.comment-input {
-  margin: 0;
-
-  .MuiOutlinedInput-root {
-      background-color: #b5d4f3;
-      height: 100%;
-  }
-
-  .MuiInputLabel-root {
-      color: #4c4b51;
-      font-weight: 600;
-  }
-
-  .MuiInputLabel-root.Mui-focused {
-      color: black;
-  }
-
-  // Raise the text inside the input
-  
-}
 
 .close-button-column{
   width: 10%;

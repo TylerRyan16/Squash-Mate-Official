@@ -262,20 +262,20 @@ const Video = () => {
             const parentComment = commentMap.get(reply.parent_comment_id);
             const mention = parentComment ? `@${parentComment.commenter_name} ` : "";
             return (
-                <div key={reply.id} className="w-full pl-10">
-                    <div className="w-full h-fit flex justify-start">
+                <div key={reply.id} className="w-full relative">
+                    <div className="w-full h-fit flex justify-start border-b-2 border-b-neutral-300/50 mb-1 py-1">
                         {/* reply icon indicator */}
-                        <img src="/assets/icons/reply-icon.svg" alt="reply" className="w-6 h-6 self-start mr-1 mt-2" />
+                        <img src="/assets/icons/reply-icon.svg" alt="reply" className="w-4 h-4 self-start mr-1 mt-2" />
 
                         {/* profile picture */}
-                        <img src={`/assets/characters/${profilePicMap[reply.commenter_name || "default"]}.png`} alt="profile cover" className="w-14 h-14" />
+                        <img src={`/assets/characters/${profilePicMap[reply.commenter_name || "default"]}.png`} alt="profile cover" className="w-10 h-10 md:w-14 md:h-14" />
 
                         <div className="w-full flex flex-col pl-1">
                             {/* name, timestamp, delete button */}
                             <div className="w-full h-1/6 flex items-center justify-between mt-2">
-                                <h4 className="m-0 p-0 text-lg font-bold">{reply.commenter_name}</h4>
+                                <h4 className="m-0 p-0 text-base font-bold">{reply.commenter_name}</h4>
                                 <div className="flex justify-center items-center gap-2 mr-5">
-                                    <p className="text-sm text-neutral-600 italic">{reply.date_posted.slice(0, 10)}</p>
+                                    <p className="text-xs text-neutral-600 italic">{formatDate(reply.date_posted)}</p>
                                     <img onClick={() => deleteComment(reply)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="h-4 cursor-pointer" />
                                 </div>
                             </div>
@@ -287,15 +287,13 @@ const Video = () => {
 
                             {/* bottom button bar */}
                             <div className="w-full h-1/4 flex justify-between items-center">
-                                <p onClick={() => jumpToTimestamp(reply.timestamp)} className="timestamp-jump cursor-pointer text-sm text-blue-500 underline">Jump</p>
-                                <img className="w-3 self-end h-1 cursor-pointer p-0 m-0 opacity-80 mb-1" alt="view more" src="/assets/icons/view more.png" />
-                                <div className="flex">
+                                <div className="flex items-center justify-center ">
                                     <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="w-8 cursor-pointer" />
-                                    <div className="h-full w-auto flex items-center justify-center mr-3" onClick={() => setReplyingTo(reply)}>
-                                        <img src="/assets/icons/reply.png" alt="Reply to Comment" className="w-7 cursor-pointer" />
-                                        <p className="cursor-pointer font-medium text-sm">Reply</p>
-                                    </div>
+                                    <p className="cursor-pointer font-medium text-sm">Reply</p>
                                 </div>
+                                <img className="w-3 -end h-1 cursor-pointer p-0 m-0 opacity-80 mb-1" alt="view more" src="/assets/icons/view more.png" />
+                                <p onClick={() => jumpToTimestamp(reply.timestamp)} className="cursor-pointer text-xs">Jump</p>
+
                             </div>
                         </div>
                     </div>
@@ -406,6 +404,10 @@ const Video = () => {
             const response = await shareVideo(shareDetails);
         }
     };
+
+    const formatDate = (date) => {
+        return date ? date.slice(0, 10) : "";
+    }
 
 
 
@@ -562,7 +564,7 @@ const Video = () => {
 
 
             {/* Scoreboard */}
-            <div className="video-point-display flex-grow-0">
+            <div className="bg-[#4B3C3C] w-9/12 mt-2 h-16 flex self-center items-center justify-center border-2 border-[#3D3D3D] rounded-lg">
                 <div className="video-player1-color" id='player1-color' style={{ backgroundColor: video.player1_color }}></div>
                 <p className='video-player-name'>{video.player1_name}</p>
                 <div className="video-player1_wins" id="player1_wins">0</div>
@@ -573,7 +575,7 @@ const Video = () => {
             </div>
 
             {/* video title */}
-            <h1 className="self-start text-xl font-bold px-5 py-1 mt-1.5">{video.title}</h1>
+            <h1 className="self-start text-left text-xl font-bold px-5 py-1 mt-1.5">{video.title}</h1>
             <div className="w-full flex justify-between items-center px-4">
 
 
@@ -583,13 +585,14 @@ const Video = () => {
                     <p className="text-base font-semibold p-0">{video.poster}</p>
                 </div>
 
+
                 {/* VIDEO OPTIONS (3 dots) */}
                 <div
                     onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
                     className="relative flex items-center justify-center rounded-full transition-all duration-100"
                 >
+                    <p className="text-xs text-neutral-500">Posted on {formatDate(video.date_posted)}</p>
                     <img src="/assets/icons/3 dots.png" alt="more video info" className="w-4 cursor-pointer p-1 rounded-lg hover:bg-neutral-600/30"></img>
-
 
                     {/* OPTIONS PANEL */}
                     {videoOptionsOpen && <div className="video-options-panel">
@@ -660,11 +663,7 @@ const Video = () => {
 
             {/* DESCRIPTION */}
             <div className="w-11/12 self-start ml-4 h-auto mt-2 mb-3 rounded-md bg-neutral-200">
-                <div className="top-description-row">
-                    <h2>{video.title}</h2>
-                    <p>Posted on {video.date_posted}</p>
-                </div>
-                <p>{video.description || "No description provided."}</p>
+                <p className="text-sm">{video.description || "No description provided."}</p>
             </div>
 
 
@@ -715,10 +714,11 @@ const Video = () => {
                         className="post-reply-button"
                         onClick={() => postComment()}
                         sx={{
-                            height: "50%",
+                            height: "100%",
                             padding: "10px 0px",
                             fontSize: "18px",
                             fontWeight: 600,
+                            marginLeft: 1,
                         }}
 
                     >
@@ -733,23 +733,23 @@ const Video = () => {
                     {rootComments.map(commentInfo => (
                         <div className="w-full h-fit">
                             {/* ROOT COMMENT */}
-                            <div className="w-full h-32 flex justify-start" key={commentInfo.id}>
+                            <div className="w-full h-fit flex justify-start border-b-2 border-b-neutral-300/50 mb-1 py-1" key={commentInfo.id}>
                                 {/* profile pic */}
-                                <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`} alt='profile cover' className="w-14 h-14"></img>
+                                <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`} alt='profile cover' className="w-10 h-10 md:w-14 md:h-14"></img>
                                 <div className="w-full flex flex-col pl-1">
                                     {/* name, timestamp, delete button */}
                                     <div className="w-full h-1/6 flex items-center justify-between mt-2">
-                                        <h4 className="m-0 p-0 text-lg font-bold">{commentInfo.commenter_name}</h4>
+                                        <h4 className="m-0 p-0 text-base font-bold">{commentInfo.commenter_name}</h4>
                                         <div className="flex justify-center items-center gap-2 mr-5">
-                                            <p className="text-sm text-neutral-600 italic">{commentInfo.date_posted.slice(0, 10)}</p>
+                                            <p className="text-xs text-neutral-600 italic">{formatDate(commentInfo.date_posted)}</p>
                                             <img onClick={() => deleteComment(commentInfo)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="h-4 cursor-pointer"></img>
                                         </div>
                                     </div>
                                     <div className="w-full h-1/2 overflow-hidden text-ellipsis text-sm">
-                                        <p>{commentInfo.comment}</p>
+                                        <p className="text-sm">{commentInfo.comment}</p>
                                     </div>
                                     <div className="w-full h-1/4 flex justify-between items-center">
-                                        <p onClick={() => jumpToTimestamp(commentInfo.timestamp)} className="timestamp-jump">Jump</p>
+                                        <p onClick={() => jumpToTimestamp(commentInfo.timestamp)} className="text-xs cursor-pointer">Jump</p>
                                         <img className="w-3 self-end h-1 cursor-pointer p-0 m-0 opacity-80 mb-1" alt="view more" src="/assets/icons/view more.png"></img>
                                         <div className="flex">
                                             <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="w-8 cursor-pointer"></img>
@@ -769,6 +769,10 @@ const Video = () => {
                     ))}
 
                     <div ref={bottomRef}></div>
+
+                </div>
+
+                <div className="w-full h-32">
 
                 </div>
             </div>
