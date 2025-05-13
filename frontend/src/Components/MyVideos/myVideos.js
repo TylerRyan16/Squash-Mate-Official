@@ -23,13 +23,13 @@ const MyVideos = () => {
       try {
         const name = await getMyUsername();
 
-        const rawVideos = await getMyVideos(name);        
+        const rawVideos = await getMyVideos(name);
         const enrichedVideos = await enrichVideosWithPFP(rawVideos);
 
         setMyVideos(enrichedVideos);
       } catch (error) {
         console.error(`Error fetching videos or usernames: ${error}`);
-      } 
+      }
     };
 
     fetchMyVideos();
@@ -178,8 +178,13 @@ const MyVideos = () => {
             </div>
           )}
         </div>
-        <div className="rows">
-          {filteredVideos.length > 0 ? (
+
+        <div className=" 
+                    flex flex-col
+                    sm:grid sm:grid-cols-2
+                    md:grid md:grid-cols-2
+                    lg:grid lg:grid-cols-3 mx-2
+                    ">          {filteredVideos.length > 0 ? (
             filteredVideos.map(video => (
               <VideoCard key={video.id} video={video} />
             ))

@@ -8,36 +8,36 @@ const Explore = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-      const fetchMyVideos = async () => {
-        try {
-          const name = await getMyUsername();
-          console.log("name in frontend: ", name);
-  
-          const rawVideos = await getAllVideos(name);        
-          const enrichedVideos = await enrichVideosWithPFP(rawVideos);
-  
-          setAllVideos(enrichedVideos);
-        } catch (error) {
-          console.error(`Error fetching videos or usernames: ${error}`);
-        } 
-      };
-  
-      fetchMyVideos();
-    }, []);
-  
-    const enrichVideosWithPFP = async (videos) => {
-      const enriched = await Promise.all(
-        videos.map(async (video) => {
-          try {
-            const pfp = await getProfilePicForPoster(video.poster);
-            return { ...video, poster_pfp: pfp };
-          } catch {
-            return { ...video, poster_pfp: "default" };
-          }
-        })
-      );
-      return enriched;
+    const fetchMyVideos = async () => {
+      try {
+        const name = await getMyUsername();
+        console.log("name in frontend: ", name);
+
+        const rawVideos = await getAllVideos(name);
+        const enrichedVideos = await enrichVideosWithPFP(rawVideos);
+
+        setAllVideos(enrichedVideos);
+      } catch (error) {
+        console.error(`Error fetching videos or usernames: ${error}`);
+      }
     };
+
+    fetchMyVideos();
+  }, []);
+
+  const enrichVideosWithPFP = async (videos) => {
+    const enriched = await Promise.all(
+      videos.map(async (video) => {
+        try {
+          const pfp = await getProfilePicForPoster(video.poster);
+          return { ...video, poster_pfp: pfp };
+        } catch {
+          return { ...video, poster_pfp: "default" };
+        }
+      })
+    );
+    return enriched;
+  };
 
   const filteredVideos = allVideos.filter((video) =>
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -54,16 +54,18 @@ const Explore = () => {
           <img src="/assets/icons/filter-icon.png" alt="filter icon" className="filter-icon" />
         </div>
 
-        <div className="explore-video-display-area">
-          <div className="rows">
-            {filteredVideos.length > 0 ? (
-              filteredVideos.map(video => (
-                <VideoCard key={video.id} video={video} />
-              ))
-            ) : (
-              <p>No videos found</p>
-            )}
-          </div>
+        <div className=" 
+                    flex flex-col items-center justify-center
+                    sm:grid sm:grid-cols-2 sm:justify-start sm:items-start
+                    md:grid md:grid-cols-2
+                    lg:grid lg:grid-cols-3 mx-2
+                    ">            {filteredVideos.length > 0 ? (
+            filteredVideos.map(video => (
+              <VideoCard key={video.id} video={video} />
+            ))
+          ) : (
+            <p>No videos found</p>
+          )}
         </div>
       </main>
     </div>

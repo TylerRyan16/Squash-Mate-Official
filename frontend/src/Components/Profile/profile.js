@@ -144,52 +144,56 @@ const Profile = () => {
     }
 
     return (
-        <div className="profile-page">
-            <div className="left-area">
-                <div className="tooltip-wrapper">
+        <div className=
+            "flex flex-col justify-center items-center"
+        >
+            {/* PROFILE PIC & EDIT & CLUB LOCKER*/}
+            <div className="relative flex flex-col items-center w-full flex-grow-0">
+                {/* EDIT PROFILE BUTTON */}
+                <div className="absolute top-4 right-4 flex items-center justify-center gap-1 cursor-pointer"
+                    onClick={() => {
+                        // set data back to original if not pressed save changes
+                        if (editProfileEnabled) {
+                            setUserData(originalData);
+                            setSelectedColor(originalData.profile_pic);
+                        }
+                        setEditProfileEnabled(!editProfileEnabled);
+                    }}
+                >
                     <img
-                        onClick={() => {
-                            // set data back to original if not pressed save changes
-                            if (editProfileEnabled) {
-                                setUserData(originalData);
-                                setSelectedColor(originalData.profile_pic);
-                            }
-                            setEditProfileEnabled(!editProfileEnabled);
-                        }}
                         src="/assets/icons/edit profile.png"
                         alt="edit-profile"
-                        className={`edit-profile-button ${editProfileEnabled ? "enabled" : ""}`}
+                        className={`w-5 h-5 ${editProfileEnabled ? "enabled" : ""}`}
                     />
-                    <span className="tooltip-text">Edit Profile</span>
+                    <span className="hover:underline cursor-pointer">Edit Profile</span>
 
                 </div>
 
-                <h1 className="my-profile">My Profile</h1>
+                <h1 className="text-xl font-semibold self-start ml-6 pt-1">My Profile</h1>
+                {/* PROFILE PICTURE */}
+                <div className="flex items-center justify-center gap-4">
+                    <img className={`${editProfileEnabled ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300 w-8 md:w-16 h-auto rotate-180`} src='assets\icons\right-arrow.png' alt='change pic left' onClick={() => switchProfileColor("left")} />
+                    {!editProfileEnabled && <img className="w-20 md:w-32 h-auto" src={`/assets/characters/${userData.profile_pic}.png`} alt='profile cover'></img>}
 
+                    {editProfileEnabled && <img className="w-20 md:w-32 h-auto" src={`/assets/characters/${selectedColor}.png`} alt='profile cover' ></img>}
 
-
-                <div className="profile-picture-zone">
-                    {editProfileEnabled && <img className='pic-switch-left' src='assets\icons\right-arrow.png' alt='change pic left' onClick={() => switchProfileColor("left")} />}
-                    {!editProfileEnabled && <img src={`/assets/characters/${userData.profile_pic}.png`} alt='profile cover' className="profile-pic"></img>}
-
-                    {editProfileEnabled && <img src={`/assets/characters/${selectedColor}.png`} alt='profile cover' className="profile-pic"></img>}
-
-                    {editProfileEnabled && <img className='pic-switch-right' src='assets\icons\right-arrow.png' alt='change pic right' onClick={() => switchProfileColor("right")} />}
+                    <img className={`${editProfileEnabled ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300 w-8 md:w-16 h-auto`} src='assets\icons\right-arrow.png' alt='change pic right' onClick={() => switchProfileColor("right")} />
                 </div>
 
-                <h1 className="profile-username">{userData.username}</h1>
+                {/* USERNAME */}
+                <h1 className="text-lg font-bold">{userData.username}</h1>
 
+                {/* CLUB LOCKER */}
+                <div className="flex gap-2 items-center justify-center" onClick={() => window.open(userData.club_locker_url, '_blank')}>
+                    <h3 className="text-base font-bold">Club Locker</h3>
+                    <img className="w-4 h-4 text-base" src="/assets/icons/link.png" alt="club locker link"></img>
 
-                <div className="club-locker-area" onClick={() => window.open(userData.club_locker_url, '_blank')}>
-                    <h3>Club Locker</h3>
-                    <img src="/assets/icons/link.png" alt="club locker link"></img>
-
-                    <p>{userData.level}</p>
+                    <p className="text-sm font-medium">{userData.level}</p>
                 </div>
             </div>
 
-
-            <div className="right-area">
+            {/* PROFILE TEXT FIELDS */}
+            <div className="flex flex-col gap-3 p-2">
 
 
                 <div className="profile-fields-div">
@@ -248,8 +252,8 @@ const Profile = () => {
                     />
                 </div>
 
-                <h1 id="security-title">Security</h1>
-
+                {/* SECURITY AREA */}
+                <h1 className="text-lg font-bold">Security</h1>
                 {/* email */}
                 <TextField
                     label="Email"
@@ -274,21 +278,44 @@ const Profile = () => {
                     sx={{ mb: 2 }}
                 />
 
-                <div className="security-button-area">
+                <div className="w-full flex justify-between gap-4">
                     <button
-                        className="change-password-button"
+                        type="button"
+                        className="w-1/2 lg:w-1/5 p-2 border-2 border-solid border-red-600 text-red-600 rounded-lg bg-inherit hover:bg-red-100"
                     >Change Password</button>
                     <button
-                        className="logout-button"
+                        type="button"
+                        className="w-1/2 lg:w-1/5 p-2 border-2 border-solid border-red-600 text-red-600 rounded-lg bg-inherit hover:bg-red-100"
                         onClick={logoutUser}>Logout</button>
                 </div>
 
 
                 {/* CHECKBOXES */}
-                <input type="checkbox" id="show-age"></input>
-                <label htmlFor="show-age" className="show-age-label">Publicly display my age on my profile</label>
+                <div className="flex gap-4">
+                    <input type="checkbox" id="show-age"></input>
+                    <label htmlFor="show-age" >Publicly display my age on my profile</label>
+                </div>
 
-                {editProfileEnabled && <button className="save-changes-button" onClick={() => updateProfile()}>Save Changes</button>}
+                {/* save changes (mobile)*/}
+                <div
+                    className={`${(editProfileEnabled ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0')} sm:hidden flex bg-navbar shadow-2xl border-t-2 transition-all duration-300 z-50 fixed  items-center justify-center left-0 bottom-0 w-full h-20`}
+                >
+                    <button className="w-1/2 lg:w-1/5 p-2 border-2 border-solid border-green-600 text-green-600 rounded-lg bg-inherit hover:bg-green-100"
+                        onClick={() => updateProfile()}>Save Changes</button>
+                </div>
+
+                {/* save changes (desktop) */}
+                <button className={`${editProfileEnabled ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300 hidden md:block w-1/2 lg:w-1/5 p-2 border-2 border-solid border-green-600 text-green-600 rounded-lg bg-inherit hover:bg-green-100 self-end`}
+                    onClick={() => updateProfile()}>Save Changes</button>
+
+                {/* Empty space */}
+                <div className="w-full h-20 border-b-2 border-b-gray-200">
+
+                </div>
+                <div className="w-full h-6">
+
+                </div>
+
 
             </div>
         </div>
