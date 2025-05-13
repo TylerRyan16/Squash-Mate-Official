@@ -50,6 +50,10 @@ const Video = () => {
     const playerContainerRef = useRef(null);
     const [fullscreen, setFullscreen] = useState(false);
 
+    // sharing
+    const [shareDisabled, setShareDisabled] = useState(true);
+    const [invalidShare, setInvalidShare] = useState(false);
+
     const deleteVideo = async () => {
         try {
             await deleteVideoRequest(video);
@@ -68,11 +72,8 @@ const Video = () => {
             try {
                 const currentVideo = await getSpecificVideo(id);
                 setVideo(currentVideo);
-
-                console.log("current poster: ", currentVideo.poster);
                 // use video poster to query DB for their pfp
                 const profilePicResponse = await getProfilePicForPoster(currentVideo.poster);
-                console.log("profile pic found: ", profilePicResponse);
                 setPosterPic(profilePicResponse);
             } catch (error) {
                 console.log(error);
@@ -103,11 +104,16 @@ const Video = () => {
         fetchAllUsers();
         fetchComments(videoID);
 
-    }, [])
+    }, [videoID])
 
-    // Grab comments for the video
+    // disable share button on empty list
     useEffect(() => {
-    }, [video])
+        if (sharedUsers.length === 0) {
+            setShareDisabled(true);
+        } else {
+            setShareDisabled(false);
+        }
+    }, [sharedUsers]);
 
     // SCROLL TO NEW COMMENT WHEN POSTED
     // useEffect(() => {
@@ -368,15 +374,21 @@ const Video = () => {
     };
 
     const updateChecks = (user) => {
-        const index = sharedUsers.indexOf(user);
+        const index = sharedUsers.findIndex(u => u.id === user.id);
+        let updatedUsers;
+        // if already in list, remove
         if (index > -1) {
-            sharedUsers.splice(index, 1);
+            updatedUsers = sharedUsers.filter(u => u.id !== user.id);
         }
+        // if not in list, push
         else {
-            sharedUsers.push(user);
+            updatedUsers = [...sharedUsers, user];
         }
-        disableShare();
+        setSharedUsers(updatedUsers);
+
+        // disableShare();
     }
+
     const disableShare = () => {
         const shareButton = document.getElementById("share-button");
         const users = document.getElementsByClassName("user-checkbox");
@@ -402,7 +414,22 @@ const Video = () => {
         for (const index in sharedUsers) {
             shareDetails.user_id = sharedUsers[index].id;
             const response = await shareVideo(shareDetails);
+            // error
+            if (!response.success) {
+                if (response.reason === 'already_shared') {
+                    setInvalidShare(true);
+                } else {
+                    console.log(response.reason);
+                    alert(response.message || "Unknown error. Please contact support.");
+                }
+                // SUCCESS
+            } else {
+                setInvalidShare(false);
+                setShareOpen(false);
+
+            }
         }
+
     };
 
     const formatDate = (date) => {
@@ -564,14 +591,21 @@ const Video = () => {
 
 
             {/* Scoreboard */}
-            <div className="bg-[#4B3C3C] w-9/12 mt-2 h-16 flex self-center items-center justify-center border-2 border-[#3D3D3D] rounded-lg">
-                <div className="video-player1-color" id='player1-color' style={{ backgroundColor: video.player1_color }}></div>
-                <p className='video-player-name'>{video.player1_name}</p>
-                <div className="video-player1_wins" id="player1_wins">0</div>
-                <div className='video-score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
-                <div className="video-player2_wins" id="player2_wins">0</div>
-                <p className='video-player-name'>{video.player2_name}</p>
-                <div className="video-player2-color" style={{ backgroundColor: video.player2_color }}></div>
+            <div className="bg-[#4B3C3C] md:w-2/5 w-10/12 mt-2 h-28 flex self-center items-center justify-center border-2 border-[#3D3D3D] rounded-lg">
+                {/* player 1 color */}
+                <div className="flex-grow-1 h-full w-1/12" id='player1-color' style={{ backgroundColor: video.player1_color }}></div>
+                {/* player 1 wins */}
+                <div className="h-full bg-[#315fb9] text-white w-1/12 text-center content-center text-xl px-2 font-bold" id="player1_wins">0</div>
+                {/* player 1 name */}
+                <p className='text-sm md:text-base font-bold text-white w-1/3 px-4 py-4 text-center'>{video.player1_name}</p>
+                {/* score */}
+                <div className='bg-[#3D3D3D] text-white h-full w-1/4 text-center flex items-center justify-center'><p className="text-sm" id="player1_score">0</p><p className="text-sm">-</p><p className="text-sm" id="player2_score">0</p></div>
+                {/* player 2 name */}
+                <p className='text-sm md:text-base font-bold text-white w-1/3 px-4 py-4 text-center'>{video.player2_name}</p>
+                {/* player 2 wins */}
+                <div className="h-full bg-[#315fb9] text-white w-1/12 text-center content-center text-xl px-2 font-bold" id="player2_wins">0</div>
+                {/* player 2 color */}
+                <div className="flex-grow-1 h-full w-1/12" style={{ backgroundColor: video.player2_color }}></div>
             </div>
 
             {/* video title */}
@@ -585,80 +619,93 @@ const Video = () => {
                     <p className="text-base font-semibold p-0">{video.poster}</p>
                 </div>
 
+                <div className="flex gap-1 items-center justify-center">
 
-                {/* VIDEO OPTIONS (3 dots) */}
-                <div
-                    onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
-                    className="relative flex items-center justify-center rounded-full transition-all duration-100"
-                >
-                    <p className="text-xs text-neutral-500">Posted on {formatDate(video.date_posted)}</p>
-                    <img src="/assets/icons/3 dots.png" alt="more video info" className="w-4 cursor-pointer p-1 rounded-lg hover:bg-neutral-600/30"></img>
+                    <p className="text-xs text-neutral-500 ">Posted on {formatDate(video.date_posted)}</p>
 
-                    {/* OPTIONS PANEL */}
-                    {videoOptionsOpen && <div className="video-options-panel">
-                        <img src="/assets/icons/x-icon.png" alt="close options panel" className="close-popup" onClick={() => setVideoOptionsOpen(false)}></img>
-                        <p className="options-title">Video Options</p>
-                        <div className="option-row" onClick={() => setShareOpen(!shareOpen)}>
-                            <img src='/assets/icons/share icon.png' alt="share video" className="share-icon"></img>
-                            <p>Share Video</p>
-                        </div>
-                        <div className="option-row" onClick={() => setConfirmDeleteOpen(true)} >
-                            <img src="/assets/icons/delete.png" alt="delete video" className="option-icon"></img>
-                            <p className="option-text">Delete Video</p>
-                        </div>
-                    </div>}
-                </div>
+                    {/* VIDEO OPTIONS (3 dots) */}
+                    <div
+                        onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
+                        className="relative flex items-center justify-center rounded-full transition-all duration-100"
+                    >
+                        <img src="/assets/icons/3 dots.png" alt="more video info" className="w-4 cursor-pointer p-1 rounded-lg hover:bg-neutral-600/30"></img>
 
-                {/* SHARE POPUP */}
-                {shareOpen && (
-                    <div className="popup-overlay" onClick={() => setShareOpen(false)}>
-                        <div className="share-panel" onClick={(e) => e.stopPropagation()}>
-                            <h4 className='share-text'>Share with User</h4>
-                            <img src="/assets/icons/x-icon.png" alt="close share page" className="close-popup" onClick={() => setShareOpen(false)}></img>
-                            <input
-                                type="text"
-                                className="user-search-input"
-                                placeholder="Search..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <div className='user-list'>
-                                {filteredUsers.length > 0 ? (
-                                    filteredUsers.map((user) => (
-                                        <label className="share-user-container" key={user.id}>
-                                            <img src='/assets/squash-guy.jpg' alt='profile cover' className="user-profile-pic" />
-                                            <label>{user.username}</label>
-                                            <input
-                                                type="checkbox"
-                                                className="user-checkbox"
+                        {/* OPTIONS PANEL */}
+                        {videoOptionsOpen && <div className="video-options-panel">
+                            <img src="/assets/icons/x-icon.png" alt="close options panel" className="absolute top-2 right-2 w-3 h-auto cursor-pointer" onClick={() => setVideoOptionsOpen(false)}></img>
+                            <p className="options-title">Video Options</p>
+                            <div className="option-row" onClick={() => {
+                                setShareOpen(!shareOpen);
+                                setInvalidShare(false);
+                                setSharedUsers([]);
+                            }}>
+                                <img src='/assets/icons/share icon.png' alt="share video" className="share-icon"></img>
+                                <p>Share Video</p>
+                            </div>
+                            <div className="option-row" onClick={() => setConfirmDeleteOpen(true)} >
+                                <img src="/assets/icons/delete.png" alt="delete video" className="option-icon"></img>
+                                <p className="option-text">Delete Video</p>
+                            </div>
+                        </div>}
+                    </div>
+
+                    {/* SHARE POPUP */}
+                    {shareOpen && (
+                        <div className="fixed top-0 left-0 w-screen h-screen bg-black/60 z-50 flex items-center justify-center" onClick={() => setShareOpen(false)}>
+                            <div className="relative flex flex-col rounded-lg w-3/4 md:w-1/4 h-3/4 md:h-1/2 z-50 bg-navbar shadow-xl border-2 border-neutral-400/50 text-center items-center" onClick={(e) => e.stopPropagation()}>
+                                <h4 className='text-base font-bold'>Share with User</h4>
+                                <img src="/assets/icons/x-icon.png" alt="close share page" className="absolute top-2 right-2 w-3 h-auto cursor-pointer" onClick={() => setShareOpen(false)}></img>
+                                <input
+                                    type="text"
+                                    className="w-full h-12 px-1"
+                                    placeholder="Search..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <div className='w-full h-3/4 overflow-y-scroll flex flex-col gap-2 '>
+                                    {filteredUsers.length > 0 ? (
+                                        filteredUsers.map((user) => (
+                                            // individual user container
+                                            <div
+                                                className="border-b-2 border-neutral-200/50 w-full h-12 flex gap-2 items-center justify-start relative overflow-x-hidden pl-5 py-y1 cursor-pointer text-md"
+                                                key={user.id}
                                                 onClick={() => updateChecks(user)}
-                                            />
-                                            <span className="checkmark"></span>
-                                        </label>
-                                    ))
-                                ) : (
-                                    <p>No users found</p>
-                                )}
-                            </div>
-                            <button className="share-button" id="share-button" onClick={handleShareVideo}>Share</button>
-                        </div>
-                    </div>
-                )}
+                                            >
+                                                {/* dark checkmark */}
+                                                <span className={`${sharedUsers.find(u => u.id === user.id) ? 'bg-green-500' : 'bg-neutral-300'} h-6 w-6 rounded-md self-center`}></span>
 
-                {/* DELETE POPUP */}
-                {confirmDeleteOpen && (
-                    <div className="popup-overlay" onClick={() => setConfirmDeleteOpen(false)}>
-                        <div className="delete-panel" onClick={(e) => e.stopPropagation()}>
-                            <h4 className='share-text'>Are you sure you want to delete this video?</h4>
-                            <img src="/assets/icons/x-icon.png" alt="close delete page" className="close-popup" onClick={() => setConfirmDeleteOpen(false)}></img>
-                            <div className="delete-buttons-row">
-                                <button className="go-back-button" onClick={() => setConfirmDeleteOpen(false)}>Go Back</button>
-                                <button className="confirm-delete-button" onClick={() => deleteVideo()}>Delete</button>
+                                                {/* profile pic */}
+                                                <img src='/assets/squash-guy.jpg' alt='profile cover' className="user-profile-pic" />
+                                                {/* username */}
+
+                                                <p>{user.username}</p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p>No users found</p>
+                                    )}
+                                </div>
+                                <p className={`${invalidShare === true ? 'opacity-100 block' : 'opacity-0 hidden'} transition-all duration-300 text-xs text-red-500`}>Video has already been shared with one or more users.</p>
+                                <button className="share-button" id="share-button" disabled={shareDisabled} onClick={handleShareVideo}>Share</button>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
+                    {/* DELETE POPUP */}
+                    {confirmDeleteOpen && (
+                        <div className="popup-overlay" onClick={() => setConfirmDeleteOpen(false)}>
+                            <div className="delete-panel" onClick={(e) => e.stopPropagation()}>
+                                <h4 className='share-text'>Are you sure you want to delete this video?</h4>
+                                <img src="/assets/icons/x-icon.png" alt="close delete page" className="close-popup" onClick={() => setConfirmDeleteOpen(false)}></img>
+                                <div className="delete-buttons-row">
+                                    <button className="go-back-button" onClick={() => setConfirmDeleteOpen(false)}>Go Back</button>
+                                    <button className="confirm-delete-button" onClick={() => deleteVideo()}>Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                </div>
             </div>
 
             {/* DESCRIPTION */}
@@ -685,7 +732,6 @@ const Video = () => {
                         <TextField
                             multiline
                             fullWidth
-                            rows={1}
                             maxRows={4}
                             inputRef={commentRef}
                             placeholder="Message..."
@@ -731,9 +777,9 @@ const Video = () => {
                     {noComments && <h4 className='self-center italic text-lg font-bold'>No Comments to Display</h4>}
 
                     {rootComments.map(commentInfo => (
-                        <div className="w-full h-fit">
+                        <div className="w-full h-fit" key={commentInfo.id}>
                             {/* ROOT COMMENT */}
-                            <div className="w-full h-fit flex justify-start border-b-2 border-b-neutral-300/50 mb-1 py-1" key={commentInfo.id}>
+                            <div className="w-full h-fit flex justify-start border-b-2 border-b-neutral-300/50 mb-1 py-1">
                                 {/* profile pic */}
                                 <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`} alt='profile cover' className="w-10 h-10 md:w-14 md:h-14"></img>
                                 <div className="w-full flex flex-col pl-1">

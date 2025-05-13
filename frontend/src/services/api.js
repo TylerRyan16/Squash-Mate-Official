@@ -59,7 +59,7 @@ export const getMyUsername = async () => {
     try {
         const response = await api.get("/profiles/my-username");
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to fetch username.";
     }
 };
@@ -69,7 +69,7 @@ export const getAllUsers = async () => {
     try {
         const response = await api.get("/profiles/all-users");
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to fetch user data";
     }
 }
@@ -80,16 +80,16 @@ export const getProfilePicForPoster = async (poster) => {
     try {
         const response = await api.get(`/profiles/pic?username=${encodeURIComponent(poster)}`);
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to get poster profile picture.";
     }
 }
 
 export const updateProfileRequest = async (changes) => {
     try {
-        const response = await api.patch("/profiles/update", changes, {withCredentials: true});
+        const response = await api.patch("/profiles/update", changes, { withCredentials: true });
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to update profile.";
     }
 }
@@ -98,7 +98,7 @@ export const checkLoggedIn = async () => {
     try {
         const response = await api.get("/profiles/logged-in");
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to check if user was logged in.";
     }
 }
@@ -111,7 +111,7 @@ export const getAllVideos = async () => {
     try {
         const response = await api.get("/videos/all-videos");
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to fetch video data";
     }
 }
@@ -121,7 +121,7 @@ export const getMyVideos = async () => {
     try {
         const response = await api.get("/videos/my-videos");
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to fetch video data";
     }
 }
@@ -139,7 +139,7 @@ export const getSpecificVideo = async (videoID) => {
 // UPLOAD VIDEO
 export const uploadVideo = async (videoDetails) => {
     try {
-        const response = await api.post("/videos", videoDetails);        
+        const response = await api.post("/videos", videoDetails);
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
@@ -157,7 +157,7 @@ export const uploadVideo = async (videoDetails) => {
 // COMMENT ON VIDEO
 export const commentOnVideo = async (data) => {
     try {
-        const response = await api.post("/comments", data);        
+        const response = await api.post("/comments", data);
         return response.data;
     } catch (error) {
         if (error.response && error.response.data.error) {
@@ -175,8 +175,8 @@ export const getCommentsForVideo = async (videoID) => {
     try {
         const response = await api.get(`/comments/for-video/${videoID}`)
         return response.data;
-    } catch (error){
-        if (error.response && error.response.data.error){
+    } catch (error) {
+        if (error.response && error.response.data.error) {
             alert(error.response.data.error);
         } else {
             console.error("error grabbing comments: ", error);
@@ -192,7 +192,7 @@ export const deleteCommentRequest = async (comment) => {
             data: comment,
         });
         return response.data;
-    } catch (error){
+    } catch (error) {
         console.error("error deleting comment: ", error);
         alert("An error occurred while deleting the comment. Please try again.");
     }
@@ -204,7 +204,7 @@ export const deleteVideoRequest = async (video) => {
             data: video,
         });
         return response.data;
-    } catch (error){
+    } catch (error) {
         console.error("error deleting video: ", error);
         alert("An error occurred while deleting the video. Please try again.");
     }
@@ -213,27 +213,26 @@ export const deleteVideoRequest = async (video) => {
 export const shareVideo = async (shareDetails) => {
     try {
         const response = await api.post("/shared", shareDetails);
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
         if (error.response) {
             if (error.response.status === 409) {
-                alert("This video has already been shared with that user.");
-            } else if (error.response.data.error) {
-                alert(error.response.data.error);
+                return { success: false, reason: 'already_shared' };
+            } else if (error.response.data?.error) {
+                return { success: false, reason: 'server_error', message: error.response.data.error };
             }
-        } else {
-            console.error("error sharing video: ", error);
-            alert("An error occurred while sharing the video. Please try again.");
         }
 
+        console.error("error sharing video: ", error);
+        return { success: false, reason: 'network_error', message: "An error occurred while sharing the video." };
     }
-}
+};
 
 export const getSharedVideos = async () => {
     try {
         const response = await api.get("/shared/shared-videos");
         return response.data;
-    } catch (error){
+    } catch (error) {
         throw error.response?.data || "Failed to fetch user data";
     }
 }
