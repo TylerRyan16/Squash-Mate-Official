@@ -332,14 +332,7 @@
 .timeline-slider {
     -webkit-appearance: none;
     appearance: none;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    height: 30px;
-    border-radius: 25px;
-    border-color: black;
-    border-style: solid;
-    /*margin-bottom: 5vh;*/
+
 }
 
 .range-slider {
@@ -349,10 +342,10 @@
 
 .slider-background {
     position: absolute;
-    background: transparent;
+    background: yellow;
     width: 100%;
     content: "";
-    height: 60%;
+    height: 100%;
     top: 20%;
     pointer-events: none;
 }

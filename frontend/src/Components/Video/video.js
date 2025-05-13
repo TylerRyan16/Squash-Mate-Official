@@ -47,6 +47,8 @@ const Video = () => {
     const [videoLength, setVideoLength] = useState(0);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const playerRef = useRef(null);
+    const playerContainerRef = useRef(null);
+    const [fullscreen, setFullscreen] = useState(false);
 
     const deleteVideo = async () => {
         try {
@@ -135,13 +137,13 @@ const Video = () => {
             }
 
             const picMap = {};
-            for (const comment of comments){
+            for (const comment of comments) {
                 const name = comment.commenter_name;
-                if (!picMap[name]){
+                if (!picMap[name]) {
                     try {
                         const pic = await getProfilePicForPoster(name);
                         picMap[name] = pic;
-                    } catch (error){
+                    } catch (error) {
                         picMap[name] = "default";
                     }
                 }
@@ -260,41 +262,47 @@ const Video = () => {
             const parentComment = commentMap.get(reply.parent_comment_id);
             const mention = parentComment ? `@${parentComment.commenter_name} ` : "";
             return (
-                <>
-                    <div className="specific-comment reply" key={reply.id}>
-                        <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator-display"></img>
-                        <img src={`/assets/characters/${profilePicMap[reply.commenter_name || "default"]}.png`} alt='profile cover' className="comment-profile-pic"></img>
-                        <div className="comment-div">
-                            <div className="comment-top-bar">
-                                <h4 className="commenter-name">{reply.commenter_name}</h4>
-                                <div className="delete-date-zone">
-                                    <p className="date-posted">{reply.date_posted.slice(0, 10)}</p>
-                                    <img onClick={() => deleteComment(reply)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
+                <div key={reply.id} className="w-full pl-10">
+                    <div className="w-full h-fit flex justify-start">
+                        {/* reply icon indicator */}
+                        <img src="/assets/icons/reply-icon.svg" alt="reply" className="w-6 h-6 self-start mr-1 mt-2" />
+
+                        {/* profile picture */}
+                        <img src={`/assets/characters/${profilePicMap[reply.commenter_name || "default"]}.png`} alt="profile cover" className="w-14 h-14" />
+
+                        <div className="w-full flex flex-col pl-1">
+                            {/* name, timestamp, delete button */}
+                            <div className="w-full h-1/6 flex items-center justify-between mt-2">
+                                <h4 className="m-0 p-0 text-lg font-bold">{reply.commenter_name}</h4>
+                                <div className="flex justify-center items-center gap-2 mr-5">
+                                    <p className="text-sm text-neutral-600 italic">{reply.date_posted.slice(0, 10)}</p>
+                                    <img onClick={() => deleteComment(reply)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="h-4 cursor-pointer" />
                                 </div>
                             </div>
-                            <div className="comment">
-                                <p><span className="mention-text">{mention}</span>{reply.comment}</p>
-                            </div>
-                            <div className="comment-button-area">
-                                <p onClick={() => jumpToTimestamp(reply.timestamp)} className="timestamp-jump">Jump</p>
-                                <img className="view-more-button" alt="view more" src="/assets/icons/view more.png"></img>
-                                <div className="buttons-zone">
 
-                                    <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
-                                    <div className="right-comment-button-area" onClick={() => setReplyingTo(reply)}>
-                                        <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
-                                        <p className="reply-button">Reply</p>
+                            {/* comment text */}
+                            <div className="w-full h-1/2 overflow-hidden text-ellipsis text-sm">
+                                <p><span className="text-blue-600 font-medium">{mention}</span>{reply.comment}</p>
+                            </div>
+
+                            {/* bottom button bar */}
+                            <div className="w-full h-1/4 flex justify-between items-center">
+                                <p onClick={() => jumpToTimestamp(reply.timestamp)} className="timestamp-jump cursor-pointer text-sm text-blue-500 underline">Jump</p>
+                                <img className="w-3 self-end h-1 cursor-pointer p-0 m-0 opacity-80 mb-1" alt="view more" src="/assets/icons/view more.png" />
+                                <div className="flex">
+                                    <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="w-8 cursor-pointer" />
+                                    <div className="h-full w-auto flex items-center justify-center mr-3" onClick={() => setReplyingTo(reply)}>
+                                        <img src="/assets/icons/reply.png" alt="Reply to Comment" className="w-7 cursor-pointer" />
+                                        <p className="cursor-pointer font-medium text-sm">Reply</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
 
-                    {/* render this comments replies if it has any (chained comments) */}
+                    {/* render nested replies */}
                     {renderReplies(reply.id)}
-                </>
+                </div>
             );
         });
     };
@@ -358,7 +366,7 @@ const Video = () => {
     const formatTime = (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return `${mins}:${secs}`;
+        return <p className="text-neutral-300 text-center">{mins}:{secs}</p>
     };
 
     const updateChecks = (user) => {
@@ -396,41 +404,193 @@ const Video = () => {
         for (const index in sharedUsers) {
             shareDetails.user_id = sharedUsers[index].id;
             const response = await shareVideo(shareDetails);
-
         }
     };
 
-    const getProfilePic = async (username) => {
-        try {
-            const response = await getProfilePicForPoster(username);
-            console.log("found profile color: ", response);
-            return response;
-        } catch (error){
-            console.log(error);
+
+
+    const toggleFullScreen = () => {
+        const elem = playerContainerRef.current;
+
+        if (!document.fullscreenElement) {
+            elem?.requestFullscreen().catch((err) => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
         }
-    }
+    };
+
+    useEffect(() => {
+        const handleFullscreenChanged = () => {
+            const isFull = !!document.fullscreenElement;
+            setFullscreen(isFull);
+        };
+
+        document.addEventListener("fullscreenchange", handleFullscreenChanged);
+
+        return (() => {
+            document.removeEventListener("fullscreenchange", handleFullscreenChanged);
+
+        });
+    }, [])
 
     // ----------- Rendered Content ----------------------------------------------------------------------------
     return (
-        <div className="watch-video-page">
-            <h1 id="page-title">Watch Video</h1>
+        <div className="flex flex-col w-full h-screen max-w-full items-center">
 
-            {/* TOP ROW (POSTER, OPTIONS) */}
-            <div className="poster-row">
-                <div className="poster-info">
-                    <img className="poster-profile-pic" src={`/assets/characters/${posterPic}.png`} alt="profile cover"></img>
-                    <h3 id="video-poster">{video.poster}</h3>
+            {/* VIDEO WRAPPER */}
+            <div className="w-full bg-black flex flex-col justify-center items-center relative group"
+                ref={playerContainerRef}>
+                {/* YouTube Video Player */}
+                <div className={`${fullscreen ? '' : 'max-w-6xl'} aspect-video w-full  bg-black relative`}>
+                    <ReactPlayer
+                        ref={playerRef}
+                        url={video.url}
+                        playing={playing}
+                        controls={false}
+                        width="100%"
+                        height="100%"
+                        onProgress={handleProgress}
+                        onDuration={(duration) => setVideoLength(duration)}
+                        onPlay={() => setPlaying(true)}
+                        onPause={() => setPlaying(false)}
+                        config={{
+                            youtube: {
+                                playerVars: {
+                                    rel: 0,
+                                    modestbranding: 1,
+                                    showInfo: 0,
+                                }
+                            }
+                        }}
+                    />
                 </div>
 
-                {/* VIDEO OPTIONS */}
+                {/* Video Controls */}
+                <div className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 absolute bottom-0 left-0 flex justify-between items-center w-full h-auto rounded-lg pr-5">
+                    {/* VIDEO TIMELINE */}
+                    <div className="absolute top-0 h-2 w-full">
+                        {/* range slider */}
+                        <input
+                            type="range"
+                            min={0}
+                            max={1}
+                            step={0.01}
+                            value={progress}
+                            onChange={handleSeekChange}
+                            className="z-50 absolute top-0 text-center w-full h-full border-solid appearance-none
+                            [&::-webkit-slider-runnable-track]:bg-transparent"
+                        ></input>
+
+                        {/* dark background */}
+                        <div className="w-full h-full bg-gray-900/90 absolute top-0">
+                            {/* timestamps */}
+                            <div id="timestamps">
+                                {Object.keys(parsed_game_details).map(time => {
+                                    const details = parsed_game_details[time];
+                                    const playerName = details.split(" ")[0];
+                                    const bgColor = playerName === video.player1_name
+                                        ? video.player1_color
+                                        : video.player2_color;
+
+                                    return (
+                                        <div
+                                            className='tick'
+                                            key={time}
+                                            style={{
+                                                left: (commentRatio(time) * 100 + 0.5) + '%',
+                                                backgroundColor: bgColor,
+                                            }}
+                                        >
+                                            <span className='tooltiptext'>{details}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                        {/* play/pause button */}
+                        <button onClick={handlePlayPause} className="p-2">
+                            {/* play button */}
+                            <svg
+                                className={`w-6 ml-5 mt-2 text-white ${playing ? 'hidden' : 'block'}`}
+                                id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 326.41 368.37"
+                                fill="currentColor"
+                            >
+                                <path d="M27.91,367.87c-15.12,0-27.41-12.3-27.41-27.41V27.91C.5,12.8,12.8.5,27.91.5c4.79,0,9.38,1.25,13.64,3.71l270.67,156.27c8.57,4.95,13.69,13.81,13.69,23.7s-5.12,18.76-13.69,23.71L41.56,364.16c-4.26,2.46-8.85,3.71-13.64,3.71h0Z" /><path d="M27.91,1c4.7,0,9.21,1.23,13.39,3.64l270.67,156.27c8.41,4.86,13.44,13.56,13.44,23.27s-5.02,18.41-13.44,23.27L41.31,363.72c-4.19,2.42-8.69,3.64-13.39,3.64-14.84,0-26.91-12.07-26.91-26.91V27.91C1,13.07,13.07,1,27.91,1M27.91,0C13.35,0,0,11.64,0,27.91v312.54c0,16.27,13.36,27.91,27.91,27.91,4.64,0,9.4-1.18,13.89-3.78l270.67-156.27c18.58-10.73,18.58-37.55,0-48.28L41.81,3.78c-4.49-2.59-9.25-3.78-13.89-3.78h0Z" />
+                            </svg>
+
+                            {/* pause button */}
+                            <svg
+                                className={`w-3 ml-5 mt-2 text-white ${playing ? 'block' : 'hidden'}`}
+                                id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 202.12 454.55"
+                                fill="currentColor"
+                            >
+                                <rect x=".5" y=".5" width="76.12" height="453.55" rx="21.38" ry="21.38" /><path d="M55.24,1c11.51,0,20.88,9.36,20.88,20.88v410.79c0,11.51-9.36,20.88-20.88,20.88H21.88c-11.51,0-20.88-9.36-20.88-20.88V21.88C1,10.36,10.36,1,21.88,1h33.37M55.24,0H21.88C9.84,0,0,9.84,0,21.88v410.79c0,12.03,9.84,21.88,21.88,21.88h33.37c12.03,0,21.88-9.84,21.88-21.88V21.88c0-12.03-9.84-21.88-21.88-21.88h0Z" /><rect x="125.5" y=".5" width="76.12" height="453.55" rx="21.38" ry="21.38" /><path d="M180.24,1c11.51,0,20.88,9.36,20.88,20.88v410.79c0,11.51-9.36,20.88-20.88,20.88h-33.37c-11.51,0-20.88-9.36-20.88-20.88V21.88c0-11.51,9.36-20.88,20.88-20.88h33.37M180.24,0h-33.37c-12.03,0-21.88,9.84-21.88,21.88v410.79c0,12.03,9.84,21.88,21.88,21.88h33.37c12.03,0,21.88-9.84,21.88-21.88V21.88c0-12.03-9.84-21.88-21.88-21.88h0Z" />
+                            </svg>
+                        </button>
+
+
+
+                        <div className="w-full flex items-center justify-center gap-2 text-neutral-400 pt-2">
+                            {formatTime(progress * (playerRef.current?.getDuration() || 0))} / {formatTime(playerRef.current?.getDuration() || 0)}
+                        </div>
+                    </div>
+
+                    {/* fullscreen button */}
+                    <svg
+                        className="w-5 ml-5 mt-2 text-white cursor-pointer"
+                        id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 487.75 517.99"
+                        fill="currentColor"
+                        onClick={toggleFullScreen}
+                    >
+                        <path d="M449.39,195.04c-6.34,0-11.5-5.16-11.5-11.5V49.87h-133.68c-6.34,0-11.5-5.16-11.5-11.5V12c0-6.34,5.16-11.5,11.5-11.5h171.54c6.34,0,11.5,5.16,11.5,11.5v171.54c0,6.34-5.16,11.5-11.5,11.5h-26.37Z" /><path d="M475.75,1c6.07,0,11,4.93,11,11v171.55c0,6.07-4.93,11-11,11h-26.37c-6.07,0-11-4.93-11-11V49.37h-134.18c-6.07,0-11-4.93-11-11V12c0-6.07,4.93-11,11-11h171.55M475.75,0h-171.55c-6.6,0-12,5.4-12,12v26.37c0,6.6,5.4,12,12,12h133.18v133.18c0,6.6,5.4,12,12,12h26.37c6.6,0,12-5.4,12-12V12c0-6.6-5.4-12-12-12h0Z" /><path d="M12,195.04c-6.34,0-11.5-5.16-11.5-11.5V12C.5,5.66,5.66.5,12,.5h171.55c6.34,0,11.5,5.16,11.5,11.5v26.37c0,6.34-5.16,11.5-11.5,11.5H49.87v133.68c0,6.34-5.16,11.5-11.5,11.5H12Z" /><path d="M183.55,1c6.07,0,11,4.93,11,11v26.37c0,6.07-4.93,11-11,11H49.37v134.18c0,6.07-4.93,11-11,11H12c-6.07,0-11-4.93-11-11V12C1,5.93,5.93,1,12,1h171.55M183.55,0H12C5.4,0,0,5.4,0,12v171.55c0,6.6,5.4,12,12,12h26.37c6.6,0,12-5.4,12-12V50.37h133.18c6.6,0,12-5.4,12-12V12C195.55,5.4,190.15,0,183.55,0h0Z" /><path d="M304.21,517.49c-6.34,0-11.5-5.16-11.5-11.5v-26.37c0-6.34,5.16-11.5,11.5-11.5h133.68v-133.68c0-6.34,5.16-11.5,11.5-11.5h26.37c6.34,0,11.5,5.16,11.5,11.5v171.54c0,6.34-5.16,11.5-11.5,11.5h-171.54Z" /><path d="M475.75,323.45c6.07,0,11,4.93,11,11v171.55c0,6.07-4.93,11-11,11h-171.55c-6.07,0-11-4.93-11-11v-26.37c0-6.07,4.93-11,11-11h134.18v-134.18c0-6.07,4.93-11,11-11h26.37M475.75,322.45h-26.37c-6.6,0-12,5.4-12,12v133.18h-133.18c-6.6,0-12,5.4-12,12v26.37c0,6.6,5.4,12,12,12h171.55c6.6,0,12-5.4,12-12v-171.55c0-6.6-5.4-12-12-12h0Z" /><path d="M12,517.49c-6.34,0-11.5-5.16-11.5-11.5v-171.54c0-6.34,5.16-11.5,11.5-11.5h26.37c6.34,0,11.5,5.16,11.5,11.5v133.68h133.68c6.34,0,11.5,5.16,11.5,11.5v26.37c0,6.34-5.16,11.5-11.5,11.5H12Z" /><path d="M38.37,323.45c6.07,0,11,4.93,11,11v134.18h134.18c6.07,0,11,4.93,11,11v26.37c0,6.07-4.93,11-11,11H12c-6.07,0-11-4.93-11-11v-171.55c0-6.07,4.93-11,11-11h26.37M38.37,322.45H12c-6.6,0-12,5.4-12,12v171.55c0,6.6,5.4,12,12,12h171.55c6.6,0,12-5.4,12-12v-26.37c0-6.6-5.4-12-12-12H50.37v-133.18c0-6.6-5.4-12-12-12h0Z" />
+                    </svg>
+
+                </div>
+            </div>
+
+
+
+            {/* Scoreboard */}
+            <div className="video-point-display flex-grow-0">
+                <div className="video-player1-color" id='player1-color' style={{ backgroundColor: video.player1_color }}></div>
+                <p className='video-player-name'>{video.player1_name}</p>
+                <div className="video-player1_wins" id="player1_wins">0</div>
+                <div className='video-score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
+                <div className="video-player2_wins" id="player2_wins">0</div>
+                <p className='video-player-name'>{video.player2_name}</p>
+                <div className="video-player2-color" style={{ backgroundColor: video.player2_color }}></div>
+            </div>
+
+            {/* video title */}
+            <h1 className="self-start text-xl font-bold px-5 py-1 mt-1.5">{video.title}</h1>
+            <div className="w-full flex justify-between items-center px-4">
+
+
+                {/* profile picture & name of poster */}
+                <div className="flex items-center gap-1">
+                    <img className="w-6 h-auto" src={`/assets/characters/${posterPic}.png`} alt="profile cover"></img>
+                    <p className="text-base font-semibold p-0">{video.poster}</p>
+                </div>
+
+                {/* VIDEO OPTIONS (3 dots) */}
                 <div
                     onClick={() => setVideoOptionsOpen(!videoOptionsOpen)}
-                    className="video-creator-controls"
+                    className="relative flex items-center justify-center rounded-full transition-all duration-100"
                 >
-                    <div className="open-options-button">
-                        <img src="/assets/icons/3 dots.png" alt="more video info" className="three-dots"></img>
+                    <img src="/assets/icons/3 dots.png" alt="more video info" className="w-4 cursor-pointer p-1 rounded-lg hover:bg-neutral-600/30"></img>
 
-                    </div>
+
                     {/* OPTIONS PANEL */}
                     {videoOptionsOpen && <div className="video-options-panel">
                         <img src="/assets/icons/x-icon.png" alt="close options panel" className="close-popup" onClick={() => setVideoOptionsOpen(false)}></img>
@@ -498,211 +658,119 @@ const Video = () => {
 
             </div>
 
-
-            {/* WATCH VIDEO & COMMENTS AREA */}
-            <div className="watch-video-page-column">
-                <div className="video-comments-section-row">
-                    <div className="video-area">
-                        {/* YouTube Video Player */}
-                        <div className="react-player-wrapper">
-                            <ReactPlayer
-                                ref={playerRef}
-                                url={video.url}
-                                playing={playing}
-                                controls={false}
-                                width="95%"
-                                height="100%"
-                                className="react-player"
-                                onProgress={handleProgress}
-                                onDuration={(duration) => setVideoLength(duration)}
-                                onPlay={() => setPlaying(true)}
-                                onPause={() => setPlaying(false)}
-                            />
-                        </div>
-
-                        {/* Scoreboard */}
-                        <div className="video-point-display">
-                            <div className="video-player1-color" id='player1-color' style={{ backgroundColor: video.player1_color }}></div>
-                            <p className='video-player-name'>{video.player1_name}</p>
-                            <div className="video-player1_wins" id="player1_wins">0</div>
-                            <div className='video-score-background'><p id="player1_score">0</p><p >-</p><p id="player2_score">0</p></div>
-                            <div className="video-player2_wins" id="player2_wins">0</div>
-                            <p className='video-player-name'>{video.player2_name}</p>
-                            <div className="video-player2-color" style={{ backgroundColor: video.player2_color }}></div>
-                        </div>
-
-                        {/* Video Controls */}
-                        <div className="controls">
-                            <button onClick={handlePlayPause}><img className="play-pause" alt="play/pause video" src={playing ? '/assets/icons/pause-icon.png' : '/assets/icons/play-icon.png'}></img></button>
-                            <div className="range-slider">
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    step={0.01}
-                                    value={progress}
-                                    onChange={handleSeekChange}
-                                    className="timeline-slider"
-                                ></input>
-                                <div className="slider-background">
-                                    <div id="timestamps">
-                                        {
-
-                                        }
-                                        {Object.keys(parsed_game_details).map(time => {
-                                            const details = parsed_game_details[time];
-                                            const playerName = details.split(" ")[0];
-                                            const bgColor = playerName === video.player1_name
-                                                ? video.player1_color
-                                                : video.player2_color;
-
-                                            return (
-                                                <div
-                                                    className='tick'
-                                                    key={time}
-                                                    style={{
-                                                        left: (commentRatio(time) * 100 + 0.5) + '%',
-                                                        backgroundColor: bgColor,
-                                                    }}
-                                                >
-                                                    <span className='tooltiptext'>{details}</span>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <span>
-                                {formatTime(progress * (playerRef.current?.getDuration() || 0))} / {formatTime(playerRef.current?.getDuration() || 0)}
-                            </span>
-                        </div>
-
-
-                    </div>
-
-
-                    {/* Comment Section */}
-                    <div className="comment-section">
-                        <div className="comment-section-top-bar">
-                            <h2 id="coaching-header">Coaching Feed</h2>
-                            <div class="coach-tabs">
-                                <button className="tablinks"></button>
-                            </div>
-                        </div>
-
-
-                        {/* Comments List */}
-                        <div className="comments-area" id="comments-scroll">
-                            {noComments && <h4 className='no-comments-text'>No Comments to Display</h4>}
-
-                            {rootComments.map(commentInfo => (
-                                <div className="comment-and-replies">
-                                    <div className="specific-comment" key={commentInfo.id}>
-                                        {/* ROOT COMMENT */}
-                                        <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`}  alt='profile cover' className="comment-profile-pic"></img>
-                                        <div className="comment-div">
-                                            <div className="comment-top-bar">
-                                                <h4 className="commenter-name">{commentInfo.commenter_name}</h4>
-                                                <div className="delete-date-zone">
-                                                    <p className="date-posted">{commentInfo.date_posted.slice(0, 10)}</p>
-                                                    <img onClick={() => deleteComment(commentInfo)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="delete-comment-button"></img>
-                                                </div>
-                                            </div>
-                                            <div className="comment">
-                                                <p>{commentInfo.comment}</p>
-                                            </div>
-                                            <div className="comment-button-area">
-                                                <p onClick={() => jumpToTimestamp(commentInfo.timestamp)} className="timestamp-jump">Jump</p>
-                                                <img className="view-more-button" alt="view more" src="/assets/icons/view more.png"></img>
-                                                <div className="buttons-zone">
-                                                    <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="like-button"></img>
-                                                    <div className="right-comment-button-area" onClick={() => setReplyingTo(commentInfo)}>
-                                                        <img src="/assets/icons/reply.png" alt="Like Comment" className="reply-icon"></img>
-                                                        <p className="reply-button">Reply</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* render replies recursively */}
-                                    {renderReplies(commentInfo.id)}
-                                </div>
-
-                            ))}
-
-                            <div ref={bottomRef}></div>
-
-                        </div>
-
-                        {/* Comment Input */}
-                        <div className="comment-input-bar">
-                            <div className="input-section">
-                                {replyingComment && <div className="close-button-column">
-                                    <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => closeReply()}></img>
-                                    <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator"></img>
-                                </div>}
-
-
-                                <TextField
-                                    multiline
-                                    fullWidth
-                                    rows={1}
-                                    maxRows={4}
-                                    inputRef={commentRef}
-                                    placeholder="Message..."
-                                    variant="outlined"
-                                    className="comment-input"
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter" && !e.shiftKey) {
-                                            e.preventDefault();
-                                            postComment(e);
-                                        }
-                                    }}
-                                    InputProps={{
-                                        sx: {
-                                            backgroundColor: "#b5d4f3",
-                                            alignItems: "flex-start",     // ensure top alignment
-                                            paddingTop: "10px",           // optional, visual buffer
-                                        }
-                                    }}
-                                />
-                            </div>
-
-                            {/* Post Comment */}
-
-                            <Button
-                                variant="contained"
-                                className="post-reply-button"
-                                onClick={() => postComment()}
-                                sx={{
-                                    height: "50%",
-                                    padding: "10px 0px",
-                                    fontSize: "18px",
-                                    fontWeight: 600,
-                                }}
-
-                            >
-                                Post
-                            </Button>
-                        </div>
-
-
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div className="video-description">
+            {/* DESCRIPTION */}
+            <div className="w-11/12 self-start ml-4 h-auto mt-2 mb-3 rounded-md bg-neutral-200">
                 <div className="top-description-row">
                     <h2>{video.title}</h2>
                     <p>Posted on {video.date_posted}</p>
                 </div>
-                <h4>Description</h4>
                 <p>{video.description || "No description provided."}</p>
+            </div>
+
+
+
+            {/* Comment Section */}
+            <div className="w-full h-full flex flex-col items-center justify-start relative gap-2">
+                <h1 className="text-xl font-semibold self-start px-4">Comments</h1>
+                <p className="italic text-neutral-400 self-start px-8">Leave a comment!</p>
+
+                {/* Comment Input */}
+                <div className="w-full px-6 flex items-center justify-center">
+                    <div className="relative w-3/4 h-full flex flex-row">
+                        {replyingComment && <div className="close-button-column">
+                            <img src="/assets/icons/x-icon.png" alt='reply' className="close-reply-button" onClick={() => closeReply()}></img>
+                            <img src="/assets/icons/reply-icon.svg" alt='reply' className="reply-indicator"></img>
+                        </div>}
+
+
+                        <TextField
+                            multiline
+                            fullWidth
+                            rows={1}
+                            maxRows={4}
+                            inputRef={commentRef}
+                            placeholder="Message..."
+                            variant="outlined"
+                            className="comment-input"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                    e.preventDefault();
+                                    postComment(e);
+                                }
+                            }}
+                            InputProps={{
+                                sx: {
+                                    backgroundColor: "#b5d4f3",
+                                    alignItems: "flex-start",     // ensure top alignment
+                                    paddingTop: "10px",           // optional, visual buffer
+                                }
+                            }}
+                        />
+                    </div>
+
+                    {/* Post Comment */}
+
+                    <Button
+                        variant="contained"
+                        className="post-reply-button"
+                        onClick={() => postComment()}
+                        sx={{
+                            height: "50%",
+                            padding: "10px 0px",
+                            fontSize: "18px",
+                            fontWeight: 600,
+                        }}
+
+                    >
+                        Post
+                    </Button>
+                </div>
+
+                {/* Comments List */}
+                <div className="w-full h-auto px-6" id="comments-scroll">
+                    {noComments && <h4 className='self-center italic text-lg font-bold'>No Comments to Display</h4>}
+
+                    {rootComments.map(commentInfo => (
+                        <div className="w-full h-fit">
+                            {/* ROOT COMMENT */}
+                            <div className="w-full h-32 flex justify-start" key={commentInfo.id}>
+                                {/* profile pic */}
+                                <img src={`/assets/characters/${profilePicMap[commentInfo.commenter_name || "default"]}.png`} alt='profile cover' className="w-14 h-14"></img>
+                                <div className="w-full flex flex-col pl-1">
+                                    {/* name, timestamp, delete button */}
+                                    <div className="w-full h-1/6 flex items-center justify-between mt-2">
+                                        <h4 className="m-0 p-0 text-lg font-bold">{commentInfo.commenter_name}</h4>
+                                        <div className="flex justify-center items-center gap-2 mr-5">
+                                            <p className="text-sm text-neutral-600 italic">{commentInfo.date_posted.slice(0, 10)}</p>
+                                            <img onClick={() => deleteComment(commentInfo)} src="/assets/icons/x-icon.png" alt="Delete Comment" className="h-4 cursor-pointer"></img>
+                                        </div>
+                                    </div>
+                                    <div className="w-full h-1/2 overflow-hidden text-ellipsis text-sm">
+                                        <p>{commentInfo.comment}</p>
+                                    </div>
+                                    <div className="w-full h-1/4 flex justify-between items-center">
+                                        <p onClick={() => jumpToTimestamp(commentInfo.timestamp)} className="timestamp-jump">Jump</p>
+                                        <img className="w-3 self-end h-1 cursor-pointer p-0 m-0 opacity-80 mb-1" alt="view more" src="/assets/icons/view more.png"></img>
+                                        <div className="flex">
+                                            <img src="/assets/icons/heart-empty.png" alt="Like Comment" className="w-8 cursor-pointer"></img>
+                                            <div className="h-full w-auto flex items-center justify-center mr-3" onClick={() => setReplyingTo(commentInfo)}>
+                                                <img src="/assets/icons/reply.png" alt="Like Comment" className="w-7 cursor-pointer"></img>
+                                                <p className="cursor-pointer font-medium text-sm">Reply</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* render replies recursively */}
+                            {renderReplies(commentInfo.id)}
+                        </div>
+
+                    ))}
+
+                    <div ref={bottomRef}></div>
+
+                </div>
             </div>
         </div>
 

@@ -1,148 +1,21 @@
-.layout-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;   
-}
-
-.content-area-with-top-navbar {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% - 5%);
-    height: 100%;
-
+.content-area-navbar {
+    width: 95%;
     transition: width 0.3s ease-in-out;
-
-    &.sidebar-open {
-        width: 95%;
-    }
-
-    &.sidebar-closed {
-        width: 100%;
-    }
 }
-
-.top-nav-bar {
-    width: 100%;
-    height: 7vh;
-    padding-right: 1%;
-    padding-left: 1%;
-    padding-top: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    .icon-area {
-        width: fit-content;
-        align-self: flex-end;
-        height: 65px;
-        display: flex;
-        z-index: 50;
-    }
-
-    .profile-icon {
-        padding: 0;
-        height: 63%;
-        width: auto;
-        border-radius: 100%;
-        margin: 30% -50%;
-        z-index: 50;
-    }
-
-    .profile-icon:hover {
-        background-color: rgb(211, 211, 211, 0.5);
-        z-index: 50;
-    }
-
-    .bell-icon {
-        padding: 0;
-        height: 70%;
-        width: auto;
-        border-radius: 100%;
-        margin: 20% -70%;
-        z-index: 50;
-        cursor: pointer;
-    }
-
-    .bell-icon:hover {
-        background-color: rgb(211, 211, 211, 0.5);
-        z-index: 50;
-    }
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 9%;
-    right: 2%;
-    width: 20%;
-    background-color: white;
-    border-radius: 2%;
-    border: 5px solid #4693e1;
-    z-index: 50;
-}
-
-.dropdown-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.dropdown-menu li {
-    padding: 4%;
-    cursor: pointer;
-}
-
-.dropdown-menu li:hover {
-    background-color: #f4f4f4;
-}
-
-
-.main-content {
-    overflow: auto;
-}
-
-.menu-button {
-    width: clamp(45px, 1vw, 75px);
-    height: clamp(45px, 1vw, 75px);
-    color: black;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 1100;
-    padding: 5px;
-    border-radius: 8px;
-}
-
-.menu-button:hover {
-    background-color: grey;
-}
-
-// TABLET
-@media screen and (min-width: 768px) and (max-width: 1024px){
-    .menu-button{
-
-    }
-}
-
-// PHONE
-@media screen and (max-width: 768px){
-    .sidebar{
-        background-color: green;
-    }
-}
-
 
 @media screen and (max-width: 768px) {
     .content-area-with-top-navbar {
         width: calc(100% - 15%);
 
         &.sidebar-open {
-            width: 85%;
+            width: 90%;
         }
 
         &.sidebar-closed {
             width: 100%;
         }
     }
+
 }
 
 

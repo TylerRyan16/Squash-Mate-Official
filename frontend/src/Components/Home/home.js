@@ -101,77 +101,98 @@ const Home = () => {
         )
     } else {
         return (
-            <div className="home-container">
-                <h1 id='app-title'>Squash Mate</h1>
-                <h3 id='slogan'>Elevate Your Game</h3>
+            <div className="flex flex-col w-full h-auto overflow-y-auto pt-2">
+                <h1 className="text-center text-4xl lg:text-6xl font-bold">Squash Mate</h1>
+                <h3 className="text-center text-base lg:text-xl">Elevate Your Game</h3>
 
 
                 {/* EXPLORE PAGE */}
-                <div className="category-name-button-area">
-                    <h1 className='category-name'>Explore</h1>
-                    <Link to="/explore" className="view-more">View More</Link>
-                </div>
+                <div className="w-full flex flex-col gap-2 px-4">
 
-                <div className="all-videos-list">
-                    {allVideos.map(video => (
-                        <VideoCard key={video.id} video={video} />
-                    ))}
+                    {/* header */}
+                    <div className="flex justify-between items-center">
+                        <h1 className='font-semibold text-2xl md:text-4xl'>Explore</h1>
+                        <Link to="/explore">View More</Link>
+                    </div>
+
+                    {/*LIST */}
+                    <div className=" 
+                    flex flex-col items-center justify-center
+                    sm:grid sm:grid-cols-2
+                    md:grid md:grid-cols-2
+                    lg:grid lg:grid-cols-3 
+                    ">
+                        {allVideos.slice(0, 10).map(video => (
+                            <VideoCard key={video.id} video={video} />
+                        ))}
+                    </div>
                 </div>
 
 
                 {/* MY VIDEOS */}
-                <div className="category-name-button-area">
-                    <h1 className='category-name'>My Videos</h1>
-                    <Link to="/my-videos" className="view-more">View More</Link>
-                </div>
+                <div className="flex flex-col gap-2 w-full">
 
-                <div className="carousel">
-                    {/* left arrow */}
-                    <button id="left-scroll-my-videos" className="left-scroll" onClick={() => scrollLeft('my-videos-list')}>
-                        <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
-
-                    <div id="my-videos-list" className="my-videos-list">
-                        {myVideos.length !== 0 && myVideos.map(video => (
-                            <VideoCard key={video.id} video={video} />
-                        ))}
-
-                        {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p>}
-
-
+                    {/* Header */}
+                    <div className="flex justify-between mx-6">
+                        <h1 className='font-semibold text-2xl md:text-4xl'>My Videos</h1>
+                        <Link to="/my-videos" >View More</Link>
                     </div>
 
-                    {/* right arrow */}
-                    <button id="right-scroll-my-videos" className="right-scroll" onClick={() => scrollRight("my-videos-list")}>
-                        <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
+                    {/* List */}
+                    <div className="flex justify-between">
+                        {/* desktop- left arrow */}
+                        <button id="left-scroll-my-videos" className="left-scroll hidden lg:block" onClick={() => scrollLeft('my-videos-list')}>
+                            <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                        </button>
+
+                        <div id="my-videos-list" className="flex overflow-x-scroll h-auto w-full gap-4 px-2 py-4 overflow-y-hidden ">
+                            {myVideos.length !== 0 && myVideos.map(video => (
+                                <VideoCard key={video.id} video={video} />
+                            ))}
+
+                            {myVideos.length === 0 && <p>You haven't uploaded anything! Try it out!</p>}
+
+
+                        </div>
+
+                        {/* desktop - right arrow */}
+                        <button id="right-scroll-my-videos" className="right-scroll  hidden lg:block" onClick={() => scrollRight("my-videos-list")}>
+                            <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                        </button>
+                    </div>
                 </div>
+
 
                 {/* SHARED WITH ME */}
-                <div className="category-name-button-area">
-                    <h1 className='category-name'>Shared With Me</h1>
-                    <Link to="/shared-with-me" className="view-more">View More</Link>
-                </div>
-
-                <div className="carousel">
-                    {/* left arrow */}
-                    <button id="left-scroll-shared" className="left-scroll" onClick={() => scrollLeft('shared-list')}>
-                        <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
-
-                    <div id="shared-list" className="my-videos-list">
-                        {sharedWithMe.length !== 0 && sharedWithMe.map(video => (
-                            <VideoCard key={video.id} video={video} />
-                        ))}
-
-                        {sharedWithMe.length === 0 && <p>Nobody has shared any videos with you :(</p>}
-
+                <div className="flex flex-col gap-2 w-full">
+                    {/* header */}
+                    <div className="flex justify-between mx-6">
+                        <h1 className='px-2 font-semibold text-2xl md:text-4xl'>Shared With Me</h1>
+                        <Link to="/shared-with-me">View More</Link>
                     </div>
-                    {/* right arrow */}
-                    <button id="right-scroll-shared" className="right-scroll" onClick={() => scrollRight("shared-list")}>
-                        <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
-                    </button>
+
+                    {/* list */}
+                    <div className="flex justify-between">
+                        {/* left arrow */}
+                        <button id="left-scroll-shared" className="left-scroll  hidden lg:block" onClick={() => scrollLeft('shared-list')}>
+                            <img className='left-scroll-icon' id='left-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                        </button>
+
+                        <div id="shared-list" className="flex overflow-x-scroll h-auto w-full gap-4 px-2 py-4 overflow-y-hidden">
+                            {sharedWithMe.length !== 0 && sharedWithMe.map(video => (
+                                <VideoCard key={video.id} video={video} />
+                            ))}
+
+                            {sharedWithMe.length === 0 && <p>Nobody has shared any videos with you :(</p>}
+
+                        </div>
+                        {/* right arrow */}
+                        <button id="right-scroll-shared" className="right-scroll  hidden lg:block" onClick={() => scrollRight("shared-list")}>
+                            <img className='right-scroll-icon' id='right-scroll-icon' src='assets\icons\right-arrow.png' alt='' />
+                        </button>
+                    </div>
                 </div>
+
 
                 <div className="empty-banner"></div>
             </div>
